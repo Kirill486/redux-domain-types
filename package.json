@@ -1,0 +1,26 @@
+{
+  "name": "redux-domain-types",
+  "version": "1.0.0",
+  "description": "Easy to use map from buisiness-logic to model implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kirill486/redux-domain-types.git"
+  },
+  "keywords": [
+    "model",
+    "redux"
+  ],
+  "author": "Kirill Penkin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kirill486/redux-domain-types/issues"
+  },
+  "homepage": "https://github.com/Kirill486/redux-domain-types#readme",
+  "dependencies": {
+    "redux": ">=0.10"
+  }
+}
