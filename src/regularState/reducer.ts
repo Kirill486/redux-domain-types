@@ -1,6 +1,7 @@
-import { IEntityState, IAction, CsudActions, IEntity, IEntityCommon } from "../lib/types";
+import { IEntityState, IAction, IEntity, IEntityCommon } from "../lib/types";
 import { EntityController } from "../lib/EntityActions";
 import { IPersonEntity, personFabric } from "./domainTypes";
+import { v4 as id } from 'uuid';
 
 export const entityModelController = new EntityController<IEntity<IPersonEntity>>('person', personFabric);
 
@@ -10,22 +11,25 @@ export const regularEntityReducer =
   {type, payload}: IAction<Entity> | IAction<IEntityState<Entity>> | IAction<string>,
 ) => {
   switch (type) {
-    case CsudActions.CREATE: {
+    case entityModelController.createActionType: {
       const entity = entityModelController.getEmptyEntity();
-      
+      const entityId = id();
+      entity.id = entityId;
+
       if (state[entity.id]) {
         console.warn('You should not use create for update');
       }
-      return {
+      const newState = {
         ...state,
         [entity.id]: entity,
       }
+      return newState;
     }
-    case CsudActions.SET: {
+    case entityModelController.setActionType: {
       const state = payload as IEntityState<Entity>;
       return state;
     }
-    case CsudActions.UPDATE: {
+    case entityModelController.updateActionType: {
       const entity = payload as Entity;
       if (!state[entity.id]) {
         console.warn('You should not use update for create');
@@ -35,7 +39,7 @@ export const regularEntityReducer =
         [entity.id]: entity,
       }
     }
-    case CsudActions.DELETE: {
+    case entityModelController.deleteActionType: {
       const entityId = payload as string;
       return {
         ...state,

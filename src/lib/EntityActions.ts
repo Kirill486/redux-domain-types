@@ -2,12 +2,12 @@ import { CsudActions, IAction, id, EntityFabric, IEntityState } from "./types";
 import { ActionCreator } from "redux";
 
 export class EntityController<Entity> {
-  static readonly prefix = 'entity/';
+  static readonly prefix = 'entity';
   private domainPrefix: string;
-  private createActionType: string;
-  private setActionType: string;
-  private updateActionType: string;
-  private deleteActionType: string;
+  public readonly createActionType: string;
+  public readonly setActionType: string;
+  public readonly updateActionType: string;
+  public readonly deleteActionType: string;
   
   public getEmptyEntity: EntityFabric<Entity>;
 
@@ -40,10 +40,10 @@ export class EntityController<Entity> {
   ) {
     this.domainPrefix = prefix;
 
-    this.createActionType = `${EntityController.prefix}${this.domainPrefix}${CsudActions.CREATE}`;
-    this.setActionType = `${EntityController.prefix}${this.domainPrefix}${CsudActions.SET}`;
-    this.updateActionType = `${EntityController.prefix}${this.domainPrefix}${CsudActions.UPDATE}`;
-    this.deleteActionType = `${EntityController.prefix}${this.domainPrefix}${CsudActions.DELETE}`;
+    this.createActionType = `${EntityController.prefix}/${this.domainPrefix}/${CsudActions.CREATE}`;
+    this.setActionType = `${EntityController.prefix}/${this.domainPrefix}/${CsudActions.SET}`;
+    this.updateActionType = `${EntityController.prefix}/${this.domainPrefix}/${CsudActions.UPDATE}`;
+    this.deleteActionType = `${EntityController.prefix}/${this.domainPrefix}/${CsudActions.DELETE}`;
 
     this.getEmptyEntity = emptyEntityFabric;
   }
