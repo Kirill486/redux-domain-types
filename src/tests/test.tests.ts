@@ -13,7 +13,7 @@ describe('Obvious function', () => {
   });
 
   const {dispatch, getState} = createStore(regularEntityReducer);
-  const stateController = new EntityController<IEntity<IPersonEntity>>('person/', personFabric);
+  const stateController = new EntityController<IEntity<IPersonEntity>>('person', personFabric);
   dispatch({ type: 'initial' });
 
   const initialState = getState();
@@ -31,11 +31,13 @@ describe('Obvious function', () => {
     assert.equal(stateKeys.length, 2);
   });
 
-  const entitiesInMemory = stateKeys.map((key, index): IEntity<IPersonEntity> => ({
-      ...storeAfterCreation[key],
-      firstName: `Johhn${index}`,
-      lastName: `Dow${10 - index}`,
-    })
+  const entitiesInMemory = stateKeys.map((key, index): IEntity<IPersonEntity> => {
+    return {
+        ...storeAfterCreation[key],
+        firstName: `Johhn${index}`,
+        lastName: `Dow${10 - index}`,
+      };
+    }
   );
 
   it('should have 2 records with different keys', () => {
