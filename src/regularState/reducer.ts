@@ -18,7 +18,7 @@ export const regularEntityReducer =
 
       if (state[entity.id]) {
         console.warn('You should not use create for update');
-      }
+      } 
       const newState = {
         ...state,
         [entity.id]: entity,
