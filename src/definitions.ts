@@ -32,3 +32,5 @@ export interface IActionOfType<Types, Payload> {
 };
 
 export type IActionCreator<Types, Payload> = (...actionArgs: any) => IActionOfType<Types, Payload>;
+
+export type EntityFabric<Entity extends IEntity<any>> = () => Entity;
