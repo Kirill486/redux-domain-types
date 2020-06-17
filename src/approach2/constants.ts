@@ -1,0 +1,12 @@
+
+export enum L2ActionTypes {
+  SET_VALUE = 'SET_VALUE',
+  REMOVE_VALUE = 'REMOVE_VALUE',
+}
+
+export enum L3ActionTypes {
+  CREATE_ENTITY = 'CREATE_ENTITY',
+  UPDATE_ENTITY = 'UPDATE_ENTITY',
+  DELETE_ENTITY = 'DELETE_ENTITY',
+}
+
