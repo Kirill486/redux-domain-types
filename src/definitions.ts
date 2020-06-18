@@ -1,16 +1,17 @@
 import { IAction } from "./lib/types";
+import { type } from "os";
 
 export type id = string;
 
-export interface IEntityCommon {
+export interface IRecordCommon {
   id: string;
 }
 
-// Entity always has Id
-export type IEntity<DomainType> = DomainType & IEntityCommon;
+// Record always has Id
+export type IRecord<DomainType> = DomainType & IRecordCommon;
 
-// Entity state is key mapped object
-export type IEntityState<Entity> = {[key: string]: IEntity<Entity> };
+// Record state is key mapped object
+export type IRecordState<DomainType> = {[key: string]: IRecord<DomainType> };
 
 export type Reducer<State> =
 (state: State, action: IAction<any>) => State;
@@ -31,9 +32,16 @@ export interface IActionOfType<Types, Payload> {
   payload: Payload;
 };
 
+export type IRecordActionOfType<Types, DomainType> = IActionOfType<Types, IRecord<DomainType>>;
+
 export type IActionCreator<Types, Payload> = (...actionArgs: any) => IActionOfType<Types, Payload>;
+
+export type IRecordActionCreator<Types, DomainType> = (...actionArgs: any) => IRecordActionOfType<Types, DomainType>;
 
 // In this context set means kit and not the data structure
 export type IActionSet = { [actionType: string] : IActionCreator<any, any> };
 
-export type EntityFabric<Entity extends IEntity<any>> = () => Entity;
+// Set also means kit in this context
+export type ISelectorSet = { [selectorType: string] :Selector<any, any> };
+
+export type EntityFabric<Entity extends IRecord<any>> = () => Entity;
