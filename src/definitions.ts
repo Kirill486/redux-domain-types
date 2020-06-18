@@ -33,4 +33,7 @@ export interface IActionOfType<Types, Payload> {
 
 export type IActionCreator<Types, Payload> = (...actionArgs: any) => IActionOfType<Types, Payload>;
 
+// In this context set means kit and not the data structure
+export type IActionSet = { [actionType: string] : IActionCreator<any, any> };
+
 export type EntityFabric<Entity extends IEntity<any>> = () => Entity;
