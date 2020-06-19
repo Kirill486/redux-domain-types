@@ -45,3 +45,13 @@ export type IActionSet = { [actionType: string] : IActionCreator<any, any> };
 export type ISelectorSet = { [selectorType: string] :Selector<any, any> };
 
 export type EntityFabric<Entity extends IRecord<any>> = () => Entity;
+
+export interface Index<IndexValue> {
+  indexKey: string;
+  index: IndexValue;
+}
+
+export type HashCode<Record, Result> = (record: Record) => Result;
+
+export type HashIndex<Record, Result> = Index<HashCode<Record, Result>>;
+// export type BuisinessIndex<Record, Result> = Index<HashCode<Record, Result>>;
