@@ -1,15 +1,14 @@
-import { IProduct, IPosition } from "./domainTypes";
-import { EntityFabric, IActionCreator, HashIndex, Selector, Dispatch, Query, command, ClientSelector, IRecord, Factory } from "../src/definitions"
+import { IProduct, IPosition, IAppState, TPartialAppState } from "./domainTypes";
+import { EntityFabric, IActionCreator, HashIndex, Selector, Dispatch, Query, command, ClientSelector, IRecord, Factory, id } from "../src/definitions"
 import { EntityStateController, TEntityStateControllerProvider } from "./entityStateController";
+import { TStateControllerProvider, IStateController } from "./stateController";
 
 export const commonInitialization =
 (
-    ProductStateController: EntityStateController<IProduct>,
     ProductStateControllerProvider: TEntityStateControllerProvider<IProduct>,
     emptyProductFactory: Factory<IProduct>,
 
 
-    PositionStateController: EntityStateController<IPosition>,
     PositionStateControllerProvider: TEntityStateControllerProvider<IPosition>,
     emptyPositionFactory: Factory<IPosition>,
 
@@ -25,9 +24,9 @@ export const commonInitialization =
     const positionStateController = new PositionStateControllerProvider('position', emptyPositionFactory, [costIndex, productIndex, wishListPosition]);
     
     // Initial
-    const defaultQueried = ProductStateController.query();
-    const sortedByTitle = ProductStateController.query(titleIndex.indexKey);
-    const sortedByValue = ProductStateController.query(valueIndex.indexKey);
+    const defaultQueried = productStateController.query();
+    const sortedByTitle = productStateController.query(titleIndex.indexKey);
+    const sortedByValue = productStateController.query(valueIndex.indexKey);
 }
 
 export const commonPurchaise = (
@@ -74,4 +73,51 @@ export const commonPurchaise = (
     // Show wishes that are about to get complete
     const positionsThatFullfillWisshes = PositionStateController.query(wishListPosition.indexKey);
 }    
-    
+
+export const appStateScenario =
+(
+    EntityStateControllerProvider: TStateControllerProvider<IAppState>,
+    positionStateController: EntityStateController<IPosition>,
+) => {
+    const initial: IAppState = {
+        modalOpen: false,
+        isLoading: false,
+        errors: [],
+        manualOrder: undefined,
+    }
+    const appStateController = new EntityStateControllerProvider('app', initial);
+
+    const diff: TPartialAppState = {
+        isLoading: true,
+    }
+    appStateController.set(diff);
+
+    appStateController.reset();
+}
+
+export const manualOrderScenario =
+(
+    appStateController: IStateController<IAppState>,
+    positionStateController: EntityStateController<IPosition>,
+) => {
+    const order: id[] = positionStateController.query().map((position) => position.id);
+
+    {
+        const diff: TPartialAppState = {
+            manualOrder: order,
+        }
+        appStateController.set(diff);
+    }
+
+    {
+        // will throw if you mess with names
+        const manualOrder = appStateController.select('manualOrder') as id[];
+
+        // change places first and last
+        const newOrder = moveItem(manualOrder, 0, 2);
+        const diff: TPartialAppState = {
+            manualOrder: order,
+        }
+        appStateController.set(diff);
+    }
+}
