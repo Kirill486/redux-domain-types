@@ -5,8 +5,6 @@ export type AnyStateController = EntityStateController<any> | IStateController<a
 
 type ControllerPool = { [propertyKey: string]: AnyStateController }
 
-interface StateControllerPool {
-
-    controllerPool: ControllerPool;
-    getController: (property: string) => AnyStateController;
+export interface StateControllerPool {
+    getControllerFor: (property: string) => AnyStateController;
 }
