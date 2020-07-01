@@ -1,7 +1,7 @@
-import { IProduct, IPosition, IAppState, TPartialAppState } from "../api_describtion/domainTypes";
+import { IProduct, IPosition, IAppState, TPartialAppState } from "./domainTypes";
 import { EntityFabric, IActionCreator, HashIndex, Selector, Dispatch, Query, command, ClientSelector, IRecord, Factory, id } from "../src/definitions"
-import { EntityStateController, TEntityStateControllerProvider } from "../api_describtion/entityStateController";
-import { TStateControllerProvider, IStateController } from "../api_describtion/stateController";
+import { EntityStateController, TEntityStateControllerProvider } from "./entityStateController";
+import { TStateControllerProvider, IStateController } from "./stateController";
 
 export const commonInitialization =
 (
