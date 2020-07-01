@@ -1,5 +1,4 @@
 import { IAction } from "./lib/types";
-import { type } from "os";
 
 export type id = string;
 
@@ -44,7 +43,7 @@ export type IActionSet = { [actionType: string] : IActionCreator<any, any> };
 // Set also means kit in this context
 export type ISelectorSet = { [selectorType: string] :Selector<any, any> };
 
-export type EntityFabric<Entity extends IRecord<any>> = () => Entity;
+export type EntityFabric<Entity extends IRecord<any>> = (...args: any) => Entity;
 
 export interface Index<IndexValue> {
   indexKey: string;
@@ -55,3 +54,10 @@ export type HashCode<Record, Result> = (record: Record) => Result;
 
 export type HashIndex<Record, Result> = Index<HashCode<Record, Result>>;
 // export type BuisinessIndex<Record, Result> = Index<HashCode<Record, Result>>;
+
+// We have literal command - query separation.
+
+export type command = (...args: any) => void;
+export type Dispatch = command;
+
+export type Query<Data> = (...args: any) => Data;
