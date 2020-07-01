@@ -1,27 +1,29 @@
 import { IProduct, IPosition } from "./domainTypes";
-import { EntityFabric, IActionCreator, HashIndex, Selector, Dispatch, Query, command, ClientSelector, IRecord } from "../src/definitions"
-import { EntityStateController } from "./entityStateController";
+import { EntityFabric, IActionCreator, HashIndex, Selector, Dispatch, Query, command, ClientSelector, IRecord, Factory } from "../src/definitions"
+import { EntityStateController, TEntityStateControllerProvider } from "./entityStateController";
 
 export const commonInitialization =
 (
     ProductStateController: EntityStateController<IProduct>,
-    // ProductStateControllerProvider: TStateControllerProvider<IProduct>,
+    ProductStateControllerProvider: TEntityStateControllerProvider<IProduct>,
+    emptyProductFactory: Factory<IProduct>,
+
+
     PositionStateController: EntityStateController<IPosition>,
+    PositionStateControllerProvider: TEntityStateControllerProvider<IPosition>,
+    emptyPositionFactory: Factory<IPosition>,
 
     titleIndex: HashIndex<IProduct, number>,
     valueIndex: HashIndex<IProduct, number>,
 
     costIndex: HashIndex<IPosition, number>,
     productIndex: HashIndex<IPosition, IProduct>,
+    wishListPosition: HashIndex<IPosition, boolean>,
 ) => {
-    ProductStateController.add(ProductStateController.factory());
-    ProductStateController.add(ProductStateController.factory());
-    ProductStateController.index(titleIndex);
-    ProductStateController.index(valueIndex);
 
-    PositionStateController.index(costIndex);
-    PositionStateController.index(productIndex);
-
+    const productStateController = new ProductStateControllerProvider('product', emptyProductFactory, [titleIndex, valueIndex]);
+    const positionStateController = new PositionStateControllerProvider('position', emptyPositionFactory, [costIndex, productIndex, wishListPosition]);
+    
     // Initial
     const defaultQueried = ProductStateController.query();
     const sortedByTitle = ProductStateController.query(titleIndex.indexKey);

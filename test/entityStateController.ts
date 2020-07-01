@@ -1,4 +1,4 @@
-import { EntityFabric, IRecord, ClientSelector, command } from "../src/definitions";
+import { EntityFabric, IRecord, ClientSelector, command, HashIndex } from "../src/definitions";
 
 export interface IEntityStateInstanceController<Entity> {
     factory: EntityFabric<IRecord<Entity>>,
@@ -12,7 +12,7 @@ export interface IEntityStateCommandController<Entity> {
 }
 
 export interface IEntityStateQueryController<Entity> {
-    index: command, // add index
+    // index: command, // add index
 
     query: ClientSelector<Array<IRecord<Entity>>>,
     select: ClientSelector<IRecord<Entity>>,
@@ -23,4 +23,9 @@ IEntityStateInstanceController<Entity>,
 IEntityStateCommandController<Entity>,
 IEntityStateQueryController<Entity> {}
 
-export type TEntityStateControllerProvider<Entity> = new (factoryMethod: () => Entity) => EntityStateController<Entity>;
+export type TEntityStateControllerProvider<Entity> =
+new (
+    propertyTitle: string,
+    factoryMethod: () => Entity,
+    indexes: Array<HashIndex<Entity, any>>,
+) => EntityStateController<Entity>;
