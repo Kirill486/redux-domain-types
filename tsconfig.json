@@ -7,7 +7,7 @@
     "declaration": true,
   },
   "include": [
-    "src/**/*", "tests", "utils"
+    "src/**/*", "tests", "utils", "api_describtion/index.ts"
   ],
   "exclude": [
     "node_modules"
