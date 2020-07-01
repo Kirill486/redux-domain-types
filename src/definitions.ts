@@ -20,6 +20,9 @@ export type Selector<State, Data> = (
   ...queryParams: any
 ) => Data;
 
+// Clients should not worry what from we select stuff
+export type ClientSelector<Data> = (...queryParams: any) => Data;
+
 export type IndexSelector<State, Data> = (
   state: State,
   indexKey: string,
