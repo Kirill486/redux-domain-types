@@ -1,18 +1,13 @@
 # Redux Domain types
 
-## Plan
+Now we have the ```api_description``` folder.
 
-1. API description
-2. Tests
-3. Green tests
-4. Documentation
-5. More tests
+We makeing up more and more common scenarios to act like we have easiest possible model implementation.
 
-## API description.
+Get me right here!!! 
+The ```redux-domain-types``` is the model implementation. You ***must not*** write buisiness-logic here.
+It's just a fancy in-memory data storage with synckrosyty, time travel and blackjack))) To help all humans)
 
-- we provide entity of a domain type
-- we get reducer and crud action creators
-
-## Pre
-
-We write a regular reducer that provide the discribed API to have both code tested at once.
+For buisiness-logic layer inplementation I would recommend ```redux-saga```. It does the job well.
+Even too well. You can literally **translaate** well-written buisiness requiriments into code.
+It has great documentation, so check it out, it's really excyting reading)

@@ -7,7 +7,7 @@
     "declaration": true,
   },
   "include": [
-    "src/**/*"
+    "src/**/*", "tests", "utils"
   ],
   "exclude": [
     "node_modules"
