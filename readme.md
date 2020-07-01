@@ -7,7 +7,7 @@ The ```redux-domain-types``` is the model implementation. You ***must not*** wri
 It's just a fancy in-memory data storage with synckrosyty, time travel and blackjack))) To help all humans)
 
 For buisiness-logic layer inplementation I would recommend ```redux-saga```. It does the job well.
-Even too well. You can literally **translaate** well-written buisiness requiriments into code.
+Even too well. You can literally **translate** well-written buisiness requiriments into code.
 It has great documentation, so check it out, it's really excyting reading)
 
 ## Folder Structure
