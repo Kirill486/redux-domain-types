@@ -1,24 +1,12 @@
 import { IProduct, IPosition } from "./domainTypes";
 import { EntityFabric, IActionCreator, HashIndex, Selector, Dispatch, Query, command, ClientSelector, IRecord } from "../src/definitions"
-
-interface StateController<Entity> {
-    factory: EntityFabric<IRecord<Entity>>,
-
-    add: command,
-    modify: command,
-    delete: command,
-
-    index: command,
-
-    includes: ClientSelector<boolean>,
-    query: ClientSelector<Array<IRecord<Entity>>>,
-    select: ClientSelector<IRecord<Entity>>,
-}
+import { EntityStateController } from "./entityStateController";
 
 export const commonInitialization =
 (
-    ProductStateController: StateController<IProduct>,
-    PositionStateController: StateController<IPosition>,
+    ProductStateController: EntityStateController<IProduct>,
+    // ProductStateControllerProvider: TStateControllerProvider<IProduct>,
+    PositionStateController: EntityStateController<IPosition>,
 
     titleIndex: HashIndex<IProduct, number>,
     valueIndex: HashIndex<IProduct, number>,
@@ -41,8 +29,8 @@ export const commonInitialization =
 }
 
 export const commonPurchaise = (
-    ProductStateController: StateController<IProduct>,
-    PositionStateController: StateController<IPosition>,
+    ProductStateController: EntityStateController<IProduct>,
+    PositionStateController: EntityStateController<IPosition>,
 
     titleIndex: HashIndex<IProduct, number>,
     valueIndex: HashIndex<IProduct, number>,
