@@ -1,5 +1,3 @@
-import { IAction } from "./lib/types";
-
 export type id = string;
 
 export interface IRecordCommon {
@@ -13,7 +11,7 @@ export type IRecord<DomainType> = DomainType & IRecordCommon;
 export type IRecordState<DomainType> = {[key: string]: IRecord<DomainType> };
 
 export type Reducer<State> =
-(state: State, action: IAction<any>) => State;
+(state: State, action: IActionOfType<any, any>) => State;
 
 export type Selector<State, Data> = (
   state: State,
