@@ -1,3 +1,5 @@
+import { id } from "../src/definitions";
+
 export interface IProduct {
     title: string;
     value: number;
@@ -5,7 +7,7 @@ export interface IProduct {
 }
 
 export interface IPosition {
-    product: IProduct;
+    product: id; // productId
     amount: number;
 }
 
@@ -13,5 +15,9 @@ export interface IAppState {
     modalOpen: boolean;
     isLoading: boolean;
 
+    manualOrder?: id[]; // positionId
+
     errors: any[];
 }
+
+export type TPartialAppState = Partial<IAppState>;
