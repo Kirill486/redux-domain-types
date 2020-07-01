@@ -46,6 +46,8 @@ export type IActionSet = { [actionType: string] : IActionCreator<any, any> };
 // Set also means kit in this context
 export type ISelectorSet = { [selectorType: string] :Selector<any, any> };
 
+export type Factory<Entity> = (...args: any) => Entity;
+
 export type EntityFabric<Entity extends IRecord<any>> = (...args: any) => Entity;
 
 export interface Index<IndexValue> {
