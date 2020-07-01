@@ -1,53 +1,13 @@
 # Redux Domain types
 
-## Plan
+Now we have the ```api_description``` folder.
 
-1. API description
-2. Tests
-3. Green tests
-4. Documentation
-5. More tests
+We makeing up more and more common scenarios to act like we have easiest possible model implementation.
 
-## API description.
+Get me right here!!! 
+The ```redux-domain-types``` is the model implementation. You ***must not*** write buisiness-logic here.
+It's just a fancy in-memory data storage with synckrosyty, time travel and blackjack))) To help all humans)
 
-- we provide entity of a domain type
-- we get reducer and crud action creators
-
-## Pre
-
-We write a regular reducer that provide the discribed API to have both code tested at once.
-
-# API Description
-
-So we have different levels of *something*. (modal sanity?)
-
-I.  store responds to the set_state and reset_state action (whole state *something*)
-II. store responds to the set_entity and reset_entity action (entity level *something*)
-III. CRUD entity
-
-So, we have different levels of indexes:
-
-I. none (indexes itself)
-II. all kesy index (we can query all)
-III. Index by hashCodes. (rande or flag)
-
-HashCode = (entity: IEntity) => number | boolean;
-
-CommonInddex = {
-  indexKey: string,
-  index: HashCode,
-}
-
-IV. BuisinessLogicIndexes
-
-BuisinessIndex = {
-  indexKey:
-  index: number | boolean 
-}
-
-V. Data Structures
-
-List (insert, reorder, removeFromList, removeWithData)
-Domain types provide link safety out of the box (nothing points to undefined)
-
-Set (add removeFromSet removeWithData)
+For buisiness-logic layer inplementation I would recommend ```redux-saga```. It does the job well.
+Even too well. You can literally **translaate** well-written buisiness requiriments into code.
+It has great documentation, so check it out, it's really excyting reading)
