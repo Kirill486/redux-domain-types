@@ -113,7 +113,7 @@ export const manualOrderScenario =
         // will throw if you mess with names
         const manualOrder = appStateController.select('manualOrder') as id[];
 
-        // change places first and last
+        // change places first and third
         const newOrder = moveItem(manualOrder, 0, 2);
         const diff: TPartialAppState = {
             manualOrder: order,

@@ -1,4 +1,4 @@
-import { obviousFunction } from "../src";
+import { obviousFunction } from "../utils/obviosFunction";
 import * as assert from 'assert'
 import { createStore } from "redux";
 import { regularEntityReducer } from "../regularState/reducer";
