@@ -9,4 +9,9 @@ export interface IPosition {
     amount: number;
 }
 
-export type TChart = Set<IPosition>;
+export interface IAppState {
+    modalOpen: boolean;
+    isLoading: boolean;
+
+    errors: any[];
+}
