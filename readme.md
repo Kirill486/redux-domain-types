@@ -27,3 +27,7 @@ Yet you can not. (**See work order**)
 1. Finish describing API. How it all starts (StateControllerPool) ```() =>store```. <<<<- **we here**
 2. Write Usage with ```redux-saga``` part.
 3. Write red tests and the ```Installation & Run``` part).
+
+## Contribution guide
+
+[Contribution guide](https://github.com/Kirill486/redux-domain-types/blob/master/contribution.md)
