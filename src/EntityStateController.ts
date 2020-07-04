@@ -13,10 +13,10 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
     factory: () => null;
     includes: () => false;
 
-    add: () => void;
+    add: (entity?: Entity) => void;
     modify: () => void;
     delete: () => void;
 
-    select: () => null;
-    query: () => [];
+    select: (indexKey?: string, value?: any) => null;
+    query: (indexKey?: string, ...args: any[]) => [];
 }
