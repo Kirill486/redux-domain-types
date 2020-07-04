@@ -15,4 +15,7 @@ export class ReduxStateController<State> implements IStateController<State> {
     
     select: (propertyKey?: string) => null;
     queryKeys: () => [];
+
+    makeReducer: () => null;
+    plugIn: (dispatch: any) => void;
 }

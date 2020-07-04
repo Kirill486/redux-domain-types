@@ -19,4 +19,7 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
 
     select: (indexKey?: string, value?: any) => null;
     query: (indexKey?: string, ...args: any[]) => [];
+
+    makeReducer: () => null;
+    plugIn: (dispatch) => void;
 }
