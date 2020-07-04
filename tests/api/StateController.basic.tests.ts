@@ -6,6 +6,7 @@ import { ReduxEntityStateController } from '../../src/EntityStateController';
 import { ReduxStateControllerPool } from '../../src';
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from './constants.indexes';
 import { IAppState, TPartialAppState } from '../../domain_types/domainTypes';
+import { StateControllerUnknownPropertyName } from '../../src/exceptions';
 
 const initialize = () => {
     const appStateController = new ReduxStateController(StatePropertyNames.app, initialApp);
@@ -96,10 +97,23 @@ describe('StateController Basic Usage', () => {
     });
 
     it('ensures we can query single property', () => {
-        
+        const {ApplicationStateControllerPool} = initialize();
+        const appStateController: ReduxStateController<IAppState> = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.app);
+
+        const isOpen = appStateController.select('modalOpen');
+        assert.equal(isOpen, false);
     });
 
     it('throws on unknown property', () => {
-    
+        const {ApplicationStateControllerPool} = initialize();
+        const appStateController: ReduxStateController<IAppState> = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.app);
+
+        try {
+            const isOpen = appStateController.select('someProperyWeDoNotKnow');
+        } catch(e) {
+            const error = e as Error;
+            const expectedError = StateControllerUnknownPropertyName('someProperyWeDoNotKnow');
+            assert.equal(e.message, expectedError.message);
+        }        
     });
 });

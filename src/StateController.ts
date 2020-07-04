@@ -13,6 +13,6 @@ export class ReduxStateController<State> implements IStateController<State> {
     set: (diff: Partial<State>) => void;
     reset: () => void;
     
-    select: () => null;
+    select: (propertyKey?: string) => null;
     queryKeys: () => [];
 }
