@@ -3,6 +3,7 @@ import { Factory } from "../../utils/definitions";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "./constants.indexes";
 import { createStore } from "redux";
+import { IEntityFactoryMethod } from "../../src/EntityStateController";
 
 const postfix = 'test_env';
 
@@ -20,28 +21,38 @@ export const initialApp: IAppState = {
     manualOrder: undefined,
 }
 
-export const productFactory: Factory<IProduct> = (title, description, value) => ({
+const productFactory: Factory<IProduct> = (title, description, value) => ({
     title,
     description,
     value,
 });
 
-export const positionFactory: Factory<IPosition> = (productId, amount = 1) => ({
+export const productFactoryMethod: IEntityFactoryMethod<IProduct> = {
+    factory: productFactory,
+    linkedProperties: [],
+};
+
+const positionFactory: Factory<IPosition> = (productId, amount = 1) => ({
     product: productId,
     amount: amount,
 })
+
+export const positionFactoryMethod: IEntityFactoryMethod<IPosition> = {
+    factory: positionFactory,
+    linkedProperties: ["product"],
+};
 
 export const initialize = () => {
     const appStateController = new ReduxStateController(StatePropertyNames.app, initialApp);
 
     const productStateController = new ReduxEntityStateController(
         StatePropertyNames.product,
-        productFactory,
-        [titleIndex, valueIndex]
+        productFactoryMethod,
+        [titleIndex, valueIndex],
     );
     const positionStateController = new ReduxEntityStateController(
         StatePropertyNames.position,
-        positionFactory,
+        positionFactoryMethod,
         [costIndex, productIndex, wishListPosition],
     );
 

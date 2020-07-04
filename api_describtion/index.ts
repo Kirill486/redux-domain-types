@@ -7,18 +7,19 @@ import { createStore } from 'redux';
 import { StatePropertyNames, initialApp } from "../tests/api/constants";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "../tests/api/constants.indexes";
+import { IEntityFactoryMethod } from "../src/EntityStateController";
 
 export const commonInitialization =
 (
-    productFactory: Factory<IProduct>,
-    positionFactory: Factory<IPosition>,
+    productFactoryMethod: IEntityFactoryMethod<IProduct>,
+    positionFactoryMethod: IEntityFactoryMethod<IPosition>,
 ) => {
     
     const appStateController = new ReduxStateController(StatePropertyNames.app, initialApp);
 
     const productStateController = new ReduxEntityStateController(
         StatePropertyNames.product,
-        productFactory,
+        productFactoryMethod,
         [titleIndex, valueIndex],
     );
 
@@ -32,7 +33,7 @@ export const commonInitialization =
 
     const positionStateController = new ReduxEntityStateController(
         StatePropertyNames.position,
-        positionFactory,
+        positionFactoryMethod,
         [costIndex, productIndex, wishListPosition],
     );
 
