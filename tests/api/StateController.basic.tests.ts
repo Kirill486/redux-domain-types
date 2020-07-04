@@ -1,39 +1,8 @@
 import * as assert from 'assert';
-import { createStore } from 'redux';
-import { StatePropertyNames, initialApp, positionFactory, productFactory } from './constants';
+import { StatePropertyNames, initialApp, initialize } from './constants';
 import { ReduxStateController } from '../../src/StateController';
-import { ReduxEntityStateController } from '../../src/EntityStateController';
-import { ReduxStateControllerPool } from '../../src';
-import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from './constants.indexes';
 import { IAppState, TPartialAppState } from '../../domain_types/domainTypes';
 import { StateControllerUnknownPropertyName } from '../../src/exceptions';
-
-const initialize = () => {
-    const appStateController = new ReduxStateController(StatePropertyNames.app, initialApp);
-
-    const productStateController = new ReduxEntityStateController(
-        StatePropertyNames.product,
-        productFactory,
-        [titleIndex, valueIndex]
-    );
-    const positionStateController = new ReduxEntityStateController(
-        StatePropertyNames.position,
-        positionFactory,
-        [costIndex, productIndex, wishListPosition],
-    );
-
-    const ApplicationStateControllerPool = new ReduxStateControllerPool(appStateController, productStateController, positionStateController);
-    const reducer = ApplicationStateControllerPool.makeReducer();
-
-    const store = createStore(reducer);
-
-    ApplicationStateControllerPool.plugIn(store);
-
-    return {
-        store, 
-        ApplicationStateControllerPool,
-    };
-}
 
 describe('StateController Basic Usage', () => {
   
