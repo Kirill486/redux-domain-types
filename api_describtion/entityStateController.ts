@@ -22,10 +22,3 @@ export interface IEntityStateController<Entity> extends
 IEntityStateInstanceController<Entity>,
 IEntityStateCommandController<Entity>,
 IEntityStateQueryController<Entity> {}
-
-export type TEntityStateControllerProvider<Entity> =
-new (
-    propertyTitle: string,
-    factoryMethod: () => Entity,
-    indexes: Array<HashIndex<Entity, any>>,
-) => IEntityStateController<Entity>;
