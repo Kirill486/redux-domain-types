@@ -21,6 +21,15 @@ export const commonInitialization =
         productFactory,
         [titleIndex, valueIndex],
     );
+
+    // Position Factory has id properties.
+    // We want to keep data consistensy outof the box
+    // so we need to notify StateController, that he has id props.
+
+    // We may need something abstract that incapsulates id consistensy checks.
+
+    // ## id consistensy check - ids link someWhere (else deleted)
+
     const positionStateController = new ReduxEntityStateController(
         StatePropertyNames.position,
         positionFactory,
