@@ -18,7 +18,7 @@ export interface IEntityStateQueryController<Entity> {
     select: ClientSelector<IRecord<Entity>>,
 }
 
-export interface EntityStateController<Entity> extends
+export interface IEntityStateController<Entity> extends
 IEntityStateInstanceController<Entity>,
 IEntityStateCommandController<Entity>,
 IEntityStateQueryController<Entity> {}
@@ -28,4 +28,4 @@ new (
     propertyTitle: string,
     factoryMethod: () => Entity,
     indexes: Array<HashIndex<Entity, any>>,
-) => EntityStateController<Entity>;
+) => IEntityStateController<Entity>;
