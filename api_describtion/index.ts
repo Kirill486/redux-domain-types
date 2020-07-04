@@ -1,18 +1,10 @@
-import { IProduct, IPosition, IAppState, TPartialAppState } from "./domainTypes";
+import { IProduct, IPosition, IAppState, TPartialAppState } from "../domain_types/domainTypes";
 import { IEntityStateController, TEntityStateControllerProvider } from "./entityStateController";
 import { TStateControllerProvider, IStateController } from "./stateController";
 import { Factory, HashIndex, id } from "../utils/definitions";
 import {TStateControllerPoolProvider, StateControllerPool, AnyStateController} from "./libraryApi";
 import { createStore } from 'redux';
-
-const postfix = 'test_env';
-
-// Avoiding Magic Strings
-export const StatePropertyNames = Object.freeze({
-    product: `product_${postfix}`,
-    position: `position_${postfix}`,
-    app: `app_${postfix}`,
-});
+import { StatePropertyNames, initialApp } from "../tests/api/constants";
 
 export const commonInitialization =
 (
@@ -31,17 +23,12 @@ export const commonInitialization =
     valueIndex: HashIndex<IProduct, number>,
 
     costIndex: HashIndex<IPosition, number>,
-    productIndex: HashIndex<IPosition, IProduct>,
+    productIndex: HashIndex<IPosition, id>,
     wishListPosition: HashIndex<IPosition, boolean>,
 ) => {
 
-    const initial: IAppState = {
-        modalOpen: false,
-        isLoading: false,
-        errors: [],
-        manualOrder: undefined,
-    }
-    const appStateController = new StateControllerProvider(StatePropertyNames.app, initial);
+    
+    const appStateController = new StateControllerProvider(StatePropertyNames.app, initialApp);
 
     const productStateController = new ProductStateControllerProvider(StatePropertyNames.product, emptyProductFactory, [titleIndex, valueIndex]);
     const positionStateController = new PositionStateControllerProvider(StatePropertyNames.position, emptyPositionFactory, [costIndex, productIndex, wishListPosition]);
