@@ -4,7 +4,7 @@
   "description": "Easy to use map from buisiness-logic to model implementation",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register src/tests/*.ts"
+    "test": "mocha -r ts-node/register tests/*.ts"
   },
   "repository": {
     "type": "git",
