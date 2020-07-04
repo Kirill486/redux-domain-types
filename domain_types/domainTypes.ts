@@ -1,4 +1,4 @@
-import { id } from "../src/definitions";
+import { id } from "../utils/definitions";
 
 export interface IProduct {
     title: string;

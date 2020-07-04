@@ -1,0 +1,1 @@
+export const getStringHash = (s: string) => 0;

@@ -1,4 +1,4 @@
-import { command, ClientSelector, id, HashIndex } from "../src/definitions";
+import { ClientSelector, command, id } from "../utils/definitions";
 
 export interface IStateInstanceController<State> {
     initial: ClientSelector<State>;
@@ -18,9 +18,3 @@ export interface IStateController<State> extends
 IStateInstanceController<State>,
 IStateCommandController<State>,
 IStateQueryController<State> {}
-
-export type TStateControllerProvider<State> =
-new (
-    propertyTitle: string,
-    initial: State,
-) => IStateController<State>;

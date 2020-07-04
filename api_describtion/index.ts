@@ -1,10 +1,17 @@
-import { IProduct, IPosition, IAppState, TPartialAppState } from "./domainTypes";
-import { EntityFabric, IActionCreator, HashIndex, Selector, Dispatch, Query, command, ClientSelector, IRecord, Factory, id } from "../src/definitions"
-import { EntityStateController, TEntityStateControllerProvider } from "./entityStateController";
+import { IProduct, IPosition, IAppState, TPartialAppState } from "../domain_types/domainTypes";
+import { IEntityStateController, TEntityStateControllerProvider } from "./entityStateController";
 import { TStateControllerProvider, IStateController } from "./stateController";
+import { Factory, HashIndex, id } from "../utils/definitions";
+import {TStateControllerPoolProvider, StateControllerPool, AnyStateController} from "./libraryApi";
+import { createStore } from 'redux';
+import { StatePropertyNames, initialApp } from "../tests/api/constants";
 
 export const commonInitialization =
 (
+    StateControllerPoolProvider: TStateControllerPoolProvider,
+
+    StateControllerProvider: TStateControllerProvider<IAppState>,
+
     ProductStateControllerProvider: TEntityStateControllerProvider<IProduct>,
     emptyProductFactory: Factory<IProduct>,
 
@@ -16,22 +23,40 @@ export const commonInitialization =
     valueIndex: HashIndex<IProduct, number>,
 
     costIndex: HashIndex<IPosition, number>,
-    productIndex: HashIndex<IPosition, IProduct>,
+    productIndex: HashIndex<IPosition, id>,
     wishListPosition: HashIndex<IPosition, boolean>,
 ) => {
 
-    const productStateController = new ProductStateControllerProvider('product', emptyProductFactory, [titleIndex, valueIndex]);
-    const positionStateController = new PositionStateControllerProvider('position', emptyPositionFactory, [costIndex, productIndex, wishListPosition]);
     
-    // Initial
+    const appStateController = new StateControllerProvider(StatePropertyNames.app, initialApp);
+
+    const productStateController = new ProductStateControllerProvider(StatePropertyNames.product, emptyProductFactory, [titleIndex, valueIndex]);
+    const positionStateController = new PositionStateControllerProvider(StatePropertyNames.position, emptyPositionFactory, [costIndex, productIndex, wishListPosition]);
+
+    const ApplicationStateControllerPool = new StateControllerPoolProvider(appStateController, productStateController, positionStateController);
+    const reducer = ApplicationStateControllerPool.makeReducer();
+
+    const store = createStore(reducer);
+
+    ApplicationStateControllerPool.plugIn(store);
+}
+
+export const initialQuery = (
+    ApplicationStateControllerPool: StateControllerPool,
+    titleIndex: HashIndex<IProduct, number>,
+    valueIndex: HashIndex<IProduct, number>,
+) => {
+
+    const productStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.product) as IEntityStateController<IProduct>;
+
     const defaultQueried = productStateController.query();
     const sortedByTitle = productStateController.query(titleIndex.indexKey);
     const sortedByValue = productStateController.query(valueIndex.indexKey);
 }
 
 export const commonPurchaise = (
-    ProductStateController: EntityStateController<IProduct>,
-    PositionStateController: EntityStateController<IPosition>,
+    ApplicationStateControllerPool: StateControllerPool,
+
 
     titleIndex: HashIndex<IProduct, number>,
     valueIndex: HashIndex<IProduct, number>,
@@ -39,53 +64,50 @@ export const commonPurchaise = (
     costIndex: HashIndex<IPosition, number>,
     wishListPosition: HashIndex<IPosition, boolean>,
 ) => {
-    const productSelectedById = ProductStateController.select(null, 'someId');
-    const productSelectedByValue = ProductStateController.select(valueIndex.indexKey, 42);
-    const productSelectedByTitle = ProductStateController.select(titleIndex.indexKey, 'someTitle');
+    const productStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.product) as IEntityStateController<IProduct>;
+    const positionStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.position) as IEntityStateController<IPosition>;
 
-    const queryInRange = ProductStateController.query(valueIndex.indexKey, (indexValue: number) => (indexValue > 10) && (indexValue < 20));
+    const productSelectedById = productStateController.select(null, 'someId');
+    const productSelectedByValue = productStateController.select(valueIndex.indexKey, 42);
+    const productSelectedByTitle = productStateController.select(titleIndex.indexKey, 'someTitle');
+
+    const queryInRange = productStateController.query(valueIndex.indexKey, (indexValue: number) => (indexValue > 10) && (indexValue < 20));
 
     if (queryInRange.length) {
         // we want first that require our query
-        const position1 = PositionStateController.factory(queryInRange[0], 1);
-        PositionStateController.add(position1);                
+        const position1 = positionStateController.factory(queryInRange[0], 1);
+        positionStateController.add(position1);                
     }
 
-    const position2 = PositionStateController.factory(productSelectedById, 2);
-    PositionStateController.add(position2);
+    const position2 = positionStateController.factory(productSelectedById, 2);
+    positionStateController.add(position2);
 
-    const position3 = PositionStateController.factory(productSelectedByTitle, 2);
-    PositionStateController.add(position3);
+    const position3 = positionStateController.factory(productSelectedByTitle, 2);
+    positionStateController.add(position3);
 
-    PositionStateController.delete(position2.id);
+    positionStateController.delete(position2.id);
 
-    const positionToModify = PositionStateController.select(null, position3.id);
+    const positionToModify = positionStateController.select(null, position3.id);
     
     if (positionToModify) {
         // diff may be better?
         positionToModify.amount = 5;
-        PositionStateController.modify(positionToModify);
+        positionStateController.modify(positionToModify);
     }
 
     // Show by price (we care more about most valuables)
-    const chart = PositionStateController.query(costIndex.indexKey);
+    const chart = positionStateController.query(costIndex.indexKey);
 
     // Show wishes that are about to get complete
-    const positionsThatFullfillWisshes = PositionStateController.query(wishListPosition.indexKey);
+    const positionsThatFullfillWisshes = positionStateController.query(wishListPosition.indexKey);
 }    
 
 export const appStateScenario =
 (
-    EntityStateControllerProvider: TStateControllerProvider<IAppState>,
-    positionStateController: EntityStateController<IPosition>,
+    ApplicationStateControllerPool: StateControllerPool,
 ) => {
-    const initial: IAppState = {
-        modalOpen: false,
-        isLoading: false,
-        errors: [],
-        manualOrder: undefined,
-    }
-    const appStateController = new EntityStateControllerProvider('app', initial);
+    
+    const appStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.app) as IStateController<IAppState>;
 
     const diff: TPartialAppState = {
         isLoading: true,
@@ -97,9 +119,12 @@ export const appStateScenario =
 
 export const manualOrderScenario =
 (
-    appStateController: IStateController<IAppState>,
-    positionStateController: EntityStateController<IPosition>,
+    ApplicationStateControllerPool: StateControllerPool,
 ) => {
+
+    const appStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.app) as IStateController<IAppState>;
+    const positionStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.position) as IEntityStateController<IPosition>; 
+
     const order: id[] = positionStateController.query().map((position) => position.id);
 
     {
@@ -116,7 +141,7 @@ export const manualOrderScenario =
         // change places first and third
         const newOrder = moveItem(manualOrder, 0, 2);
         const diff: TPartialAppState = {
-            manualOrder: order,
+            manualOrder: newOrder,
         }
         appStateController.set(diff);
     }
