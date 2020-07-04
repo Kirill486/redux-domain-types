@@ -1,6 +1,6 @@
 # Redux Domain types
 
-We describbe our API in ```src/index```. Not actual tests yet. Just the way we would use the perfect model implementation.
+We describbe our API in ```api_description/index```. Not actual tests yet. Just the way we would use the perfect model implementation.
 
 Get me right here!!! 
 The ```redux-domain-types``` is the model implementation. You ***must not*** write buisiness-logic here.
