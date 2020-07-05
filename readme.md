@@ -8,7 +8,7 @@ It's just a fancy in-memory data storage with synckrosyty, time travel and black
 
 For buisiness-logic layer inplementation I would recommend ```redux-saga```. It does the job well.
 Even too well. You can literally **translate** well-written buisiness requiriments into code.
-It has great documentation, so check it out, it's really excyting reading)
+It has great documentation, so check it out, it's really exciting reading)
 
 ## Folder Structure
 
