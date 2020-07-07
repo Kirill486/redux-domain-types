@@ -1,4 +1,5 @@
 import { ClientSelector, command, id } from "../utils/definitions";
+import { IProvideReduxLikeAPI } from "./libraryApi";
 
 export interface IStateInstanceController<State> {
     initial: ClientSelector<State>;
@@ -17,4 +18,5 @@ export interface IStateQueryController<State> {
 export interface IStateController<State> extends
 IStateInstanceController<State>,
 IStateCommandController<State>,
-IStateQueryController<State> {}
+IStateQueryController<State>,
+IProvideReduxLikeAPI<State> {}

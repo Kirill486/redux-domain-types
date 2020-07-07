@@ -1,4 +1,5 @@
-import { EntityFabric, IRecord, ClientSelector, command, HashIndex } from "../src/definitions";
+import { EntityFabric, IRecord, ClientSelector, command } from "../utils/definitions";
+import { IProvideReduxLikeAPI } from "./libraryApi";
 
 export interface IEntityStateInstanceController<Entity> {
     factory: EntityFabric<IRecord<Entity>>,
@@ -12,13 +13,14 @@ export interface IEntityStateCommandController<Entity> {
 }
 
 export interface IEntityStateQueryController<Entity> {
-    // index: command, // add index
-
     query: ClientSelector<Array<IRecord<Entity>>>,
     select: ClientSelector<IRecord<Entity>>,
 }
 
+export type EntityState = any;
+
 export interface IEntityStateController<Entity> extends
 IEntityStateInstanceController<Entity>,
 IEntityStateCommandController<Entity>,
-IEntityStateQueryController<Entity> {}
+IEntityStateQueryController<Entity>,
+IProvideReduxLikeAPI<EntityState> {}

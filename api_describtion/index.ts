@@ -1,44 +1,45 @@
 import { IProduct, IPosition, IAppState, TPartialAppState } from "../domain_types/domainTypes";
-import { IEntityStateController, TEntityStateControllerProvider } from "./entityStateController";
-import { TStateControllerProvider, IStateController } from "./stateController";
+import { IEntityStateController } from "./entityStateController";
+import { IStateController } from "./stateController";
 import { Factory, HashIndex, id } from "../utils/definitions";
-import {TStateControllerPoolProvider, StateControllerPool, AnyStateController} from "./libraryApi";
+import { StateControllerPool } from "./libraryApi";
 import { createStore } from 'redux';
 import { StatePropertyNames, initialApp } from "../tests/api/constants";
+import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../src";
+import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "../tests/api/constants.indexes";
+import { IEntityFactoryMethod } from "../src/EntityStateController";
 
 export const commonInitialization =
 (
-    StateControllerPoolProvider: TStateControllerPoolProvider,
-
-    StateControllerProvider: TStateControllerProvider<IAppState>,
-
-    ProductStateControllerProvider: TEntityStateControllerProvider<IProduct>,
-    emptyProductFactory: Factory<IProduct>,
-
-
-    PositionStateControllerProvider: TEntityStateControllerProvider<IPosition>,
-    emptyPositionFactory: Factory<IPosition>,
-
-    titleIndex: HashIndex<IProduct, number>,
-    valueIndex: HashIndex<IProduct, number>,
-
-    costIndex: HashIndex<IPosition, number>,
-    productIndex: HashIndex<IPosition, id>,
-    wishListPosition: HashIndex<IPosition, boolean>,
+    productFactoryMethod: IEntityFactoryMethod<IProduct>,
+    positionFactoryMethod: IEntityFactoryMethod<IPosition>,
 ) => {
-
     
-    const appStateController = new StateControllerProvider(StatePropertyNames.app, initialApp);
+    const appStateController = new ReduxStateController(StatePropertyNames.app, initialApp);
 
-    const productStateController = new ProductStateControllerProvider(StatePropertyNames.product, emptyProductFactory, [titleIndex, valueIndex]);
-    const positionStateController = new PositionStateControllerProvider(StatePropertyNames.position, emptyPositionFactory, [costIndex, productIndex, wishListPosition]);
+    const productStateController = new ReduxEntityStateController(
+        StatePropertyNames.product,
+        productFactoryMethod,
+        [titleIndex, valueIndex],
+    );
 
-    const ApplicationStateControllerPool = new StateControllerPoolProvider(appStateController, productStateController, positionStateController);
+    const positionStateController = new ReduxEntityStateController(
+        StatePropertyNames.position,
+        positionFactoryMethod,
+        [costIndex, productIndex, wishListPosition],
+    );
+
+    const ApplicationStateControllerPool = new ReduxStateControllerPool(
+        appStateController,
+        productStateController,
+        positionStateController
+    );
+
     const reducer = ApplicationStateControllerPool.makeReducer();
-
     const store = createStore(reducer);
 
-    ApplicationStateControllerPool.plugIn(store);
+    // We need a command entry point
+    ApplicationStateControllerPool.plugIn(store.dispatch);
 }
 
 export const initialQuery = (
@@ -56,13 +57,6 @@ export const initialQuery = (
 
 export const commonPurchaise = (
     ApplicationStateControllerPool: StateControllerPool,
-
-
-    titleIndex: HashIndex<IProduct, number>,
-    valueIndex: HashIndex<IProduct, number>,
-
-    costIndex: HashIndex<IPosition, number>,
-    wishListPosition: HashIndex<IPosition, boolean>,
 ) => {
     const productStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.product) as IEntityStateController<IProduct>;
     const positionStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.position) as IEntityStateController<IPosition>;

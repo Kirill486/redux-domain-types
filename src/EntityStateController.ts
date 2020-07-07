@@ -1,10 +1,15 @@
 import { IEntityStateController } from "../api_describtion/entityStateController";
-import { Factory, HashIndex } from "../utils/definitions";
+import { Factory, HashIndex, id } from "../utils/definitions";
+
+export interface IEntityFactoryMethod<Entity> {
+    factory: Factory<Entity>;
+    linkedProperties: id[];
+}
 
 export class ReduxEntityStateController<Entity> implements IEntityStateController<Entity> {
     constructor(
         propertyTitle: string,
-        factoryMethod: Factory<Entity>,
+        factoryMethod: IEntityFactoryMethod<Entity>,
         indexes: Array<HashIndex<Entity, any>>,
     ) {
         // Nothing yet
@@ -19,4 +24,7 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
 
     select: (indexKey?: string, value?: any) => null;
     query: (indexKey?: string, ...args: any[]) => [];
+
+    makeReducer: () => null;
+    plugIn: (dispatch) => void;
 }
