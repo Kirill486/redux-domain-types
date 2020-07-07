@@ -11,9 +11,12 @@ Our Use cases: **Initialize**, **AddPositionToChart**, **ChangeAmountInPosition*
 
 1. Set Loading flag
 2. Try do buisiness logic
+
 3a. If succeded - put new data into state
+
 3b. Otherwise - put errors into state
-5. Take off the Loading flag
+
+4. Take off the Loading flag
 
 ## Our use case logic for cases would be:
 
@@ -36,8 +39,11 @@ Our Use cases: **Initialize**, **AddPositionToChart**, **ChangeAmountInPosition*
 ### MakeOrder
 
 1. Send check for positions avalability request
+
 2a. Send make order request
+
 3a. Clear positions
+
 2b. Put message from responce in state (there might be some info what product is missing)
 
 # Lets literally translate it to code
