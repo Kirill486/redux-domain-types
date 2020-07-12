@@ -1,11 +1,13 @@
-import { IStateController } from "../api_describtion/stateController";
-import { Factory, Reducer } from "../utils/definitions";
-import { ReducerMappedToProperty } from "../api_describtion/libraryApi";
+import { IStateController } from "../../api_describtion/stateController";
+import { Factory, Reducer, command } from "../../utils/definitions";
+import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 
 export class ReduxStateController<State> implements IStateController<State> {
     
     private propertyTitle: string;
     private inirialState: State;
+
+    commandEntryPoint: command;
     
     initial = () => {
         return {
@@ -27,7 +29,9 @@ export class ReduxStateController<State> implements IStateController<State> {
             [this.propertyTitle]: reducer,
         };
     } 
-    plugIn = (dispatch: any) => undefined;
+    plugIn = (dispatch: any) => {
+        this.commandEntryPoint = dispatch;
+    };
 
     constructor(
         propertyTitle: string,
