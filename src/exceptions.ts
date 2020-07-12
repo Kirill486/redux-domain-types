@@ -4,3 +4,4 @@ new Error(
     `Can not select multiple properties: ${propertyKeys.join(' ')} /n
     They not exist`
 );
+export const StateControllerUnknownRootPropertyName = (propertyName: string) => new Error(`Wrong root property ${propertyName}`);

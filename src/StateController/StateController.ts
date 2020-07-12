@@ -3,14 +3,20 @@ import { Factory, Reducer, command } from "../../utils/definitions";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 import { ActionsController } from "./actions";
 import { ReducerController } from "./reducer";
+import { Store } from "redux";
+import { StateControllerUnknownRootPropertyName } from "../exceptions";
+import { SelectorController } from "./selectors";
 
 export class ReduxStateController<State> implements IStateController<State> {
     
     public propertyTitle: string;
     private actionsController: ActionsController<State>;
     private reducerController: ReducerController<State>;
+    private selectController: SelectorController<State>;
 
     commandEntryPoint: command;
+    
+    rootSelector: () => State;
 
     initial = () => {
         return this.reducerController.initial();
@@ -30,8 +36,17 @@ export class ReduxStateController<State> implements IStateController<State> {
             [this.propertyTitle]: reducer,
         };
     } 
-    plugIn = (dispatch: any) => {
+    plugIn = ({dispatch, getState}: Store<any>) => {
         this.commandEntryPoint = dispatch;
+        this.rootSelector = () => {
+            const controllerProperty = getState()[this.propertyTitle];
+
+            if (controllerProperty) {
+                return controllerProperty;
+            } else {
+                throw StateControllerUnknownRootPropertyName(this.propertyTitle);
+            }
+        }
     };
 
     constructor(
@@ -49,5 +64,7 @@ export class ReduxStateController<State> implements IStateController<State> {
             setActionType,
             resetActionType,
         );
-    }    
+
+        this.selectController = new SelectorController<State>(this.rootSelector);
+    }
 }
