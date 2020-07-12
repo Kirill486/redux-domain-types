@@ -4,11 +4,11 @@ import { Reducer, Factory, id } from "../utils/definitions";
 
 export type AnyStateController = IEntityStateController<any> | IStateController<any>;
 
-export interface StateControllerPool extends IProvideReduxLikeAPI<any> {    
+export interface StateControllerPool extends IExtendReduxAPI<any> {    
     getControllerFor: (property: string) => AnyStateController;
 }
 
-export interface IProvideReduxLikeAPI<State> {
+export interface IExtendReduxAPI<State> {
     makeReducer: Factory<Reducer<State>>;
     plugIn: (commandEntryPoint: any) => void;
 }

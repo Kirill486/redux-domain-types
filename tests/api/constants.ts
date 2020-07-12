@@ -79,7 +79,7 @@ export const initializeControllerPool = () => {
     return ApplicationStateControllerPool;
 }
 
-const  initializeStoreWithAppStateController = () => {
+export const  initializeStoreWithAppStateController = () => {
     const ApplicationStateController = initializeAppStateController();    
     const reducer = ApplicationStateController.makeReducer();
     const store = createStore(reducer);
