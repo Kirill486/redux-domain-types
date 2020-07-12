@@ -20,9 +20,3 @@ IStateInstanceController<State>,
 IStateCommandController<State>,
 IStateQueryController<State>,
 IExtendReduxAPI<State> {}
-
-export interface IStateController<State> extends
-IStateInstanceController<State>,
-IStateCommandController<State>,
-IStateQueryController<State>,
-IExtendReduxAPI<State> {}
