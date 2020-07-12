@@ -1,1 +1,6 @@
 export const StateControllerUnknownPropertyName = (propertyKey: string) => new Error(`Can not select property ${propertyKey} It does not exist`);
+export const StateControllerUnknownMultiplePropertyNames = (propertyKeys: string[]) =>
+new Error(
+    `Can not select multiple properties: ${propertyKeys.join(' ')} /n
+    They not exist`
+);

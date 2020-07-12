@@ -21,7 +21,7 @@ export class ReduxStateController<State> implements IStateController<State> {
     }
     reset = () => this.commandEntryPoint(this.actionsController.resetAction());
     
-    select = (propertyKey?: string) => null;
+    select = (propertyKey?: string | string[]) => null;
     queryKeys = () => [];
 
     makeReducer: Factory<ReducerMappedToProperty<State>> = () => {
