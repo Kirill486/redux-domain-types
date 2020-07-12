@@ -1,12 +1,24 @@
 import * as assert from 'assert';
-import { ReduxStateController } from '../../src/StateController';
-import { IAppState, TPartialAppState } from '../../domain_types/domainTypes';
-import { StateControllerUnknownPropertyName } from '../../src/exceptions';
+import { initializeAppStateController, initialApp } from './constants';
 
-describe('StateController Basic Usage', () => {
+
+describe('StateController extends redux API', () => {
   
-    it('ensures app initial defined and not null', () => {
-        assert.notEqual(1, undefined);
-        assert.notEqual(2, null);
+    it('has makeReducer method that returns a function', () => {
+
+        const appStateController = initializeAppStateController();
+        const reducer = appStateController.makeReducer();
+
+        assert.equal(typeof reducer, "function");
     });
+
+    it('reducer can be executed with state and it will return state', () => {
+        const appStateController = initializeAppStateController();
+        const reducer = appStateController.makeReducer();
+
+        const state = reducer(initialApp, { type: 'any', payload: null });
+
+        assert.deepEqual(state, initialApp);
+        assert.notEqual(state, initialApp);
+    })
 });
