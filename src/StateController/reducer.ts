@@ -38,7 +38,9 @@ export class ReducerController<State> {
                     }
                 }
                 default: {
-                   return state;
+                   return {
+                       ...state,
+                   };
                 }
             }
         }        

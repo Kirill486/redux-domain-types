@@ -6,7 +6,7 @@ import { ReducerController } from "./reducer";
 
 export class ReduxStateController<State> implements IStateController<State> {
     
-    private propertyTitle: string;
+    public propertyTitle: string;
     private actionsController: ActionsController<State>;
     private reducerController: ReducerController<State>;
 
