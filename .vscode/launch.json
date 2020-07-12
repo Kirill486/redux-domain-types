@@ -16,7 +16,7 @@
             "--timeout",
             "999999",
             "--colors",
-            "${workspaceFolder}/tests/*.ts"
+            "${workspaceFolder}/tests/**/*.ts"
         ],
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen"
