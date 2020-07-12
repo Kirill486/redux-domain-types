@@ -21,6 +21,9 @@ export class ReducerController<State> {
             state: State,
             action: IAction<any>
         ) => {
+            if (typeof state === "undefined") {
+                state = this.initial();
+            }
             switch (action.type) {
                 case setActionType: {
                     const {payload} = action as IAction<Partial<State>>;

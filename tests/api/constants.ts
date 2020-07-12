@@ -86,7 +86,7 @@ export const  initializeStoreWithAppStateController = () => {
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);
 
-    ApplicationStateController.plugIn(store);
+    ApplicationStateController.plugIn(store.dispatch);
 
     return {
         store,

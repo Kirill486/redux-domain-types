@@ -16,7 +16,9 @@ export class ReduxStateController<State> implements IStateController<State> {
         return this.reducerController.initial();
     }
     
-    set = (diff: Partial<State>) => this.commandEntryPoint(this.actionsController.setAction(diff));
+    set = (diff: Partial<State>) => {
+        this.commandEntryPoint(this.actionsController.setAction(diff));
+    }
     reset = () => this.commandEntryPoint(this.actionsController.resetAction());
     
     select = (propertyKey?: string) => null;
