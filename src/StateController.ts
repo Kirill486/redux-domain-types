@@ -1,5 +1,6 @@
 import { IStateController } from "../api_describtion/stateController";
 import { Factory, Reducer } from "../utils/definitions";
+import { ReducerMappedToProperty } from "../api_describtion/libraryApi";
 
 export class ReduxStateController<State> implements IStateController<State> {
     
@@ -18,11 +19,13 @@ export class ReduxStateController<State> implements IStateController<State> {
     select = (propertyKey?: string) => null;
     queryKeys = () => [];
 
-    makeReducer: Factory<Reducer<State>> = () => {
+    makeReducer: Factory<ReducerMappedToProperty<State>> = () => {
         const reducer = () => {
             return this.initial();
         };
-        return reducer;
+        return {
+            [this.propertyTitle]: reducer,
+        };
     } 
     plugIn = (dispatch: any) => undefined;
 
