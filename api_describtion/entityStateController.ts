@@ -1,5 +1,5 @@
 import { EntityFabric, IRecord, ClientSelector, command } from "../utils/definitions";
-import { IProvideReduxLikeAPI } from "./libraryApi";
+import { IExtendReduxAPI } from "./libraryApi";
 
 export interface IEntityStateInstanceController<Entity> {
     factory: EntityFabric<IRecord<Entity>>,
@@ -23,4 +23,4 @@ export interface IEntityStateController<Entity> extends
 IEntityStateInstanceController<Entity>,
 IEntityStateCommandController<Entity>,
 IEntityStateQueryController<Entity>,
-IProvideReduxLikeAPI<EntityState> {}
+IExtendReduxAPI<EntityState> {}

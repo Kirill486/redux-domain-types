@@ -42,33 +42,67 @@ export const positionFactoryMethod: IEntityFactoryMethod<IPosition> = {
     linkedProperties: ["product"],
 };
 
-export const initialize = () => {
+export const initializeAppStateController = () => {
     const appStateController = new ReduxStateController(StatePropertyNames.app, initialApp);
+    return appStateController;
+}
 
+export const initializeProductEntityStateController = () => {
     const productStateController = new ReduxEntityStateController(
         StatePropertyNames.product,
         productFactoryMethod,
         [titleIndex, valueIndex],
     );
+    return productStateController;    
+}
+
+export const initializePositionEntityStateController = () => {
     const positionStateController = new ReduxEntityStateController(
         StatePropertyNames.position,
         positionFactoryMethod,
         [costIndex, productIndex, wishListPosition],
     );
+    return positionStateController;
+}
+
+export const initializeControllerPool = () => {
+    const appStateController = initializeAppStateController();
+    const productEntityStateController = initializeProductEntityStateController();
+    const positionEntityStateController = initializePositionEntityStateController();
 
     const ApplicationStateControllerPool = new ReduxStateControllerPool(
         appStateController,
-        productStateController,
-        positionStateController,
+        productEntityStateController,
+        positionEntityStateController,
     );
-    const reducer = ApplicationStateControllerPool.makeReducer();
 
+    return ApplicationStateControllerPool;
+}
+
+export const  initializeStoreWithAppStateController = () => {
+    const ApplicationStateController = initializeAppStateController();    
+    const reducer = ApplicationStateController.makeReducer();
+    const store = createStore(reducer);
+
+    ApplicationStateController.plugIn(store);
+
+    return {
+        store,
+        controller: ApplicationStateController,
+    }
+}
+
+
+export const initializeStoreWithControllerPool = () => {
+    
+    const ApplicationStateControllerPool = initializeControllerPool();    
+    const reducer = ApplicationStateControllerPool.makeReducer();
     const store = createStore(reducer);
 
     ApplicationStateControllerPool.plugIn(store);
 
     return {
         store, 
-        ApplicationStateControllerPool,
+        controller: ApplicationStateControllerPool,
     };
 }
