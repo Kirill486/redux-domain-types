@@ -99,9 +99,6 @@ export const initializeStoreWithControllerPool = () => {
     const reducer = ApplicationStateControllerPool.makeReducer();
     const store = createStore(reducer);
 
-    // Connected pool does not have makeReducerMethod
-    // Instead it has command entry point attached ?
-    // Connected controllerPool = new ConnectedAppStatePool(ApplicationStateControllerPool, store.dispatch);
     ApplicationStateControllerPool.plugIn(store);
 
     return {
