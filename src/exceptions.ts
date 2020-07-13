@@ -1,7 +1,9 @@
 export const StateControllerUnknownPropertyName = (propertyKey: string) => new Error(`Can not select property ${propertyKey} It does not exist`);
-export const StateControllerUnknownMultiplePropertyNames = (propertyKeys: string[]) =>
+export const StateControllerUnknownPropertyNames = (propertyKeys: string[]) =>
 new Error(
     `Can not select multiple properties: ${propertyKeys.join(' ')} /n
     They not exist`
 );
 export const StateControllerUnknownRootPropertyName = (propertyName: string) => new Error(`Wrong root property ${propertyName}`);
+
+export const NoRootSelectorProvided = () => new Error('NoRootSelectorProvided');
