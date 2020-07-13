@@ -4,7 +4,7 @@ import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 import { ActionsController } from "./actions";
 import { ReducerController } from "./reducer";
 import { Store } from "redux";
-import { StateControllerUnknownRootPropertyName } from "../exceptions";
+import { StateControllerUnknownRootPropertyName, UnpluggedControllerOperation } from "../exceptions";
 import { SelectorController } from "./selectors";
 
 export class ReduxStateController<State> implements IStateController<State> {
@@ -25,12 +25,30 @@ export class ReduxStateController<State> implements IStateController<State> {
     }
     
     set = (diff: Partial<State>) => {
-        this.commandEntryPoint(this.actionsController.setAction(diff));
+        if (this.isPlugged()) {
+            this.commandEntryPoint(this.actionsController.setAction(diff));
+        } else {
+            throw UnpluggedControllerOperation(this.propertyTitle);
+        }
+        
     }
-    reset = () => this.commandEntryPoint(this.actionsController.resetAction());
+    reset = () => {
+        if (this.isPlugged()) {
+            this.commandEntryPoint(this.actionsController.resetAction());
+        } else {
+            throw UnpluggedControllerOperation(this.propertyTitle);
+        }
+        
+    } 
     
-    select = (propertyKey?: string | string[]) => this.selectController.select(propertyKey);
-    queryKeys = () => [];
+    select = (propertyKey?: string | string[]) => {
+        if (this.isPlugged()) {
+            return this.selectController.select(propertyKey);
+        } else {
+            throw UnpluggedControllerOperation(this.propertyTitle);
+        }
+    }
+    // queryKeys = () => [];
 
     makeReducer: Factory<ReducerMappedToProperty<State>> = () => {
         const reducer = this.reducerController.reducer;

@@ -7,3 +7,5 @@ new Error(
 export const StateControllerUnknownRootPropertyName = (propertyName: string) => new Error(`Wrong root property ${propertyName}`);
 
 export const NoRootSelectorProvided = () => new Error('NoRootSelectorProvided');
+
+export const UnpluggedControllerOperation = (propertyName: string) => Error(`Controller you're using for ${propertyName} is unplugged`);
