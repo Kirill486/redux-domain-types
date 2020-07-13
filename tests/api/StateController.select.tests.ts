@@ -20,7 +20,7 @@ describe('StateController select data', () => {
         })
 
         const manualOrder = controller.select('manualOrder');
-        assert.deepEqual(manualOrder, someOrder); 
+        assert.deepEqual(manualOrder, {manualOrder: someOrder}); 
     });
 
     it('Select multiple properties properties', () => {
@@ -49,10 +49,12 @@ describe('StateController throws on failed selects', () => {
         try {
             controller.select(missedPropertyName);
         } catch(e) {
-            const errorMessage = e.errorMessage;
+            const err = e as Error;
+            const errorMessage = err.message;
+            ;
             const propertyNameIncluded =
                 errorMessage &&
-                errorMessage.constants(missedPropertyName);
+                errorMessage.includes(missedPropertyName);
             assert.equal(propertyNameIncluded, true);
         }
     });
@@ -65,13 +67,20 @@ describe('StateController throws on failed selects', () => {
         try {
             controller.select(requestKeys);
         } catch(e) {
-            const errorMessage = e.errorMessage;
-            const propertyNameIncluded =
-                errorMessage &&
-                errorMessage.constants(missedPropertyKeys);
+            const err = e as Error;
+            const errorMessage = err.message;
+            const isErrorMessagePresent = !!errorMessage;
 
-            assert.equal(propertyNameIncluded, true);
+            assert.equal(isErrorMessagePresent, true);
+
+            if (isErrorMessagePresent) {
+                const allMissedKeysListed = missedPropertyKeys.every((item) => {
+                    const isListed = errorMessage.includes(item);
+                    return isListed;
+                });
+
+                assert.equal(allMissedKeysListed, true);
+            }
         }
     });
-    
 });

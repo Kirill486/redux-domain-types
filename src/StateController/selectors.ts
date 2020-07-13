@@ -42,6 +42,7 @@ export class SelectorController<ControllerState> {
             }
 
             const selectedFromState = selectMultipleKeys(propertyState, keys);
+            return selectedFromState;
         }
     }
 
