@@ -14,6 +14,8 @@ export class ReduxStateController<State> implements IStateController<State> {
     private reducerController: ReducerController<State>;
     private selectController: SelectorController<State>;
 
+    plugged: boolean = false;
+
     commandEntryPoint: command;
     
     rootSelector: () => State;
@@ -27,7 +29,7 @@ export class ReduxStateController<State> implements IStateController<State> {
     }
     reset = () => this.commandEntryPoint(this.actionsController.resetAction());
     
-    select = (propertyKey?: string | string[]) => null;
+    select = (propertyKey?: string | string[]) => this.selectController.select(propertyKey);
     queryKeys = () => [];
 
     makeReducer: Factory<ReducerMappedToProperty<State>> = () => {
@@ -47,7 +49,14 @@ export class ReduxStateController<State> implements IStateController<State> {
                 throw StateControllerUnknownRootPropertyName(this.propertyTitle);
             }
         }
+
+        this.selectController = new SelectorController<State>(this.rootSelector);
+        this.plugged = true;
     };
+
+    isPlugged = () => {
+        return this.plugged;
+    }
 
     constructor(
         propertyTitle: string,
@@ -65,6 +74,6 @@ export class ReduxStateController<State> implements IStateController<State> {
             resetActionType,
         );
 
-        this.selectController = new SelectorController<State>(this.rootSelector);
+        
     }
 }

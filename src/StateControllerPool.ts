@@ -7,6 +7,10 @@ export class ReduxStateControllerPool implements StateControllerPool {
     }
 
     getControllerFor: (property: string) => null;
+
+    // This make reducer - plugin logic definitely goes
+    // to the common ancestor
     makeReducer: () => null;
-    plugIn: (reduxStore: any) => void;
+    plugIn: (reduxStore: any) => undefined;
+    isPlugged: () => false;
 }

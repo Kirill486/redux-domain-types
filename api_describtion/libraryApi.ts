@@ -11,6 +11,7 @@ export interface StateControllerPool extends IExtendReduxAPI<any> {
 export interface IExtendReduxAPI<State> {    
     makeReducer: Factory<ReducerMappedToProperty<State>>;
     plugIn: (commandEntryPoint: any) => void;
+    isPlugged: () => boolean;
 }
 
 export type StatePropertyKeyEntityData<Entity> = { [entityKey: string] : Entity };
