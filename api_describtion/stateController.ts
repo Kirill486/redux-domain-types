@@ -12,14 +12,8 @@ export interface IStateCommandController<State> {
 
 export interface IStateQueryController<State> {
     select: ClientSelector<Partial<State>>;
-    queryKeys: ClientSelector<id[]>;
+    // queryKeys: ClientSelector<id[]>;
 }
-
-export interface IStateController<State> extends
-IStateInstanceController<State>,
-IStateCommandController<State>,
-IStateQueryController<State>,
-IExtendReduxAPI<State> {}
 
 export interface IStateController<State> extends
 IStateInstanceController<State>,

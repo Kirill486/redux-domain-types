@@ -8,9 +8,10 @@ export interface StateControllerPool extends IExtendReduxAPI<any> {
     getControllerFor: (property: string) => AnyStateController;
 }
 
-export interface IExtendReduxAPI<State> {
-    makeReducer: Factory<Reducer<State>>;
+export interface IExtendReduxAPI<State> {    
+    makeReducer: Factory<ReducerMappedToProperty<State>>;
     plugIn: (commandEntryPoint: any) => void;
+    isPlugged: () => boolean;
 }
 
 export type StatePropertyKeyEntityData<Entity> = { [entityKey: string] : Entity };
@@ -18,5 +19,4 @@ export type StatePropertyKeyEntityData<Entity> = { [entityKey: string] : Entity 
 export type IndexHash = { [indexValue: string]: id[] };
 export type Ordered = id[];
 
-
-
+export type ReducerMappedToProperty<State> = { [properyKey: string]: Reducer<State> };

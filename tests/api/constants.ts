@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux';
 import { IAppState, IProduct, IPosition } from "../../domain_types/domainTypes";
 import { Factory } from "../../utils/definitions";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../../src";
@@ -81,8 +82,9 @@ export const initializeControllerPool = () => {
 
 export const  initializeStoreWithAppStateController = () => {
     const ApplicationStateController = initializeAppStateController();    
-    const reducer = ApplicationStateController.makeReducer();
-    const store = createStore(reducer);
+    const reducerMap = ApplicationStateController.makeReducer();
+    const combinedReducer = combineReducers({...reducerMap});
+    const store = createStore(combinedReducer);
 
     ApplicationStateController.plugIn(store);
 

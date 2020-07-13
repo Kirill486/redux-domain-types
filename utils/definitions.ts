@@ -1,3 +1,5 @@
+import { Action } from "redux";
+
 export type id = string;
 
 export interface IRecordCommon {
@@ -11,7 +13,7 @@ export type IRecord<DomainType> = DomainType & IRecordCommon;
 export type IRecordState<DomainType> = {[key: string]: IRecord<DomainType> };
 
 export type Reducer<State> =
-(state: State, action: IActionOfType<any, any>) => State;
+(state: State, action: IAction<any>) => State;
 
 export type Selector<State, Data> = (
   state: State,
@@ -26,6 +28,10 @@ export type IndexSelector<State, Data> = (
   indexKey: string,
   ...indexQueryParams: any
 ) => Data;
+
+export interface IAction<Payload> extends Action {
+  payload: Payload;
+}
 
 export interface IActionOfType<Types, Payload> {
   type: Types;

@@ -15,6 +15,8 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
         // Nothing yet
     }
 
+    isPlugged: () => false;
+
     factory: () => null;
     includes: () => false;
 
