@@ -1,5 +1,5 @@
-import { IEntityStateController } from "../api_describtion/entityStateController";
-import { Factory, HashIndex, id } from "../utils/definitions";
+import { IEntityStateController } from "../../api_describtion/entityStateController";
+import { Factory, HashIndex, id } from "../../utils/definitions";
 
 export interface IEntityFactoryMethod<Entity> {
     factory: Factory<Entity>;

@@ -4,7 +4,7 @@ import { Factory } from "../../utils/definitions";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "./constants.indexes";
 import { createStore } from "redux";
-import { IEntityFactoryMethod } from "../../src/EntityStateController";
+import { IEntityFactoryMethod } from "../../src/EntityStateController/EntityStateController";
 
 const postfix = 'test_env';
 
