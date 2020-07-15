@@ -3,7 +3,12 @@ import { id, IRecordState } from '../../utils/definitions';
 import { StateControllerBlueprint } from '../IExtendReduxApi/StateControllerBlueprint';
 import { Store } from 'redux';
 import { ReduxStateController } from '../StateController/StateController';
-import { KeyDoesNotExistToDelete, RecordValueCannotBeUndefined, KeyYouReTryingToReachDoesNotExist } from '../exceptions';
+import { KeyDoesNotExistToDelete, RecordValueCannotBeUndefined, KeyYouReTryingToReachDoesNotExist, RecordKeyCannotBeUndefined } from '../exceptions';
+
+export interface RecordDto<Record> {
+    recordKey: id;
+    record: Record;
+}
 
 export class ReduxRecordStateController<Record>
 extends StateControllerBlueprint<IRecordState<Record>>
@@ -30,34 +35,49 @@ implements IRecordStateController<Record> {
     };
 
     set = (id: id, data: Record) => {
-
-        const recordPresent = ((typeof data) !== "undefined");
-
-        if (recordPresent) {
-            const state = this.controller.select();
-            state[id] = data;
-            const newState = {...state};
-            this.controller.set(newState);
-        } else {
-            throw RecordValueCannotBeUndefined(id);
+        const recordDto: RecordDto<Record> = {
+            recordKey: id,
+            record: data,
         }
-
-        
+        this.bulkSet([recordDto]);        
     };
 
-    delete = (id: id) => {
+    bulkSet = (dto: Array<RecordDto<Record>>) => {
         const state = this.controller.select();
 
-        const recordPresent = ((typeof state[id]) !== "undefined");
+        dto.forEach(({recordKey, record}) => {
+            const recordPresent = ((typeof record) !== "undefined");
+            const keyPresent = ((typeof recordKey) === "string");
 
-        if (recordPresent) {
-            delete state[id];
-            const newState = {...state};
-            this.controller.set(newState);
-        } else {
-            throw KeyDoesNotExistToDelete(id);
-        }        
+            if (!recordPresent) throw RecordValueCannotBeUndefined(recordKey);
+            if (!keyPresent) throw RecordKeyCannotBeUndefined();
+            
+            if (recordPresent && keyPresent) {
+                state[recordKey] = record;
+            }
+        });
+
+        const newState = {...state};
+        this.controller.set(newState);
+    }
+
+    delete = (id: id) => {
+        this.bulkDelete([id]);
     };
+
+    bulkDelete = (ids: id[]) => {
+        const state = this.controller.select();
+        ids.forEach((recordKey: string) => {
+            const recordPresent = ((typeof state[recordKey]) !== "undefined");
+            if (recordPresent) {
+                delete state[recordKey];
+                const newState = {...state};
+                this.controller.set(newState);
+            } else {
+                throw KeyDoesNotExistToDelete(recordKey);
+            }   
+        });
+    }
 
     select = (id?: id) => {
 
@@ -73,8 +93,6 @@ implements IRecordStateController<Record> {
             }
         } else {
             return this.controller.select();
-        }
-
-        
+        }        
     };
 }

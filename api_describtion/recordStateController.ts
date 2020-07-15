@@ -7,6 +7,9 @@ export interface IRecordStateInstanceController<Record> {
 export interface IRecordStateCommandController<Record> {
     set: command;
     delete: command;
+
+    bulkSet: command;
+    bulkDelete: command;
 }
 
 export interface IRecordStateQueryController<Record> {
