@@ -18,7 +18,7 @@ export const userDataFactory = (
 });
 
 export const initializeRecordStateController = () => {
-    const recordPropertyController = new ReduxRecordStateController(RecordPropertyName, userDataFactory);
+    const recordPropertyController = new ReduxRecordStateController<IUserData>(RecordPropertyName);
     return recordPropertyController;
 }
 
