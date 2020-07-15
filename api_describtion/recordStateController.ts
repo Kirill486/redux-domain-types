@@ -2,7 +2,6 @@ import {command, ClientSelector, id, Factory, IRecordState} from '../utils/defin
 import {IExtendReduxAPI} from './libraryApi';
 
 export interface IRecordStateInstanceController<Record> {
-    fabric: Factory<Record>;
 }
 
 export interface IRecordStateCommandController<Record> {
@@ -12,7 +11,6 @@ export interface IRecordStateCommandController<Record> {
 
 export interface IRecordStateQueryController<Record> {
     select: ClientSelector<Record>;
-    queryKeys: ClientSelector<id[]>;
 }
 
 export interface IRecordStateController<Record> extends

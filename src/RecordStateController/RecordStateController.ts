@@ -9,17 +9,13 @@ implements IRecordStateController<Record> {
     
     constructor(
         propertyTitle: string,
-        recordFactory: Factory<Record>,
     ) {
         super(propertyTitle);
 
         // add checks that factory does not return undefined
         // use null instead
-        this.fabric = recordFactory;
     }
     
-    fabric = () => null;
-
     makeReducer = () => null;
     plugIn = ({dispatch, getState}: Store<any>) => {
         this.basePlugIn(dispatch, getState);
@@ -29,5 +25,4 @@ implements IRecordStateController<Record> {
     delete: command;
 
     select: ClientSelector<Record>;
-    queryKeys: ClientSelector<id[]>;
 }
