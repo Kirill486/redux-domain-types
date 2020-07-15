@@ -1,6 +1,5 @@
 import * as assert from 'assert';
-import { initializeStoreWithAppStateController, StatePropertyNames, initialApp } from "./constants";
-import { IAppState } from "../../domain_types/domainTypes";
+import { initializeStoreWithAppStateController, initialApp } from '../api/constants';
 
 describe('StateController select data', () => {
     it('Select the whole state', () => {
