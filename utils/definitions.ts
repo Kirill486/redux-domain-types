@@ -10,7 +10,7 @@ export interface IRecordCommon {
 export type IRecord<DomainType> = DomainType & IRecordCommon;
 
 // Record state is key mapped object
-export type IRecordState<DomainType> = {[key: string]: IRecord<DomainType> };
+export type IRecordState<RecordType> = {[key: string]: RecordType };
 
 export type Reducer<State> =
 (state: State, action: IAction<any>) => State;
