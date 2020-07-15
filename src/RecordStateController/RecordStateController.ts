@@ -1,9 +1,9 @@
 import {IRecordStateController} from '../../api_describtion/recordStateController';
-import { ClientSelector, id, IRecordState } from '../../utils/definitions';
+import { id, IRecordState } from '../../utils/definitions';
 import { StateControllerBlueprint } from '../IExtendReduxApi/StateControllerBlueprint';
 import { Store } from 'redux';
 import { ReduxStateController } from '../StateController/StateController';
-import { KeyDoesNotExistToDelete, RecordValueCannotBeUndefined } from '../exceptions';
+import { KeyDoesNotExistToDelete, RecordValueCannotBeUndefined, KeyYouReTryingToReachDoesNotExist } from '../exceptions';
 
 export class ReduxRecordStateController<Record>
 extends StateControllerBlueprint<IRecordState<Record>>
@@ -59,5 +59,22 @@ implements IRecordStateController<Record> {
         }        
     };
 
-    select: ClientSelector<Record>;
+    select = (id?: id) => {
+
+        if (id) {
+            const state = this.controller.select();
+            const targetRecord = state[id];
+
+            const recordPresent = ((typeof targetRecord) !== "undefined");
+            if (recordPresent) {
+                return targetRecord;
+            } else {
+                throw KeyYouReTryingToReachDoesNotExist(id);
+            }
+        } else {
+            return this.controller.select();
+        }
+
+        
+    };
 }

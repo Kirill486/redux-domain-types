@@ -37,7 +37,7 @@ describe('RecordStateController selects data', () => {
         const propertyState = store.getState()[controller.propertyTitle];
         assert.deepEqual(propertyState, { [id123]: user123 });
 
-        const propertyStateSelected = controller.select(id123);
+        const propertyStateSelected = controller.select();
         assert.deepEqual(propertyState, propertyStateSelected);
     });
 });

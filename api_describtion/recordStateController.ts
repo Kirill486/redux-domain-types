@@ -10,7 +10,7 @@ export interface IRecordStateCommandController<Record> {
 }
 
 export interface IRecordStateQueryController<Record> {
-    select: ClientSelector<Record>;
+    select: ClientSelector<Record | IRecordState<Record>>;
 }
 
 export interface IRecordStateController<Record> extends
