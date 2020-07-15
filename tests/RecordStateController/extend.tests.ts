@@ -1,7 +1,7 @@
 
 import * as assert from 'assert';
-import { initializeRecordStateController, IUserData } from "../constants.record";
-import { IRecordState } from '../../../utils/definitions';
+import { initializeRecordStateController, IUserData } from "../api/constants.record";
+import { IRecordState } from '../../utils/definitions';
 
 describe('RecordStateController extends redux API', () => {
   
