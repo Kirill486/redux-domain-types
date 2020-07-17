@@ -22,6 +22,7 @@
   "homepage": "https://github.com/Kirill486/redux-domain-types#readme",
   "dependencies": {
     "@types/redux": "^3.6.0",
+    "functional-red-black-tree": "^1.0.1",
     "redux": ">=0.10",
     "uuid": "^7.0.3"
   },
