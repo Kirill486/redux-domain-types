@@ -2,14 +2,19 @@ import { Action } from "redux";
 
 export type id = string;
 
-export interface IRecordCommon {
+export interface IEntityCommon {
   id: string;
 }
 
-// Record always has Id
-export type IRecord<DomainType> = DomainType & IRecordCommon;
+export interface IIndexCommon {
+  id: number;
+}
 
-// Record state is key mapped object
+export type IEntity<DomainType> = DomainType & IEntityCommon;
+
+export type IIndex<DomainType> = DomainType & IIndexCommon;
+
+
 export type IRecordState<RecordType> = {[key: string]: RecordType };
 
 export type Reducer<State> =
@@ -38,7 +43,7 @@ export interface IActionOfType<Types, Payload> {
   payload: Payload;
 };
 
-export type IRecordActionOfType<Types, DomainType> = IActionOfType<Types, IRecord<DomainType>>;
+export type IRecordActionOfType<Types, DomainType> = IActionOfType<Types, IEntity<DomainType>>;
 
 export type IActionCreator<Types, Payload> = (...actionArgs: any) => IActionOfType<Types, Payload>;
 
@@ -52,7 +57,7 @@ export type ISelectorSet = { [selectorType: string] :Selector<any, any> };
 
 export type Factory<Entity> = (...args: any) => Entity;
 
-export type EntityFabric<Entity extends IRecord<any>> = (...args: any) => Entity;
+export type EntityFabric<Entity extends IEntity<any>> = (...args: any) => Entity;
 
 export interface Index<IndexValue> {
   indexKey: string;
