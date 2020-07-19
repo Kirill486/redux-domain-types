@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Kirill486/redux-domain-types#readme",
   "dependencies": {
+    "search-tree": "Kirill486/functional-red-black-tree#refactoring/Typescript-typings",
     "@types/redux": "^3.6.0",
     "functional-red-black-tree": "^1.0.1",
     "redux": ">=0.10",

@@ -7,8 +7,8 @@ import {} from 'functional-red-black-tree';
 
 // Pre:
 
-// I definitely need my tree typed)
-
+// Here's my typed tree
+/* https://github.com/Kirill486/functional-red-black-tree */
 // So how we do that:
 
 // 1. Generate big dataset (10^6 or bigger);
