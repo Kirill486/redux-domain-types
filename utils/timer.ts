@@ -17,8 +17,10 @@ export class Timer {
         if (!this.timeSet) {
             throw WrongTimerOperation();
         }
+        const time = Date.now() - this.time;
+        this.time = undefined;
 
-        return Date.now() - this.time;
+        return time;
     }
 }
 
