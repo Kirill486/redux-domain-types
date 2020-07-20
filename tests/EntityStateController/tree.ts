@@ -30,7 +30,7 @@ import { roughlyEqual } from '../../utils/roughlyEqual';
 // * search for a query
 
 const timer = new Timer();
-const commonComplexityMultiplier = 1000000;
+const commonComplexityMultiplier = 100000;
 
 const initializeDataset = (complexityMultiplier) => {    
     const prods: IIndex<IProduct>[] = [];
@@ -48,8 +48,8 @@ const initializeDataset = (complexityMultiplier) => {
     return prods;
 }
 
-const initializeTree = (commonComplexityMultiplier = 1000000) => {
-    const dataSet = initializeDataset(commonComplexityMultiplier);
+const initializeTree = (complexityMultiplier = 100000) => {
+    const dataSet = initializeDataset(complexityMultiplier);
     let tree: ITree<IIndex<IProduct>> = SearchTree.createRBTree<IIndex<IProduct>>();
     dataSet.forEach((prod:IIndex<IProduct>) => {
         tree = tree.insert(prod.id, prod) as ITree<IIndex<IProduct>>;
@@ -60,13 +60,13 @@ const initializeTree = (commonComplexityMultiplier = 1000000) => {
 timer.start();
 
 const tree1 = initializeTree();
-// const tree2 = initializeTree(commonComplexityMultiplier * 100);
+const tree2 = initializeTree(commonComplexityMultiplier * 10);
 
 const initTime = timer.stop();
-console.log(`init tree time ${initTime}`);
+console.log(`init trees time ${initTime}`);
 
 describe('Tree is fast', () => {
-    it('tree is fast to insert but worse then object', (done) => {
+    it('tree is fast to insert but worse then object', async (done) => {
         timer.start();
         const tree = initializeTree();
         const treeInsert = timer.stop();
@@ -125,14 +125,14 @@ describe('Tree is fast', () => {
 
 
         const iter1 = tree1.lt(idToStart);
-        // const iter2 = tree2.lt(idToStart);
+        const iter2 = tree2.lt(idToStart);
 
         const searchTime = timer.stop();
 
         console.log(`searchTime: ${searchTime}`);
 
         assert.ok(iter1);
-        // assert.ok(iter2);
+        assert.ok(iter2);
 
         timer.start();
 
@@ -149,18 +149,18 @@ describe('Tree is fast', () => {
 
         // Case2
 
-        // timer.start();
+        timer.start();
 
-        // for (let t = 0; t < lightComplexityMultiplier / 2; t++) {
-        //     iter2.next();
-        //     const val = iter1.value;
-        //     assert.ok(val);
-        // }
+        for (let t = 0; t < lightComplexityMultiplier / 2; t++) {
+            iter2.next();
+            const val = iter1.value;
+            assert.ok(val);
+        }
 
-        // const tree2Time = timer.stop();
-        console.log(`Sequence1: ${tree1Time} Sequence2: ${1}`);
+        const tree2Time = timer.stop();
+        console.log(`Sequence1: ${tree1Time} Sequence2: ${tree2Time}`);
 
-        assert.ok(roughlyEqual(tree1Time, 1));
+        assert.ok(roughlyEqual(tree1Time, tree2Time));
         done();
     });
 
