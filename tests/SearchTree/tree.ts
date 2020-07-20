@@ -1,12 +1,12 @@
 import * as assert from 'assert';
-import * as SearchTree from '../../node_modules/search-tree/dist/rbtree';
+import * as SearchTree from 'search-tree';
 import { IProduct } from '../../domain_types/domainTypes';
 import { IIndex } from '../../utils/definitions';
 import { randomInt } from '../../utils/randomInt';
 import { ITree } from 'search-tree/libraryDefinitions';
 import { Timer } from '../../utils/timer';
-import { time } from 'console';
 import { roughlyEqual } from '../../utils/roughlyEqual';
+import { serilizeTree, deserilizeTree } from '../../utils/treeUtils';
 // Here we have our tree tested.
 // It should return pointer to the first element that satisfy query fast
 // And then return elements even faster
@@ -30,6 +30,7 @@ import { roughlyEqual } from '../../utils/roughlyEqual';
 // * search for a query
 
 const timer = new Timer();
+const timer2 = new Timer();
 const commonComplexityMultiplier = 100000;
 
 const initializeDataset = (complexityMultiplier) => {    
@@ -164,5 +165,29 @@ describe('Tree is fast', () => {
         done();
     });
 
-    // it('tree ')
+    it('tree serilizes/deserilizes fast', () => {
+        
+        timer.start();
+        
+        for (let t = 0; t < commonComplexityMultiplier; t++) {
+            timer2.start()
+            
+            const innerTreeClone = serilizeTree(tree1);
+            assert.notEqual(innerTreeClone, tree1.root);
+
+            const cloneTime = timer2.stop();
+
+            timer2.start();
+
+            const treeClone = deserilizeTree(innerTreeClone);
+            assert.notEqual(treeClone, tree1);
+
+            const deserilizationTime = timer2.stop();
+
+            console.log(`t: ${t}, clone: ${cloneTime}, desirilization: ${deserilizationTime}`);
+        }
+
+        const time = timer.stop();
+        assert.ok(true);
+    });
 });
