@@ -16,6 +16,23 @@ describe('EntityStateController stores data', () => {
         assert.ok(propertyDataKeysLength === 1);
     });
 
+    it('created by default produs have props we need', () => {
+        const {store, controller} = initializeStoreWithProductStateController();
+        controller.add();
+
+        const emptyProduct: IEntity<IProduct> = controller.factory();
+
+        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyDataKey = Object.keys(propertyData)[0];
+        assert.ok(propertyDataKey);
+        const data: IEntity<IProduct> = propertyData[propertyDataKey];
+
+        // except ids
+        delete data.id;
+        delete emptyProduct.id;
+        assert.deepEqual(data, emptyProduct);
+    });
+
     it('can create produs from domain type', () => {
         const {store, controller} = initializeStoreWithProductStateController();
         const newProd: IProduct = {
@@ -73,5 +90,49 @@ describe('EntityStateController stores data', () => {
         assert.ok(title === stateProperyTitle);
         assert.ok(description === stateProperyDescription);
         assert.ok(value === statePropertyValue);
+    });
+
+    it('can add full entity', () => {
+        const {store, controller} = initializeStoreWithProductStateController();
+        const newProd: IEntity<IProduct> = {
+            id: '42',
+            title: 'prod1',
+            description: 'descr1',
+            value: 42,
+        };
+        controller.add(newProd);
+
+        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const prod = propertyData[newProd.id];
+        
+        const {
+            id: statePropertyId,
+            title: stateProperyTitle,
+            description: stateProperyDescription,
+            value: statePropertyValue,
+        }: IEntity<IProduct> = prod;
+
+        const {id, title, description, value} = newProd;
+        assert.ok(id === statePropertyId);
+        assert.ok(title === stateProperyTitle);
+        assert.ok(description === stateProperyDescription);
+        assert.ok(value === statePropertyValue);
+    });
+
+    it('can bulk add entities', () => {
+        const {store, controller} = initializeStoreWithProductStateController();
+        const newProd1: IEntity<IProduct> = {
+            id: '42',
+            title: 'prod1',
+            description: 'descr1',
+            value: 42,
+        };
+        const newProd2: IEntity<IProduct> = {
+            id: '422',
+            title: '2prod12',
+            description: '2descr12',
+            value: 242,
+        };
+        controller.add([newProd1, newProd2]);
     });
 });

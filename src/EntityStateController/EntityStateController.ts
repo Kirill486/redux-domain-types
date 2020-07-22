@@ -26,7 +26,7 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
     factory: () => null;
     includes: () => false;
 
-    add: (entity?: Entity) => void;
+    add: (entity?: Entity | Entity[]) => void;
     modify: (entity?: Entity) => void;
     delete: (id: id) => void;
 
