@@ -7,11 +7,17 @@ export interface IEntityFactoryMethod<Entity> {
 }
 
 export class ReduxEntityStateController<Entity> implements IEntityStateController<Entity> {
+
+    static dataPrefix = 'data';
+    
+    public properyTitle;
+    
     constructor(
         propertyTitle: string,
         factoryMethod: IEntityFactoryMethod<Entity>,
         indexes: Array<HashIndex<Entity>>,
     ) {
+        this.properyTitle = propertyTitle;
         // Nothing yet
     }
 
@@ -21,8 +27,8 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
     includes: () => false;
 
     add: (entity?: Entity) => void;
-    modify: () => void;
-    delete: () => void;
+    modify: (entity?: Entity) => void;
+    delete: (id: id) => void;
 
     select: (indexKey?: string, value?: any) => null;
     query: (indexKey?: string, ...args: any[]) => [];
