@@ -15,33 +15,33 @@ export const PositionIndexKeys = Object.freeze({
     whishList: `whishList_${postfix}`,
 });
 
-export const titleHash: HashCode<IProduct, number> = (product) => {
+export const titleHash: HashCode<IProduct> = (product) => {
     return getStringHash(product.title);
 }
 
-export const valueHash: HashCode<IProduct, number> = (product) => {
+export const valueHash: HashCode<IProduct> = (product) => {
     return product.value;
 }
 
-export const titleIndex: HashIndex<IProduct, number> = {
+export const titleIndex: HashIndex<IProduct> = {
     indexKey: ProductIndexKeys.title,
     index: titleHash,
 }
 
-export const valueIndex: HashIndex<IProduct, number> = {
+export const valueIndex: HashIndex<IProduct> = {
     indexKey: ProductIndexKeys.value,
     index: valueHash,
 }
 
-export const costIndex: HashIndex<IPosition, number> = {
+export const costIndex: HashIndex<IPosition> = {
     indexKey: PositionIndexKeys.cost,
     index: null,
 }
-export const productIndex: HashIndex<IPosition, id> = {
+export const productIndex: HashIndex<IPosition> = {
     indexKey: PositionIndexKeys.product,
     index: null,
 };
-export const wishListPosition: HashIndex<IPosition, boolean> = {
+export const wishListPosition: HashIndex<IPosition> = {
     indexKey: PositionIndexKeys.whishList,
     index: null,
 };

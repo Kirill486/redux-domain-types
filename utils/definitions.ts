@@ -45,16 +45,6 @@ export interface IActionOfType<Types, Payload> {
 
 export type IRecordActionOfType<Types, DomainType> = IActionOfType<Types, IEntity<DomainType>>;
 
-export type IActionCreator<Types, Payload> = (...actionArgs: any) => IActionOfType<Types, Payload>;
-
-export type IRecordActionCreator<Types, DomainType> = (...actionArgs: any) => IRecordActionOfType<Types, DomainType>;
-
-// In this context set means kit and not the data structure
-export type IActionSet = { [actionType: string] : IActionCreator<any, any> };
-
-// Set also means kit in this context
-export type ISelectorSet = { [selectorType: string] :Selector<any, any> };
-
 export type Factory<Entity> = (...args: any) => Entity;
 
 export type EntityFabric<Entity extends IEntity<any>> = (...args: any) => Entity;
@@ -64,10 +54,9 @@ export interface Index<IndexValue> {
   index: IndexValue;
 }
 
-export type HashCode<Record, Result> = (record: Record) => Result;
+export type HashCode<Entity> = (record: Entity) => number;
 
-export type HashIndex<Record, Result> = Index<HashCode<Record, Result>>;
-// export type BuisinessIndex<Record, Result> = Index<HashCode<Record, Result>>;
+export type HashIndex<Entity> = Index<HashCode<Entity>>;
 
 // We have literal command - query separation.
 

@@ -10,7 +10,7 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
     constructor(
         propertyTitle: string,
         factoryMethod: IEntityFactoryMethod<Entity>,
-        indexes: Array<HashIndex<Entity, any>>,
+        indexes: Array<HashIndex<Entity>>,
     ) {
         // Nothing yet
     }
