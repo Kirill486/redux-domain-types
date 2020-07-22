@@ -9,6 +9,8 @@ export interface StateControllerPool extends IExtendReduxAPI<any> {
 }
 
 export interface IExtendReduxAPI<State> {    
+    properyTitle: string;
+    
     makeReducer: Factory<ReducerMappedToProperty<State>>;
     plugIn: (commandEntryPoint: any) => void;
     isPlugged: () => boolean;
