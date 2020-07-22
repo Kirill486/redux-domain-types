@@ -5,6 +5,7 @@ import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerP
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "./constants.indexes";
 import { createStore } from "redux";
 import { IEntityFactoryMethod } from "../../src/EntityStateController/EntityStateController";
+import { ReducerMappedToProperty } from '../../api_describtion/libraryApi';
 
 const postfix = 'test_env';
 
@@ -107,4 +108,18 @@ export const initializeStoreWithControllerPool = () => {
         store, 
         controller: ApplicationStateControllerPool,
     };
+}
+
+export const initializeStoreWithProductStateController = () => {
+    const ProductEntityStateController = initializeProductEntityStateController();
+    const reducerMap: ReducerMappedToProperty<any> = ProductEntityStateController.makeReducer();
+    const combinedReducer = combineReducers({...reducerMap});
+    const store = createStore(combinedReducer);
+
+    ProductEntityStateController.plugIn(store);
+
+    return {
+        store,
+        controller: ProductEntityStateController,
+    }
 }
