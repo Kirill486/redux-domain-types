@@ -14,6 +14,7 @@ export const StatePropertyNames = Object.freeze({
     product: `product_${postfix}`,
     position: `position_${postfix}`,
     app: `app_${postfix}`,
+    appMain: `main_application${postfix}`,
 });
 
 export const initialApp: IAppState = {
@@ -73,6 +74,7 @@ export const initializeControllerPool = () => {
     const positionEntityStateController = initializePositionEntityStateController();
 
     const ApplicationStateControllerPool = new ReduxStateControllerPool(
+        StatePropertyNames.appMain,
         appStateController,
         productEntityStateController,
         positionEntityStateController,
