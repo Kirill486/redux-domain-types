@@ -2,7 +2,7 @@ import { StateControllerPool, AnyStateController } from "../api_describtion/libr
 
 export class ReduxStateControllerPool implements StateControllerPool {
 
-    propertyTitle: string;
+    public propertyTitle: string;
 
     constructor(
         properyTitle: string,
