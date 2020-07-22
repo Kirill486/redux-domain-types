@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { IAppState, IProduct, IPosition } from "../../domain_types/domainTypes";
-import { Factory } from "../../utils/definitions";
+import { Factory, IEntity } from "../../utils/definitions";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "./constants.indexes";
 import { createStore } from "redux";
@@ -124,4 +124,22 @@ export const initializeStoreWithProductStateController = () => {
         store,
         controller: ProductEntityStateController,
     }
+}
+
+export const initializeStoreWithProductStateControllerAndData = () => {
+    const {store, controller} = initializeStoreWithProductStateController();
+        const newProd1: IEntity<IProduct> = {
+            id: '42',
+            title: 'prod1',
+            description: 'descr1',
+            value: 42,
+        };
+        const newProd2: IEntity<IProduct> = {
+            id: '422',
+            title: '2prod12',
+            description: '2descr12',
+            value: 242,
+        };
+    controller.add([newProd1, newProd2]);
+    return {store, controller};
 }
