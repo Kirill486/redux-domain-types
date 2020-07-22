@@ -5,7 +5,7 @@ import { ReduxEntityStateController } from '../../src';
 import { IProduct } from '../../domain_types/domainTypes';
 import { IEntity } from '../../utils/definitions';
 
-describe('EntityStateController stores data', () => {
+describe('EntityStateController adds entities', () => {
     
     it('can create produs', () => {
         const {store, controller} = initializeStoreWithProductStateController();
@@ -134,5 +134,16 @@ describe('EntityStateController stores data', () => {
             value: 242,
         };
         controller.add([newProd1, newProd2]);
+
+        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const dataKeys = Object.keys(propertyData);
+
+        assert.ok(dataKeys.length === 2);
+
+        dataKeys.forEach((dataKey) => {
+            const entity = propertyData[dataKey];
+            assert.ok(entity);
+            assert.ok(entity.id);
+        })
     });
 });
