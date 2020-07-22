@@ -140,6 +140,7 @@ export const initializeStoreWithProductStateControllerAndData = () => {
             description: '2descr12',
             value: 242,
         };
-    controller.add([newProd1, newProd2]);
-    return {store, controller};
+    const prods = [newProd1, newProd2];
+    controller.add(prods);
+    return {store, controller, prods};
 }
