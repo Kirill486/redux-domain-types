@@ -63,8 +63,11 @@ describe('EntityStateController deletes stores data', () => {
             assert.ok(e);
             const {message} = e as Error;
             assert.ok(message);
-            const AllWrongIdsMentioned = madeUpIds.every((item) => message.includes(item));
-            assert.ok(AllWrongIdsMentioned);
+            const allWrongIdsMentioned = madeUpIds.every((item) => message.includes(item));
+            assert.ok(allWrongIdsMentioned);
+
+            const validToDeleteIdsNotMentioned = !message.includes(realId);
+            assert.ok(validToDeleteIdsNotMentioned);
         }
     });
 

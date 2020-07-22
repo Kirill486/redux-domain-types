@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import { initializeStoreWithProductStateController } from "../api/constants";
+import { initializeStoreWithProductStateController, initializeStoreWithProductStateControllerAndData } from "../api/constants";
 import { ReduxEntityStateController } from '../../src';
 import { IProduct } from '../../domain_types/domainTypes';
 import { IEntity } from '../../utils/definitions';
@@ -146,4 +146,21 @@ describe('EntityStateController adds entities', () => {
             assert.ok(entity.id);
         })
     });
+
+    it('throws on attempt to create record with id that exist', () => {
+        const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
+        const prod = prods[0];
+
+        try {
+            controller.add(prod);
+        } catch(e) {
+            assert.ok(e);
+            const {message} = e as Error;
+            assert.ok(message);
+
+            const idIMentioned = message.includes(prod.id);
+            assert.ok(idIMentioned);
+        }
+    });
+
 });
