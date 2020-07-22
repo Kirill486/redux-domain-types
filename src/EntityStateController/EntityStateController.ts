@@ -28,7 +28,7 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
 
     add: (entity?: Entity | Entity[]) => void;
     modify: (entity?: Entity) => void;
-    delete: (id: id) => void;
+    delete: (id: id | id[]) => void;
 
     select: (indexKey?: string, value?: any) => null;
     query: (indexKey?: string, ...args: any[]) => [];
