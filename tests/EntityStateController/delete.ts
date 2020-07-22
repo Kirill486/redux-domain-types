@@ -42,6 +42,7 @@ describe('EntityStateController deletes stores data', () => {
         const madeUpId = 'someMadeUpId';
         try {
             controller.delete(madeUpId);
+            assert.ok(false)
         } catch(e) {
             assert.ok(e);
             const {message} = e as Error;
@@ -59,6 +60,7 @@ describe('EntityStateController deletes stores data', () => {
 
         try {
             controller.delete(requestIds);
+            assert.ok(false)
         } catch(e) {
             assert.ok(e);
             const {message} = e as Error;

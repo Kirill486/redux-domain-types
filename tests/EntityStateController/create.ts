@@ -153,6 +153,7 @@ describe('EntityStateController adds entities', () => {
 
         try {
             controller.add(prod);
+            assert.ok(false)
         } catch(e) {
             assert.ok(e);
             const {message} = e as Error;
