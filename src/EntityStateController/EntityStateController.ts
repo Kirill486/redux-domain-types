@@ -10,14 +10,14 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
 
     static dataPrefix = 'data';
     
-    public properyTitle;
+    public propertyTitle;
     
     constructor(
         propertyTitle: string,
         factoryMethod: IEntityFactoryMethod<Entity>,
         indexes: Array<HashIndex<Entity>>,
     ) {
-        this.properyTitle = propertyTitle;
+        this.propertyTitle = propertyTitle;
         // Nothing yet
     }
 

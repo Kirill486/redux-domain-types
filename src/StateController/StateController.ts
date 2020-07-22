@@ -9,7 +9,7 @@ import { SelectorController } from "./selectors";
 
 export class ReduxStateController<State> implements IStateController<State> {
     
-    public properyTitle: string;
+    public propertyTitle: string;
     private actionsController: ActionsController<State>;
     private reducerController: ReducerController<State>;
     private selectController: SelectorController<State>;
@@ -28,7 +28,7 @@ export class ReduxStateController<State> implements IStateController<State> {
         if (this.isPlugged()) {
             this.commandEntryPoint(this.actionsController.setAction(diff));
         } else {
-            throw UnpluggedControllerOperation(this.properyTitle);
+            throw UnpluggedControllerOperation(this.propertyTitle);
         }
         
     }
@@ -36,7 +36,7 @@ export class ReduxStateController<State> implements IStateController<State> {
         if (this.isPlugged()) {
             this.commandEntryPoint(this.actionsController.resetAction());
         } else {
-            throw UnpluggedControllerOperation(this.properyTitle);
+            throw UnpluggedControllerOperation(this.propertyTitle);
         }
         
     } 
@@ -45,7 +45,7 @@ export class ReduxStateController<State> implements IStateController<State> {
         if (this.isPlugged()) {
             return this.selectController.select(propertyKey);
         } else {
-            throw UnpluggedControllerOperation(this.properyTitle);
+            throw UnpluggedControllerOperation(this.propertyTitle);
         }
     }
     // queryKeys = () => [];
@@ -53,18 +53,18 @@ export class ReduxStateController<State> implements IStateController<State> {
     makeReducer: Factory<ReducerMappedToProperty<State>> = () => {
         const reducer = this.reducerController.reducer;
         return {
-            [this.properyTitle]: reducer,
+            [this.propertyTitle]: reducer,
         };
     } 
     plugIn = ({dispatch, getState}: Store<any>) => {
         this.commandEntryPoint = dispatch;
         this.rootSelector = () => {
-            const controllerProperty = getState()[this.properyTitle];
+            const controllerProperty = getState()[this.propertyTitle];
 
             if (controllerProperty) {
                 return controllerProperty;
             } else {
-                throw StateControllerUnknownRootPropertyName(this.properyTitle);
+                throw StateControllerUnknownRootPropertyName(this.propertyTitle);
             }
         }
 
@@ -80,9 +80,9 @@ export class ReduxStateController<State> implements IStateController<State> {
         properyTitle: string,
         initial: State,
     ) {
-        this.properyTitle = properyTitle;
+        this.propertyTitle = properyTitle;
 
-        this.actionsController = new ActionsController<State>(this.properyTitle);
+        this.actionsController = new ActionsController<State>(this.propertyTitle);
         const setActionType = this.actionsController.setAction().type;
         const resetActionType = this.actionsController.resetAction().type;
 

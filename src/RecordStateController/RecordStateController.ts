@@ -13,6 +13,7 @@ export interface RecordDto<Record> {
 export class ReduxRecordStateController<Record>
 extends StateControllerBlueprint<IRecordState<Record>>
 implements IRecordStateController<Record> {
+    public propertyTitle: string;
 
     controller: ReduxStateController<IRecordState<Record>>;
 
