@@ -1,7 +1,6 @@
 import {IRecordStateController} from '../../api_describtion/recordStateController';
 import { id, IRecordState } from '../../utils/definitions';
 import { StateControllerBlueprint } from '../IExtendReduxApi/StateControllerBlueprint';
-import { Store } from 'redux';
 import { ReduxStateController } from '../StateController/StateController';
 import { KeyDoesNotExistToDelete, RecordValueCannotBeUndefined, KeyYouReTryingToReachDoesNotExist, RecordKeyCannotBeUndefined } from '../exceptions';
 
@@ -26,13 +25,8 @@ implements IRecordStateController<Record> {
         this.controller = new ReduxStateController(propertyTitle, initialState);
     }
     
-    makeReducer = () => {
-        return this.controller.makeReducer();
-    };
-
-    plugIn = (store: Store<any>) => {
-        this.controller.plugIn(store);
-        this.basePlugIn(store.dispatch, store.getState);
+    makeReducerInner = () => {
+        return this.controller.makeReducerInner();
     };
 
     set = (id: id, data: Record) => {
