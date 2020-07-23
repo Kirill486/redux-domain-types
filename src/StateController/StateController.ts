@@ -77,10 +77,10 @@ export class ReduxStateController<State> implements IStateController<State> {
     }
 
     constructor(
-        propertyTitle: string,
+        properyTitle: string,
         initial: State,
     ) {
-        this.propertyTitle = propertyTitle;
+        this.propertyTitle = properyTitle;
 
         this.actionsController = new ActionsController<State>(this.propertyTitle);
         const setActionType = this.actionsController.setAction().type;

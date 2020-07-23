@@ -1,5 +1,5 @@
-import { IEntityStateController } from "../api_describtion/entityStateController";
-import { Factory, HashIndex, id } from "../utils/definitions";
+import { IEntityStateController } from "../../api_describtion/entityStateController";
+import { Factory, HashIndex, id } from "../../utils/definitions";
 
 export interface IEntityFactoryMethod<Entity> {
     factory: Factory<Entity>;
@@ -7,11 +7,17 @@ export interface IEntityFactoryMethod<Entity> {
 }
 
 export class ReduxEntityStateController<Entity> implements IEntityStateController<Entity> {
+
+    static dataPrefix = 'data';
+    
+    public propertyTitle;
+    
     constructor(
         propertyTitle: string,
         factoryMethod: IEntityFactoryMethod<Entity>,
-        indexes: Array<HashIndex<Entity, any>>,
+        indexes: Array<HashIndex<Entity>>,
     ) {
+        this.propertyTitle = propertyTitle;
         // Nothing yet
     }
 
@@ -20,9 +26,9 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
     factory: () => null;
     includes: () => false;
 
-    add: (entity?: Entity) => void;
-    modify: () => void;
-    delete: () => void;
+    add: (entity?: Entity | Entity[]) => void;
+    modify: (entity?: Partial<Entity>) => void;
+    delete: (id: id | id[]) => void;
 
     select: (indexKey?: string, value?: any) => null;
     query: (indexKey?: string, ...args: any[]) => [];

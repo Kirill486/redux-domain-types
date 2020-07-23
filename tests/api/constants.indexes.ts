@@ -1,4 +1,4 @@
-import { HashIndex, HashCode, id } from "../../utils/definitions";
+import { HashIndex, HashCode, id, IEntity } from "../../utils/definitions";
 import { IProduct, IPosition } from "../../domain_types/domainTypes";
 import { getStringHash } from "../../utils/getStringHash";
 
@@ -15,33 +15,69 @@ export const PositionIndexKeys = Object.freeze({
     whishList: `whishList_${postfix}`,
 });
 
-export const titleHash: HashCode<IProduct, number> = (product) => {
+export const titleHash: HashCode<IProduct> = (product) => {
     return getStringHash(product.title);
 }
 
-export const valueHash: HashCode<IProduct, number> = (product) => {
+export const valueHash: HashCode<IProduct> = (product) => {
     return product.value;
 }
 
-export const titleIndex: HashIndex<IProduct, number> = {
+export const titleIndex: HashIndex<IProduct> = {
     indexKey: ProductIndexKeys.title,
     index: titleHash,
 }
 
-export const valueIndex: HashIndex<IProduct, number> = {
+export const valueIndex: HashIndex<IProduct> = {
     indexKey: ProductIndexKeys.value,
     index: valueHash,
 }
 
-export const costIndex: HashIndex<IPosition, number> = {
-    indexKey: PositionIndexKeys.cost,
-    index: null,
+const costHash: HashCode<IPosition> = (position, getById) => {
+    const correspondingProduct: IProduct = getById(position.product);
+    if (correspondingProduct) {
+        return position.amount * correspondingProduct.value;
+    } else {
+        // It is buisiness-logic exception
+        throw "Pointer to undefined exception";
+    }
 }
-export const productIndex: HashIndex<IPosition, id> = {
+
+export const costIndex: HashIndex<IPosition> = {
+    indexKey: PositionIndexKeys.cost,
+    index: costHash,
+}
+
+const productHash: HashCode<IPosition> = (position, getById) => {
+    const correspondingProduct: IEntity<IProduct> = getById(position.product);
+    if (correspondingProduct) {
+        return getStringHash(correspondingProduct.id);
+    } else {
+        // It is buisiness-logic exception
+        throw "Pointer to undefined exception";
+    }
+}
+
+export const productIndex: HashIndex<IPosition> = {
     indexKey: PositionIndexKeys.product,
-    index: null,
+    index: productHash,
 };
-export const wishListPosition: HashIndex<IPosition, boolean> = {
+
+const getWishList = () => ['1', '2', '3'];
+
+const wishListHash: HashCode<IPosition> = (position, getById) => {
+    const list: id[] = getWishList();
+    const correspondingProduct: IEntity<IProduct> = getById(position.product);
+
+    if (correspondingProduct) {
+        return list.includes(correspondingProduct.id) ? 1 : 0;
+    } else {
+        // It is buisiness-logic exception
+        throw "Pointer to undefined exception";
+    }
+}
+
+export const wishListPosition: HashIndex<IPosition> = {
     indexKey: PositionIndexKeys.whishList,
-    index: null,
+    index: wishListHash,
 };

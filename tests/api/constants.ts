@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 import { IAppState, IProduct, IPosition } from "../../domain_types/domainTypes";
-import { Factory } from "../../utils/definitions";
+import { Factory, IEntity } from "../../utils/definitions";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "./constants.indexes";
 import { createStore } from "redux";
-import { IEntityFactoryMethod } from "../../src/EntityStateController";
+import { IEntityFactoryMethod } from "../../src/EntityStateController/EntityStateController";
+import { ReducerMappedToProperty } from '../../api_describtion/libraryApi';
 
 const postfix = 'test_env';
 
@@ -13,6 +14,7 @@ export const StatePropertyNames = Object.freeze({
     product: `product_${postfix}`,
     position: `position_${postfix}`,
     app: `app_${postfix}`,
+    appMain: `main_application${postfix}`,
 });
 
 export const initialApp: IAppState = {
@@ -72,6 +74,7 @@ export const initializeControllerPool = () => {
     const positionEntityStateController = initializePositionEntityStateController();
 
     const ApplicationStateControllerPool = new ReduxStateControllerPool(
+        StatePropertyNames.appMain,
         appStateController,
         productEntityStateController,
         positionEntityStateController,
@@ -108,3 +111,77 @@ export const initializeStoreWithControllerPool = () => {
         controller: ApplicationStateControllerPool,
     };
 }
+
+export const initializeStoreWithProductStateController = () => {
+    const ProductEntityStateController = initializeProductEntityStateController();
+    const reducerMap: ReducerMappedToProperty<any> = ProductEntityStateController.makeReducer();
+    const combinedReducer = combineReducers({...reducerMap});
+    const store = createStore(combinedReducer);
+
+    ProductEntityStateController.plugIn(store);
+
+    return {
+        store,
+        controller: ProductEntityStateController,
+    }
+}
+
+export const initializeStoreWithPositionStateController = () => {
+    const PositionEntityStateController = initializePositionEntityStateController();
+    const reducerMap: ReducerMappedToProperty<any> = PositionEntityStateController.makeReducer();
+    const combinedReducer = combineReducers({...reducerMap});
+    const store = createStore(combinedReducer);
+
+    PositionEntityStateController.plugIn(store);
+
+    return {
+        store,
+        controller: PositionEntityStateController,
+    }
+}
+
+export const initializeStoreWithProductStateControllerAndData = () => {
+    const {store, controller} = initializeStoreWithProductStateController();
+        const newProd1: IEntity<IProduct> = {
+            id: '42',
+            title: 'prod1',
+            description: 'descr1',
+            value: 42,
+        };
+        const newProd2: IEntity<IProduct> = {
+            id: '422',
+            title: '2prod12',
+            description: '2descr12',
+            value: 242,
+        };
+    const prods = [newProd1, newProd2];
+    controller.add(prods);
+    return {store, controller, prods};
+}
+
+// Looks like a Use case for Pool here:
+// -- combine properiest reducers
+// -- manage pointer safety
+// -- manage index pointer sefety
+
+// export const initializeStoreWithPositionStateControllerAndData = () => {
+//     const {store: prosuctStore, prods, controller: prodsController} = initializeStoreWithProductStateControllerAndData();
+//     const {store: positionStore, controller: positionController} = initializeStoreWithPositionStateController();
+    
+//     const position1: IEntity<IPosition> = {
+//         id: '12345',
+//         amount: 55,
+//         product: prods[0].id,
+//     }
+
+//     const position2: IEntity<IPosition> = {
+//         id: '123452354',
+//         amount: 552,
+//         product: prods[1].id,
+//     }
+
+//     const positions = [position1, position2];
+//     positionController.add(positions);
+
+//     return {positionStore, positionController, positions, prosuctStore, prods, prodsController};
+// }

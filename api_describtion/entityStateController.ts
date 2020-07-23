@@ -1,8 +1,8 @@
-import { EntityFabric, IRecord, ClientSelector, command } from "../utils/definitions";
+import { EntityFabric, IEntity, ClientSelector, command } from "../utils/definitions";
 import { IExtendReduxAPI } from "./libraryApi";
 
 export interface IEntityStateInstanceController<Entity> {
-    factory: EntityFabric<IRecord<Entity>>,
+    factory: EntityFabric<IEntity<Entity>>,
     includes: ClientSelector<boolean>,
 }
 
@@ -13,8 +13,8 @@ export interface IEntityStateCommandController<Entity> {
 }
 
 export interface IEntityStateQueryController<Entity> {
-    query: ClientSelector<Array<IRecord<Entity>>>,
-    select: ClientSelector<IRecord<Entity>>,
+    query: ClientSelector<Array<IEntity<Entity>>>,
+    select: ClientSelector<IEntity<Entity>>,
 }
 
 export type EntityState = any;

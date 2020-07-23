@@ -22,7 +22,11 @@
   "homepage": "https://github.com/Kirill486/redux-domain-types#readme",
   "dependencies": {
     "@types/redux": "^3.6.0",
+    "@types/rfdc": "^1.1.0",
+    "functional-red-black-tree": "^1.0.1",
     "redux": ">=0.10",
+    "rfdc": "^1.1.4",
+    "search-tree": "Kirill486/functional-red-black-tree#refactoring/Typescript-typings",
     "uuid": "^7.0.3"
   },
   "devDependencies": {

@@ -4,10 +4,10 @@
     "module": "commonjs",
     "outDir": "dist/",
     "sourceMap": true,
-    "declaration": true,
+    "declaration": true
   },
   "include": [
-    "src/**/*", "tests", "utils", "api_describtion/index.ts"
+    "src/**/*", "tests", "utils", "api_describtion/index.ts", "tree-playground/SearchTree", "api_describtion/SearchTree"
   ],
   "exclude": [
     "node_modules"
