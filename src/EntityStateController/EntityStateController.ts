@@ -43,7 +43,9 @@ implements IEntityStateController<IEntity<DomainType>> {
         this.dataController.plugIn(this.commandEntryPoint, this.getControllerProperty);
     }
 
-    includes: () => false;
+    includes = (id: id) => {
+        return this.dataController.includes(id);
+    }
 
     add = (arg?: AddAccepts<DomainType>) => {
         if (arg) {
@@ -82,6 +84,7 @@ implements IEntityStateController<IEntity<DomainType>> {
             this.dataController.set(newEntity.id, newEntity);
         }
     };
+
     modify = (entity: IEntity<Partial<DomainType>>) => {
         const recordExist = this.recordExist(entity.id);
         const fullEntity = {
@@ -92,7 +95,16 @@ implements IEntityStateController<IEntity<DomainType>> {
             this.dataController.set(entity.id, fullEntity);
         }
     };
-    delete: (id: id | id[]) => void;
+    delete = (id: id | id[]) => {
+        let toDelete: id[];
+        if (Array.isArray(id)) {
+            toDelete = id;
+        } else {
+            toDelete = [id];
+        }
+
+        this.dataController.bulkDelete(toDelete);
+    };
 
     select: (indexKey?: string, value?: any) => null;
     query: (indexKey?: string, ...args: any[]) => [];

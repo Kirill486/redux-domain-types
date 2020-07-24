@@ -18,6 +18,6 @@ export const UnpluggedControllerOperation = (propertyName: string) => Error(`Con
 
 export const RecordValueCannotBeUndefined = (recordKey: string) => new Error(`Attempt to set ${recordKey} to undefined. Use delete instead`);
 export const RecordKeyCannotBeUndefined = () => new Error(`Cannot set to undefined key`);
-export const KeyDoesNotExistToDelete = (recordKey: string) => new Error(`Record with key ${recordKey} does not exist. Cannot select`);
+export const KeyDoesNotExistToDelete = (recordKeys: string[]) => new Error(`Records with keys ${recordKeys.join(' ')} does not exist. Cannot select`);
 
 export const KeyYouReTryingToReachDoesNotExist = (recordKey: string) => new Error(`Record with key ${recordKey} does not exist. Cannot select`);
