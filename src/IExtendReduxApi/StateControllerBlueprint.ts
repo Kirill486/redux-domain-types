@@ -1,9 +1,10 @@
-import { command, Reducer } from "../../utils/definitions";
+import { command, Reducer, ClientSelector } from "../../utils/definitions";
 import { StateControllerUnknownRootPropertyName, UnpluggedControllerOperation } from "../exceptions";
 import { Store } from "redux";
 import { IExtendReduxAPI } from "../../api_describtion/libraryApi";
 
-export abstract class StateControllerBlueprint<State> implements IExtendReduxAPI<any> {
+export abstract class StateControllerBlueprint<State>
+implements IExtendReduxAPI<State> {
     public propertyTitle: string;
     plugged: boolean = false;
 
@@ -15,7 +16,7 @@ export abstract class StateControllerBlueprint<State> implements IExtendReduxAPI
         this.propertyTitle = propertyTitle;
     }
 
-    public plugIn({dispatch: commandEntryPoint, getState: rootGetStateSelector}: Store<any>) {
+    public plugIn(commandEntryPoint: command, rootGetStateSelector: ClientSelector<State>) {
         this.commandEntryPoint = commandEntryPoint;
         this.rootSelector = rootGetStateSelector;
         
