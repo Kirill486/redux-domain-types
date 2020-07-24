@@ -61,16 +61,18 @@ implements IEntityStateController<IEntity<DomainType>> {
             
             // Checks if record exist
             const toInsert = entitiesToInsertArray.map((item) => this.makeRecordDto(item));
-            
-            const greenToInsert = toInsert.every((item) => {
-                // all records must be new
-                return !this.dataController.includes(item.recordKey);
-            })
 
-            if (greenToInsert) {
+            const conflictKeys = toInsert.reduce((acc, item) => {
+                if (this.dataController.includes(item.recordKey)) {
+                    acc.push(item.recordKey);
+                }
+                return acc;
+            }, []);
+            
+            if (conflictKeys.length === 0) {
                 this.dataController.bulkSet(toInsert);
             } else {
-                throw AttemptToInsertDuplicateKey(this.propertyTitle);
+                throw AttemptToInsertDuplicateKey(this.propertyTitle, conflictKeys);
             }
             
             
