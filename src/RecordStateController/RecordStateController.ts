@@ -90,6 +90,11 @@ implements IRecordStateController<Record> {
         }        
     };
 
+    includes = (id: id) => {
+        const state = this.controller.select();
+        return !!state[id];
+    }
+
     afterPlugIn = () => {
         this.controller.plugIn(this.commandEntryPoint, this.rootSelector);
     }
