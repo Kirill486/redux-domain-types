@@ -102,7 +102,7 @@ export const initializeStoreWithControllerPool = () => {
     
     const ApplicationStateControllerPool = initializeControllerPool();    
     const reducer = ApplicationStateControllerPool.makeReducer();
-    const store = createStore(reducer);
+    const store = createStore(reducer as any);
 
     ApplicationStateControllerPool.plugIn(store);
 
