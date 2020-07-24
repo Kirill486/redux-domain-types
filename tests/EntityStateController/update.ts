@@ -18,7 +18,7 @@ describe('EntityStateController updates data', () => {
 
         controller.modify(diff);
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const {
             id: updatedId,
             title: updatedTitle,
