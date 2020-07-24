@@ -91,10 +91,6 @@ implements IRecordStateController<Record> {
     };
 
     afterPlugIn = () => {
-        const fakeState = {
-            dispatch: this.commandEntryPoint,
-            getState: this.rootSelector,
-        }
-        this.controller.plugIn(fakeState as any);
+        this.controller.plugIn(this.commandEntryPoint, this.rootSelector);
     }
 }

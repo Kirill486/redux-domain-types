@@ -16,7 +16,7 @@ implements IExtendReduxAPI<State> {
         this.propertyTitle = propertyTitle;
     }
 
-    public plugIn(commandEntryPoint: command, rootGetStateSelector: ClientSelector<State>) {
+    public plugIn(commandEntryPoint: command, rootGetStateSelector: ClientSelector<any>) {
         this.commandEntryPoint = commandEntryPoint;
         this.rootSelector = rootGetStateSelector;
         
