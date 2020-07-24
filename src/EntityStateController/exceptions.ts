@@ -1,0 +1,1 @@
+export const AttemptToInsertDuplicateKey = (propertyKey: string) => new Error(`Attempt to insert is state property ${propertyKey} duplicate key`);
