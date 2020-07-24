@@ -11,7 +11,7 @@ describe('EntityStateController adds entities', () => {
         const {store, controller} = initializeStoreWithProductStateController();
         controller.add();
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const propertyDataKeysLength = Object.keys(propertyData).length
         assert.ok(propertyDataKeysLength === 1);
     });
@@ -22,7 +22,7 @@ describe('EntityStateController adds entities', () => {
 
         const emptyProduct: IEntity<IProduct> = controller.factory();
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const propertyDataKey = Object.keys(propertyData)[0];
         assert.ok(propertyDataKey);
         const data: IEntity<IProduct> = propertyData[propertyDataKey];
@@ -43,7 +43,7 @@ describe('EntityStateController adds entities', () => {
         
         controller.add(newProd);
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const propertyDataKeysLength = Object.keys(propertyData).length
         assert.ok(propertyDataKeysLength === 1);
 
@@ -59,7 +59,7 @@ describe('EntityStateController adds entities', () => {
         
         controller.add(newProd);
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const prodKey = Object.keys(propertyData)[0];
 
         const record = propertyData[prodKey];
@@ -77,7 +77,7 @@ describe('EntityStateController adds entities', () => {
         
         controller.add(newProd);
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const prodKey = Object.keys(propertyData)[0];
 
         const {
@@ -102,7 +102,7 @@ describe('EntityStateController adds entities', () => {
         };
         controller.add(newProd);
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const prod = propertyData[newProd.id];
         
         const {
@@ -135,7 +135,7 @@ describe('EntityStateController adds entities', () => {
         };
         controller.add([newProd1, newProd2]);
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const dataKeys = Object.keys(propertyData);
 
         assert.ok(dataKeys.length === 2);
