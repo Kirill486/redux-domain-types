@@ -64,7 +64,7 @@ implements IEntityStateController<IEntity<DomainType>> {
             
             const greenToInsert = toInsert.every((item) => {
                 // all records must be new
-                return this.dataController.includes(item.recordKey);
+                return !this.dataController.includes(item.recordKey);
             })
 
             if (greenToInsert) {
