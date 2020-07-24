@@ -15,8 +15,12 @@ implements IEntityStateController<IEntity<DomainType>> {
     dataController: ReduxRecordStateController<IEntity<DomainType>>
     indexes = {};
 
-    get IndexKeys() {
+    get indexKeys() {
         return Object.keys(this.indexes);
+    }
+
+    get dataProperyTitle() {
+        return `${this.propertyTitle}__${ReduxEntityStateController.dataPrefix}`;
     }
     
     constructor(
@@ -33,6 +37,10 @@ implements IEntityStateController<IEntity<DomainType>> {
             const {indexKey, index: IndexFunction} = hashIndex;
             this.indexes[indexKey] =- IndexFunction;
         });
+    }
+
+    afterPlugIn = () => {
+        this.dataController.plugIn(this.commandEntryPoint, this.getControllerProperty);
     }
 
     includes: () => false;
@@ -88,7 +96,8 @@ implements IEntityStateController<IEntity<DomainType>> {
     query: (indexKey?: string, ...args: any[]) => [];
 
     makeReducerInner = () => {
-        this.dataController = new ReduxRecordStateController<IEntity<DomainType>>(this.propertyTitle);
+        
+        this.dataController = new ReduxRecordStateController<IEntity<DomainType>>(this.dataProperyTitle);
         const dataControllerReducer = this.dataController.makeReducer();
         
         // Looks like we need an Index State Controller
