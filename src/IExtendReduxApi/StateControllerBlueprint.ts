@@ -1,5 +1,5 @@
 import { command, Reducer } from "../../utils/definitions";
-import { StateControllerUnknownRootPropertyName } from "../exceptions";
+import { StateControllerUnknownRootPropertyName, UnpluggedControllerOperation } from "../exceptions";
 import { Store } from "redux";
 import { IExtendReduxAPI } from "../../api_describtion/libraryApi";
 
@@ -15,22 +15,30 @@ export abstract class StateControllerBlueprint<State> implements IExtendReduxAPI
         this.propertyTitle = propertyTitle;
     }
 
-    public plugIn({dispatch: commandEntryPoint, getState: rootSelector}: Store<any>) {
+    public plugIn({dispatch: commandEntryPoint, getState: rootGetStateSelector}: Store<any>) {
         this.commandEntryPoint = commandEntryPoint;
-        this.rootSelector = () => {
-            const controllerProperty = rootSelector()[this.propertyTitle];
-
-            if (controllerProperty) {
-                return controllerProperty;
-            } else {
-                throw StateControllerUnknownRootPropertyName(this.propertyTitle);
-            }
-        };
-
+        this.rootSelector = rootGetStateSelector;
+        
         this.plugged = true;
 
         if (this.afterPlugIn) {
             this.afterPlugIn();
+        }
+    }
+
+    getControllerProperty = () => {
+        const state = this.rootSelector();
+
+        if (!this.isPlugged()) {
+            throw UnpluggedControllerOperation(this.propertyTitle);
+        }
+
+        const controllerProperty: State = state[this.propertyTitle];
+
+        if (controllerProperty) {
+            return controllerProperty;
+        } else {
+            throw StateControllerUnknownRootPropertyName(this.propertyTitle);
         }
     }
 
