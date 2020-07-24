@@ -1,7 +1,10 @@
-import { command } from "../../utils/definitions";
-import { StateControllerUnknownRootPropertyName } from "../exceptions";
+import { command, Reducer, ClientSelector } from "../../utils/definitions";
+import { StateControllerUnknownRootPropertyName, UnpluggedControllerOperation } from "../exceptions";
+import { Store } from "redux";
+import { IExtendReduxAPI } from "../../api_describtion/libraryApi";
 
-export abstract class StateControllerBlueprint<State> {
+export abstract class StateControllerBlueprint<State>
+implements IExtendReduxAPI<State> {
     public propertyTitle: string;
     plugged: boolean = false;
 
@@ -13,25 +16,44 @@ export abstract class StateControllerBlueprint<State> {
         this.propertyTitle = propertyTitle;
     }
 
-    basePlugIn(
-        commandEntryPoint: command,
-        rootSelector: () => State,
-    ) {
+    public plugIn(commandEntryPoint: command, rootGetStateSelector: ClientSelector<any>) {
         this.commandEntryPoint = commandEntryPoint;
-        this.rootSelector = () => {
-            const controllerProperty = rootSelector()[this.propertyTitle];
+        this.rootSelector = rootGetStateSelector;
+        
+        this.plugged = true;
 
-            if (controllerProperty) {
-                return controllerProperty;
-            } else {
-                throw StateControllerUnknownRootPropertyName(this.propertyTitle);
-            }
-        };
+        if (this.afterPlugIn) {
+            this.afterPlugIn();
+        }
+    }
 
-        this.plugged = true
+    getControllerProperty = () => {
+        const state = this.rootSelector();
+
+        if (!this.isPlugged()) {
+            throw UnpluggedControllerOperation(this.propertyTitle);
+        }
+
+        const controllerProperty: State = state[this.propertyTitle];
+
+        if (controllerProperty) {
+            return controllerProperty;
+        } else {
+            throw StateControllerUnknownRootPropertyName(this.propertyTitle);
+        }
     }
 
     isPlugged = () => {
         return this.plugged;
     }
+
+    makeReducer = () => {
+        const reducer = this.makeReducerInner();
+        return {
+            [this.propertyTitle]: reducer
+        };
+    }
+
+    abstract makeReducerInner: () => Reducer<State>;
+    afterPlugIn = undefined;
 }

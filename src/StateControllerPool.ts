@@ -1,21 +1,17 @@
 import { StateControllerPool, AnyStateController } from "../api_describtion/libraryApi";
+import { StateControllerBlueprint } from "./IExtendReduxApi/StateControllerBlueprint";
 
-export class ReduxStateControllerPool implements StateControllerPool {
-
-    public propertyTitle: string;
-
+export class ReduxStateControllerPool extends StateControllerBlueprint<any> implements StateControllerPool {
     constructor(
         properyTitle: string,
         ...stateControllers: AnyStateController[]
     ) {
+        super(properyTitle);
         // nothingYet
     }
+    
+    makeReducerInner: () => null;
 
     getControllerFor: (property: string) => null;
 
-    // This make reducer - plugin logic definitely goes
-    // to the common ancestor
-    makeReducer: () => null;
-    plugIn: (reduxStore: any) => undefined;
-    isPlugged: () => false;
 }

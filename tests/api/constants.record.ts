@@ -28,7 +28,8 @@ export const initializeStoreWithRecordStateController = () => {
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);
 
-    RecordPropertyController.plugIn(store as any);
+    const {dispatch, getState} = store;
+    RecordPropertyController.plugIn(dispatch, getState);
 
     return {
         store,

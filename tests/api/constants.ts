@@ -88,8 +88,9 @@ export const  initializeStoreWithAppStateController = () => {
     const reducerMap = ApplicationStateController.makeReducer();
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);
+    const {dispatch, getState} = store;
 
-    ApplicationStateController.plugIn(store);
+    ApplicationStateController.plugIn(dispatch, getState);
 
     return {
         store,
@@ -102,9 +103,10 @@ export const initializeStoreWithControllerPool = () => {
     
     const ApplicationStateControllerPool = initializeControllerPool();    
     const reducer = ApplicationStateControllerPool.makeReducer();
-    const store = createStore(reducer);
+    const store = createStore(reducer as any);
 
-    ApplicationStateControllerPool.plugIn(store);
+    const {dispatch, getState} = store;
+    ApplicationStateControllerPool.plugIn(dispatch, getState);
 
     return {
         store, 
@@ -118,7 +120,8 @@ export const initializeStoreWithProductStateController = () => {
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);
 
-    ProductEntityStateController.plugIn(store);
+    const {dispatch, getState} = store;
+    ProductEntityStateController.plugIn(dispatch, getState);
 
     return {
         store,
@@ -132,7 +135,8 @@ export const initializeStoreWithPositionStateController = () => {
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);
 
-    PositionEntityStateController.plugIn(store);
+    const {dispatch, getState} = store;
+    PositionEntityStateController.plugIn(dispatch, getState);
 
     return {
         store,

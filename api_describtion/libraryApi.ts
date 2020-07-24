@@ -1,6 +1,6 @@
 import { IEntityStateController } from "./entityStateController";
 import { IStateController } from "./stateController";
-import { Reducer, Factory, id } from "../utils/definitions";
+import { Reducer, Factory, id, command, ClientSelector } from "../utils/definitions";
 
 export type AnyStateController = IEntityStateController<any> | IStateController<any>;
 
@@ -10,9 +10,10 @@ export interface StateControllerPool extends IExtendReduxAPI<any> {
 
 export interface IExtendReduxAPI<State> {    
     propertyTitle: string;
+    getControllerProperty: () => State;
     
     makeReducer: Factory<ReducerMappedToProperty<State>>;
-    plugIn: (commandEntryPoint: any) => void;
+    plugIn: (commandEntryPoint: command, rootGetStateSelector: ClientSelector<State>) => void;
     isPlugged: () => boolean;
 }
 

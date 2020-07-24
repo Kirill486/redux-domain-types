@@ -1,12 +1,15 @@
 import { IEntityStateController } from "../../api_describtion/entityStateController";
 import { Factory, HashIndex, id } from "../../utils/definitions";
+import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlueprint";
 
 export interface IEntityFactoryMethod<Entity> {
     factory: Factory<Entity>;
     linkedProperties: id[];
 }
 
-export class ReduxEntityStateController<Entity> implements IEntityStateController<Entity> {
+export class ReduxEntityStateController<Entity>
+extends StateControllerBlueprint<any>
+implements IEntityStateController<Entity> {
 
     static dataPrefix = 'data';
     
@@ -17,7 +20,7 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
         factoryMethod: IEntityFactoryMethod<Entity>,
         indexes: Array<HashIndex<Entity>>,
     ) {
-        this.propertyTitle = propertyTitle;
+        super(propertyTitle);
         // Nothing yet
     }
 
@@ -33,6 +36,5 @@ export class ReduxEntityStateController<Entity> implements IEntityStateControlle
     select: (indexKey?: string, value?: any) => null;
     query: (indexKey?: string, ...args: any[]) => [];
 
-    makeReducer: () => null;
-    plugIn: (dispatch) => void;
+    makeReducerInner: () => null;
 }
