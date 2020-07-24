@@ -10,7 +10,6 @@ export class ReduxStateController<State>
 extends StateControllerBlueprint<State>
 implements IStateController<State> {
     
-    public propertyTitle: string;
     private actionsController: ActionsController<State>;
     private reducerController: ReducerController<State>;
     private selectController: SelectorController<State>;
@@ -52,7 +51,7 @@ implements IStateController<State> {
     }
 
     afterPlugIn = () => {
-        this.selectController = new SelectorController<State>(this.rootSelector);
+        this.selectController = new SelectorController<State>(this.getControllerProperty);
     }
 
     constructor(
