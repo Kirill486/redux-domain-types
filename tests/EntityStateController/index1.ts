@@ -33,4 +33,9 @@ describe('Simple indexes do not require another entities to get calculated', () 
         throw NotImplementedYetException();
     });
 
+    it('throws on attempt to use complex index without Pool', () => {
+        const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
+        throw NotImplementedYetException();
+    });
+
 });
