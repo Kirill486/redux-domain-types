@@ -1,5 +1,5 @@
-import { initializeStoreWithProductStateControllerAndData } from "../api/constants";
 import { NotImplementedYetException } from "../../src/exceptions";
+import { initializeStoreWithProductStateControllerAndData } from "../api/constants.entity";
 
 describe('Complex indexes DO require a query to state to get calculated', () => {
     

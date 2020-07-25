@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { IAppState } from "../../domain_types/domainTypes";
-import { initializeStoreWithAppStateController, StatePropertyNames, initialApp } from '../api/constants';
+import { initializeStoreWithAppStateController, initialApp } from '../api/constants.state';
+import { StatePropertyNames } from '../api/constants';
 
 describe('StateController control the respective redux property', () => {
     it('state property can be set', () => {

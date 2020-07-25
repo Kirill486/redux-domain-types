@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import { initializeStoreWithProductStateController } from "../api/constants";
 import { titleIndex, valueIndex } from '../api/constants.indexes';
+import { initializeStoreWithProductStateController } from '../api/constants.entity';
 
 describe('EntityStateController has initial state split into data and indexes', () => {
 

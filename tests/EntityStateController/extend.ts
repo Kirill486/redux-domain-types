@@ -1,7 +1,7 @@
 import * as assert from 'assert';
-import { initializeProductEntityStateController } from "../api/constants";
 import { titleIndex, valueIndex } from '../api/constants.indexes';
 import { ReduxEntityStateController } from '../../src';
+import { initializeProductEntityStateController } from '../api/constants.entity';
 
 
 describe('EntityStateController extends redux API', () => {

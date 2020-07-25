@@ -1,7 +1,5 @@
 import * as assert from 'assert';
-
-import { initializeStoreWithProductStateControllerAndData } from "../api/constants";
-import { ReduxEntityStateController } from '../../src';
+import { initializeStoreWithProductStateControllerAndData } from '../api/constants.entity';
 
 
 describe('EntityStateController deletes stores data', () => {

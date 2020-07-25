@@ -1,9 +1,7 @@
 import * as assert from 'assert';
-
-import { initializeStoreWithProductStateController, initializeStoreWithProductStateControllerAndData } from "../api/constants";
-import { ReduxEntityStateController } from '../../src';
 import { IProduct } from '../../domain_types/domainTypes';
 import { IEntity } from '../../utils/definitions';
+import { initializeStoreWithProductStateController, initializeStoreWithProductStateControllerAndData } from '../api/constants.entity';
 
 describe('EntityStateController adds entities', () => {
     

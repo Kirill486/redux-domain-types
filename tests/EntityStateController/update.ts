@@ -1,8 +1,7 @@
 import * as assert from 'assert';
-import { initializeStoreWithProductStateControllerAndData } from "../api/constants";
 import { IEntity } from '../../utils/definitions';
 import { IProduct } from '../../domain_types/domainTypes';
-import { ReduxEntityStateController } from '../../src/EntityStateController/EntityStateController';
+import { initializeStoreWithProductStateControllerAndData } from '../api/constants.entity';
 
 describe('EntityStateController updates data', () => {
     it('will update record by id', () => {
