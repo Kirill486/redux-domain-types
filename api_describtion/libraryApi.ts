@@ -4,6 +4,10 @@ import { Reducer, Factory, id, command, ClientSelector } from "../utils/definiti
 
 export type AnyStateController = IEntityStateController<any> | IStateController<any>;
 
+// State Controller Pool does
+// * complex indexes (it provides a selector by id to inner controllers)
+// * pointer safety (deletes links that point to undefined)
+
 export interface StateControllerPool extends IExtendReduxAPI<any> {    
     getControllerFor: (property: string) => AnyStateController;
 }

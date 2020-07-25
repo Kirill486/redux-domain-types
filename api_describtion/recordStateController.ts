@@ -14,6 +14,7 @@ export interface IRecordStateCommandController<Record> {
 
 export interface IRecordStateQueryController<Record> {
     select: ClientSelector<Record | IRecordState<Record>>;
+    includes: ClientSelector<boolean>;
 }
 
 export interface IRecordStateController<Record> extends

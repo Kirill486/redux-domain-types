@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { initializeProductEntityStateController } from "../api/constants";
 import { titleIndex, valueIndex } from '../api/constants.indexes';
+import { ReduxEntityStateController } from '../../src';
 
 
 describe('EntityStateController extends redux API', () => {
@@ -20,14 +21,25 @@ describe('EntityStateController extends redux API', () => {
     it('initial state has data property', () => {
 
         const productStateController = initializeProductEntityStateController();
-        const reducerProperty = productStateController.makeReducer() as any;
+        const reducerMappedProperty = productStateController.makeReducer();
+        const reducerProperty = reducerMappedProperty[productStateController.propertyTitle];
 
-        const stateInitial = reducerProperty(undefined, {type: 'any'}) as object;
+        const anyAction = {
+            type: 'any',
+            payload: undefined,
+        }
+
+        const stateInitial = reducerProperty(undefined, anyAction) as object;
 
         const stateInitialIsNotNullObject = (typeof stateInitial === 'object') && (stateInitial !== null);
-        assert.equal(stateInitialIsNotNullObject, true);
+        assert.ok(stateInitialIsNotNullObject);
 
-        const hasDataProperty = stateInitial.hasOwnProperty('data');
+        const dataProperty = productStateController.dataProperyTitle;
+        assert.ok(typeof dataProperty === "string")
+        assert.ok(dataProperty.includes(productStateController.propertyTitle));
+        assert.ok(dataProperty.includes(ReduxEntityStateController.dataPrefix));
+
+        const hasDataProperty = stateInitial.hasOwnProperty(dataProperty);
         assert.equal(hasDataProperty, true);
     });
 

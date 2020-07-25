@@ -61,16 +61,20 @@ implements IRecordStateController<Record> {
 
     bulkDelete = (ids: id[]) => {
         const state = this.controller.select();
+        const missingIds = [];
         ids.forEach((recordKey: string) => {
             const recordPresent = ((typeof state[recordKey]) !== "undefined");
             if (recordPresent) {
                 delete state[recordKey];
-                const newState = {...state};
-                this.controller.set(newState);
             } else {
-                throw KeyDoesNotExistToDelete(recordKey);
+                missingIds.push(recordKey);
             }   
         });
+        if (missingIds.length === 0) {
+            this.controller.set({...state});
+        } else {
+            throw KeyDoesNotExistToDelete(missingIds);
+        }
     }
 
     select = (id?: id) => {
@@ -89,6 +93,11 @@ implements IRecordStateController<Record> {
             return this.controller.select();
         }        
     };
+
+    includes = (id: id) => {
+        const state = this.controller.select();
+        return !!state[id];
+    }
 
     afterPlugIn = () => {
         this.controller.plugIn(this.commandEntryPoint, this.rootSelector);

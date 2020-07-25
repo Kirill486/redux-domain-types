@@ -4,8 +4,9 @@ import { Factory, IEntity } from "../../utils/definitions";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "./constants.indexes";
 import { createStore } from "redux";
-import { IEntityFactoryMethod } from "../../src/EntityStateController/EntityStateController";
 import { ReducerMappedToProperty } from '../../api_describtion/libraryApi';
+import {v4 as uuid} from 'uuid';
+import { IEntityFactoryMethod } from '../../src/EntityStateController/types';
 
 const postfix = 'test_env';
 
@@ -24,23 +25,25 @@ export const initialApp: IAppState = {
     manualOrder: undefined,
 }
 
-const productFactory: Factory<IProduct> = (title, description, value) => ({
+const productFactory: Factory<IEntity<IProduct>> = (title, description, value) => ({
+    id: uuid(),
     title,
     description,
     value,
 });
 
-export const productFactoryMethod: IEntityFactoryMethod<IProduct> = {
+export const productFactoryMethod: IEntityFactoryMethod<IEntity<IProduct>> = {
     factory: productFactory,
     linkedProperties: [],
 };
 
-const positionFactory: Factory<IPosition> = (productId, amount = 1) => ({
+const positionFactory: Factory<IEntity<IPosition>> = (productId, amount = 1) => ({
+    id: uuid(),
     product: productId,
     amount: amount,
 })
 
-export const positionFactoryMethod: IEntityFactoryMethod<IPosition> = {
+export const positionFactoryMethod: IEntityFactoryMethod<IEntity<IPosition>> = {
     factory: positionFactory,
     linkedProperties: ["product"],
 };

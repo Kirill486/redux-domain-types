@@ -10,7 +10,7 @@ describe('EntityStateController updates data', () => {
         const prodToTest = 0;
         const idToModify = prods[prodToTest].id;
 
-        const diff: Partial<IEntity<IProduct>> = {
+        const diff: IEntity<Partial<IProduct>> = {
             id: idToModify,
             title: 'newTitle111',
             value: 99,
@@ -18,7 +18,7 @@ describe('EntityStateController updates data', () => {
 
         controller.modify(diff);
 
-        const propertyData: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const {
             id: updatedId,
             title: updatedTitle,
@@ -43,7 +43,7 @@ describe('EntityStateController updates data', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
         const wrongId = 'someMAdeUpId';
 
-        const diff: Partial<IEntity<IProduct>> = {
+        const diff: IEntity<Partial<IProduct>> = {
             id: wrongId,
             title: 'SomeTitle',
         }
@@ -63,7 +63,8 @@ describe('EntityStateController updates data', () => {
     it('will throw on record with no id', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
 
-        const diff: Partial<IEntity<IProduct>> = {
+        const diff: IEntity<Partial<IProduct>> = {
+            id: undefined,
             title: 'SomeTitle',
         }
 

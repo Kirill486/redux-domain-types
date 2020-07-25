@@ -8,21 +8,21 @@ describe('EntityStateController deletes stores data', () => {
     it('can delete by id', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
 
-        const propertyDataBefore: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyDataBefore: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const beforeKeysLength = Object.keys(propertyDataBefore).length;
         assert.ok(beforeKeysLength === 2);
         
         assert.ok(prods[0].id);
         controller.delete(prods[0].id);
 
-        const propertyDataAfter: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyDataAfter: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const afterKeysLength = Object.keys(propertyDataAfter).length;
         assert.ok(afterKeysLength === 1);
     });
     it('can delete array of ids', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
 
-        const propertyDataBefore: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyDataBefore: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const beforeKeysLength = Object.keys(propertyDataBefore).length;
         assert.ok(beforeKeysLength === 2);
         
@@ -33,7 +33,7 @@ describe('EntityStateController deletes stores data', () => {
 
         controller.delete(prodIds);
 
-        const propertyDataAfter: object = store.getState()[controller.propertyTitle][ReduxEntityStateController.dataPrefix];
+        const propertyDataAfter: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const afterKeysLength = Object.keys(propertyDataAfter).length;
         assert.ok(afterKeysLength === 0);
     });
