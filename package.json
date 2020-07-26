@@ -7,7 +7,8 @@
     "test": "mocha -r ts-node/register tests/**/*.ts",
     "test_state": "mocha -r ts-node/register tests/StateController/*.ts",
     "test_record": "mocha -r ts-node/register tests/RecordStateController/*.ts",
-    "test_entity": "mocha -r ts-node/register tests/EntityStateController/*.ts"
+    "test_entity": "mocha -r ts-node/register tests/EntityStateController/*.ts",
+    "test_index": "mocha -r ts-node/register tests/IndexStateController/*.ts"
   },
   "repository": {
     "type": "git",
@@ -26,10 +27,9 @@
   "dependencies": {
     "@types/redux": "^3.6.0",
     "@types/rfdc": "^1.1.0",
-    "functional-red-black-tree": "^1.0.1",
     "redux": ">=0.10",
     "rfdc": "^1.1.4",
-    "search-tree": "Kirill486/functional-red-black-tree#refactoring/Typescript-typings",
+    "search-tree": "Kirill486/functional-red-black-tree",
     "uuid": "^7.0.3"
   },
   "devDependencies": {
