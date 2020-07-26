@@ -1,5 +1,5 @@
-import {command, ClientSelector, id, Factory, IRecordState} from '../utils/definitions';
-import {IExtendReduxAPI} from './libraryApi';
+import { command, ClientSelector, id } from '../utils/definitions';
+import { IExtendReduxAPI } from './libraryApi';
 
 export type hash = number;
 
@@ -12,7 +12,7 @@ export interface IIndexStateCommandController {
 }
 
 export interface IIndexStateQueryController {
-    select: ClientSelector<hash[]>;
+    select: ClientSelector<id[]>;
     includes: ClientSelector<boolean>;
 }
 

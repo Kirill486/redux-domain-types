@@ -1,5 +1,6 @@
 import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlueprint";
-import {IIndexStateController} from '../../api_describtion/indexStateController';
+import {IIndexStateController, hash} from '../../api_describtion/indexStateController';
+import { id } from "../../utils/definitions";
 
 export class IndexStateController
 extends StateControllerBlueprint<any>
@@ -11,8 +12,9 @@ implements IIndexStateController {
 
     makeReducerInner = () => null;
 
-    add = () => undefined;
-    remove = () => undefined;
-    select = () => [42];
+    add = (hash: hash, ids: id[]) => undefined;
+    remove = (hash: hash, ids: id[]) => undefined;
+
+    select = (hashFrom: hash, hashTo: hash) => ["42"] as id[];
     includes = () => undefined;
 }
