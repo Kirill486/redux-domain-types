@@ -4,6 +4,11 @@ import { IExtendReduxAPI } from './libraryApi';
 export type hash = number;
 export type entities = id[];
 
+export interface IndexDto {
+    hash: hash;
+    entities: entities;
+}
+
 export interface IIndexStateInstanceController {
 }
 
