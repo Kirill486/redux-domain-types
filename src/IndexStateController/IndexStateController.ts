@@ -15,6 +15,6 @@ implements IIndexStateController {
     add = (hash: hash, ids: id[]) => undefined;
     remove = (hash: hash, ids: id[]) => undefined;
 
-    select = (hashFrom: hash, hashTo: hash) => ["42"] as id[];
-    includes = () => undefined;
+    select = (hashFrom: hash, hashTo: hash) => ["42"];
+    includes = () => false;
 }

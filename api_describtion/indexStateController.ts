@@ -2,6 +2,7 @@ import { command, ClientSelector, id } from '../utils/definitions';
 import { IExtendReduxAPI } from './libraryApi';
 
 export type hash = number;
+export type entities = id[];
 
 export interface IIndexStateInstanceController {
 }
@@ -12,7 +13,7 @@ export interface IIndexStateCommandController {
 }
 
 export interface IIndexStateQueryController {
-    select: ClientSelector<id[]>;
+    select: ClientSelector<entities>;
     includes: ClientSelector<boolean>;
 }
 
