@@ -5,6 +5,7 @@ import { RedBlackTree, defaultCompare } from 'search-tree';
 import { ReduxStateController } from "..";
 import { deepClone } from "../../utils/deepClone";
 import { INode } from "search-tree/dist/libraryDefinitions";
+import { RedBlackTreeIterator } from "search-tree/dist/rbtreeIterator";
 
 export type IndexInnerTreeType = INode<entities> | null;
 
@@ -62,12 +63,26 @@ implements IIndexStateController {
 
     select = (hashFrom?: hash, hashTo?: hash) => {
         const tree = new RedBlackTree<entities>(defaultCompare, this.InnerTreePointer);
-        const iterator = tree.begin;
         const result: entities = [];
+
+        let iterator: RedBlackTreeIterator<entities>;
+
+        if (hashTo) {
+            // Equal or greater (first in seq)
+            iterator = tree.ge(hashTo);
+        } else {
+            iterator = tree.begin;
+        }
+
         while (iterator.hasNext) {
             iterator.next();
-            const entities = iterator.value;
 
+            const toConditionHit = hashTo && iterator.key > hashTo;
+            if (toConditionHit) {
+                break;
+            }
+
+            const entities = iterator.value;
             entities.forEach((id: id) => result.push(id));
         }
 
