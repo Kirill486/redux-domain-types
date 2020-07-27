@@ -29,23 +29,23 @@ export const initializeStoreWithIndexStateControllerAndData = () => {
     const indexes: IndexDto[] = [
         {
             hash: 5,
-            entities: ['11121'],
+            entities: ['11121', 'aqscaC', 'wdcdkjnwsbco'],
         },
         {
             hash: 7,
-            entities: ['1121'],
+            entities: ['1121', 'ASDVASQVQ', 'QDVQWVWV'],
         },
         {
             hash: 51,
-            entities: ['1152'],
+            entities: ['1152', 'asdg', 'ASCAV'],
         },
         {
             hash: 590,
-            entities: ['131'],
+            entities: ['131', 'sclokqh', 'qscl;kch'],
         },
         {
             hash: 52000,
-            entities: ['123331'],
+            entities: ['123331', 'dcwc', 'wedl;wkn', 'efclwhj'],
         },
     ];
 
