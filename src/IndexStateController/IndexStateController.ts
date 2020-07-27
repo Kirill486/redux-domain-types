@@ -36,10 +36,14 @@ implements IIndexStateController {
     add = (hash: hash, ids: id[]) => {
         let tree = new RedBlackTree<entities>(defaultCompare, this.InnerTreeCopy);
         const iterator = tree.find(hash);
-        if (iterator) {
-            const {value} = iterator;
+        const {value} = iterator;
+
+        if (value) {
             tree = iterator.update([...value, ...ids]);
+        } else {
+            tree = tree.insert(hash, ids);
         }
+        
         const nextInnerTree = tree.root;
         this.controller.set(nextInnerTree);        
     };
@@ -94,4 +98,8 @@ implements IIndexStateController {
         const iterator = tree.find(hash);
         return iterator.valid;
     };
+
+    afterPlugIn = () => {
+        this.controller.plugIn(this.commandEntryPoint, this.rootSelector);
+    }
 }
