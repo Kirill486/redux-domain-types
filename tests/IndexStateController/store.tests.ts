@@ -158,7 +158,64 @@ describe('IndexStateController can store index data', () => {
     });
 
     it('will throw on deleting by hash that not exist', () => {
-        
+        const {store, controller} = initializeStoreWithIndexStateController();
+        const madeUpHash = 455;
+        const madeUpIds: entities = ['madeUpId', 'madeUpId2'];
+
+        try {
+            controller.remove(madeUpHash, madeUpIds);
+            assert.ok(false);
+        } catch(e) {
+            assert.ok(e);
+            const {message} = e as Error;
+            assert.ok(message);
+
+            const hashMentioned = message.includes(`${madeUpHash}`);
+            assert.ok(hashMentioned);
+        }
     });
 
+    it('will throw on deleting id that does not exist in hash', () => {
+        const {store, controller, indexes} = initializeStoreWithIndexStateControllerAndData();
+        
+        const anyIndex = 3;
+        const {hash, entities} = indexes[anyIndex];
+
+        const presentEntityIndex = 0;
+        const presentEntityId = entities[presentEntityIndex];
+
+        const innerTreeBefore = store.getState()[controller.propertyTitle];
+        const stateTreeBefore =  new RedBlackTree<entities>(defaultCompare, innerTreeBefore);
+
+        const madeUpId = 'someMadeUpId';        
+        const entitiesBefore = stateTreeBefore.get(hash);
+
+        const entitiesBeforeDoesNotIncludeMadeUpId = !entitiesBefore.includes(madeUpId);
+        assert.ok(entitiesBeforeDoesNotIncludeMadeUpId);
+
+        const entitiesToRemove = [presentEntityId, madeUpId];
+
+        try {
+            controller.remove(hash, entitiesToRemove);
+        } catch(e) {
+            assert.ok(e);
+            const {message} = e as Error;
+            assert.ok(message);
+
+            const hashMentioned = message.includes(`${hash}`);
+            assert.ok(hashMentioned);
+
+            const missingIdMentioned = message.includes(`${madeUpId}`);
+            assert.ok(missingIdMentioned);
+
+            const presentIdNotMentioned = !message.includes(`${presentEntityId}`);
+            assert.ok(presentIdNotMentioned);
+
+            const innerTreeAfter = store.getState()[controller.propertyTitle];
+            const stateTreeAfter =  new RedBlackTree<entities>(defaultCompare, innerTreeAfter);
+            const entitiesAfter = stateTreeAfter.get(hash);
+            const presentIdMotDeleted = entitiesAfter.includes(presentEntityId);
+            assert.ok(presentIdMotDeleted);
+        }
+    });
 });
