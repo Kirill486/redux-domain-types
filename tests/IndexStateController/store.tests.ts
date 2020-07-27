@@ -57,8 +57,10 @@ describe('IndexStateController can store index data', () => {
         assert.ok(stateKeys.length === 1);
         assert.ok(stateKeys[0] === hash1);
 
-        assert.ok(values.includes(id1));
-        assert.ok(values.includes(id2));
+        const hashValues = values[hash1];
+
+        assert.ok(hashValues.includes(id1));
+        assert.ok(hashValues.includes(id2));
     });
 
     it('can add multiple ids to different indexes, keys stored in defaultCompare order', () => {
@@ -76,8 +78,7 @@ describe('IndexStateController can store index data', () => {
         const innerTree = store.getState()[controller.propertyTitle];
         const stateTree =  new RedBlackTree<entities>(defaultCompare, innerTree);
 
-        const stateKeys = stateTree.keys;
-        const values: entities = stateTree.values;
+        const {keys: stateKeys, values} = stateTree.keys;
 
         assert.ok(stateKeys.length === 2);
 
@@ -89,8 +90,8 @@ describe('IndexStateController can store index data', () => {
         assert.ok(values.length === 2);
 
         // becouse of order
-        const valuesHash1 = values[1];
-        const valuesHash2 = values[0];
+        const valuesHash1: entities = values[hash1];
+        const valuesHash2: entities = values[hash2];
 
         const valuesHash1IncludeIds = ids1.every((item) => {
             valuesHash1.includes(item);
