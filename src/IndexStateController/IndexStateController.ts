@@ -72,9 +72,9 @@ implements IIndexStateController {
 
         let iterator: RedBlackTreeIterator<entities>;
 
-        if (hashTo) {
+        if (hashFrom) {
             // Equal or greater (first in seq)
-            iterator = tree.ge(hashTo);
+            iterator = tree.ge(hashFrom);
         } else {
             iterator = tree.begin;
         }
