@@ -1,16 +1,19 @@
 import { IEntityStateController } from "../../api_describtion/entityStateController";
-import { HashIndex, id, IEntity, Factory } from "../../utils/definitions";
+import { HashIndex, id, IEntity, Factory, HashIndexInfo } from "../../utils/definitions";
 import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlueprint";
 import { ReduxRecordStateController, RecordDto } from "../RecordStateController/RecordStateController";
 import { combineReducers } from "redux";
 import { IEntityFactoryMethod, AddAccepts } from "./types";
 import { AttemptToInsertDuplicateKey } from "./exceptions";
+import { IndexStateController } from "../IndexStateController/IndexStateController";
+import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 
 export class ReduxEntityStateController<DomainType>
 extends StateControllerBlueprint<any>
 implements IEntityStateController<IEntity<DomainType>> {
 
     static dataPrefix = 'data';
+    static indexPrefix = 'index';
     public factory: Factory<IEntity<DomainType>>;
     dataController: ReduxRecordStateController<IEntity<DomainType>>
     indexes = {};
@@ -21,6 +24,10 @@ implements IEntityStateController<IEntity<DomainType>> {
 
     get dataProperyTitle() {
         return `${this.propertyTitle}__${ReduxEntityStateController.dataPrefix}`;
+    }
+
+    getIndexProperyTitle = (indexKey: string)  => {
+        return `${ReduxEntityStateController.indexPrefix}__${this.propertyTitle}__${indexKey}`;
     }
     
     constructor(
@@ -34,8 +41,13 @@ implements IEntityStateController<IEntity<DomainType>> {
         this.factory = factory;
 
         indexes.forEach((hashIndex) => {
-            const {indexKey, index: IndexFunction} = hashIndex;
-            this.indexes[indexKey] =- IndexFunction;
+            const {indexKey} = hashIndex;
+            const indexStateController = new IndexStateController(this.getIndexProperyTitle(indexKey));
+            const indexInfo: HashIndexInfo<DomainType> = {
+                ...hashIndex,
+                controller: indexStateController,
+            };
+            this.indexes[indexKey] = indexInfo;
         });
     }
 
@@ -114,16 +126,17 @@ implements IEntityStateController<IEntity<DomainType>> {
         this.dataController = new ReduxRecordStateController<IEntity<DomainType>>(this.dataProperyTitle);
         const dataControllerReducer = this.dataController.makeReducer();
         
-        // Looks like we need an Index State Controller
+        const indexesReducer: ReducerMappedToProperty<any> = {};
         
-        // const indexReducers = this.IndexKeys.map((indexKey) => {
-        //     const correspondingFunction = this.indexes[indexKey];
-        //     const indexReducer = 
-        // });
-        
-        
+        this.indexKeys.forEach((indexKey: string) => {
+            const {controller} = this.indexes[indexKey] as HashIndexInfo<DomainType>;
+            const indexControllerReducer = controller.makeReducerInner();
+            indexesReducer[controller.propertyTitle] = indexControllerReducer;
+        });        
+                
         const reducer = combineReducers({
             ...dataControllerReducer,
+            ...indexesReducer,
         });
         return reducer;
     };
