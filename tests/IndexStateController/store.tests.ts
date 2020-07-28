@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { initializeStoreWithIndexStateController, initializeStoreWithIndexStateControllerAndData } from "../api/constants.index";
-import { RedBlackTree, defaultCompare } from 'search-tree';
+import { RedBlackTree, defaultCompare } from 'functional-red-black-tree2';
 import { entities } from '../../api_describtion/indexStateController';
 
 describe('IndexStateController can store index data', () => {
