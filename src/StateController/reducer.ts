@@ -43,9 +43,13 @@ export class ReducerController<State> {
                     }
                 }
                 default: {
-                   return {
-                       ...state,
-                   };
+                    if (state === null) {
+                        return null;
+                    } else {
+                        return {
+                            ...state,
+                        };
+                    }                   
                 }
             }
         }        
