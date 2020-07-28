@@ -59,29 +59,26 @@ implements IEntityStateController<IEntity<DomainType>> {
         return this.dataController.includes(id);
     }
 
+    extractEntityArray = (arg: AddAccepts<DomainType>) => {
+        let entitiesToInsertArray: Array<IEntity<DomainType>> = [];
+        const isArray = Array.isArray(arg);
+        if (isArray) {
+            entitiesToInsertArray = (arg as DomainType[]).map((item) => {
+                return this.makeEntity(item);
+            });                
+        } else {
+            const entity: IEntity<DomainType> = this.makeEntity(arg as DomainType);
+            entitiesToInsertArray = [entity];
+        }
+        return entitiesToInsertArray;
+    }
+
     add = (arg?: AddAccepts<DomainType>) => {
         if (arg) {
-            let entitiesToInsertArray: Array<IEntity<DomainType>> = [];
-            const isArray = Array.isArray(arg);
-
-            if (isArray) {
-                entitiesToInsertArray = (arg as DomainType[]).map((item) => {
-                    return this.makeEntity(item);
-                });                
-            } else {
-                const entity: IEntity<DomainType> = this.makeEntity(arg as DomainType);
-                entitiesToInsertArray = [entity];
-            }
-            
-            // Checks if record exist
+            const entitiesToInsertArray = this.extractEntityArray(arg);
             const toInsert = entitiesToInsertArray.map((item) => this.makeRecordDto(item));
 
-            const conflictKeys = toInsert.reduce((acc, item) => {
-                if (this.dataController.includes(item.recordKey)) {
-                    acc.push(item.recordKey);
-                }
-                return acc;
-            }, []);
+            const conflictKeys = toInsert.filter((item) => this.dataController.includes(item.recordKey)).map((item) => item.recordKey);
             
             if (conflictKeys.length === 0) {
                 this.dataController.bulkSet(toInsert);
