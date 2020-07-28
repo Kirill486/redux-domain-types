@@ -1,11 +1,11 @@
 import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlueprint";
 import {IIndexStateController, hash, entities} from '../../api_describtion/indexStateController';
 import { id } from "../../utils/definitions";
-import { RedBlackTree, defaultCompare } from 'search-tree';
+import { RedBlackTree, defaultCompare } from 'functional-red-black-tree2';
 import { ReduxStateController } from "..";
 import { deepClone } from "../../utils/deepClone";
-import { INode } from "search-tree/dist/libraryDefinitions";
-import { RedBlackTreeIterator } from "search-tree/dist/rbtreeIterator";
+import { INode } from "functional-red-black-tree2/dist/libraryDefinitions";
+import { RedBlackTreeIterator } from "functional-red-black-tree2/dist/rbtreeIterator";
 
 export type IndexInnerTreeType = INode<entities> | null;
 
@@ -22,7 +22,8 @@ implements IIndexStateController {
     }
 
     get InnerTreeCopy(): IndexInnerTreeType {
-        return deepClone(this.controller.select() as INode<entities>);
+        const innerTreeClone = deepClone(this.InnerTreePointer);
+        return innerTreeClone;
     }
 
     get InnerTreePointer(): IndexInnerTreeType {
