@@ -76,7 +76,7 @@ describe('IndexStateController can store index data', () => {
         const innerTree = store.getState()[controller.propertyTitle];
         const stateTree =  new RedBlackTree<entities>(defaultCompare, innerTree);
 
-        const {keys: stateKeys, values} = stateTree.keys;
+        const {keys: stateKeys, values} = stateTree;
 
         assert.ok(stateKeys.length === 2);
 
@@ -88,16 +88,16 @@ describe('IndexStateController can store index data', () => {
         assert.ok(values.length === 2);
 
         // becouse of order
-        const valuesHash1: entities = values[hash1];
-        const valuesHash2: entities = values[hash2];
+        const valuesHash1: entities = values[1];
+        const valuesHash2: entities = values[0];
 
         const valuesHash1IncludeIds = ids1.every((item) => {
-            valuesHash1.includes(item);
+            return valuesHash1.includes(item);
         });
         assert.ok(valuesHash1IncludeIds);
 
         const valuesHash2IncludeIds = ids2.every((item) => {
-            valuesHash2.includes(item);
+            return valuesHash2.includes(item);
         });
         assert.ok(valuesHash2IncludeIds);
     });
@@ -107,10 +107,11 @@ describe('IndexStateController can store index data', () => {
         const innerTreeBefore = store.getState()[controller.propertyTitle];
         const stateTreeBefore =  new RedBlackTree<entities>(defaultCompare, innerTreeBefore);
 
-        const anyIndex = 2;
-        const anyIndexHash = indexes[anyIndex].hash;
+        const anyNumber = 2;
+        const anyIndexHash = indexes[anyNumber].hash;
+        const anyIndexEntities = indexes[anyNumber].entities;
 
-        const entitiesToRemove: entities = [indexes[anyIndexHash].entities[0], indexes[anyIndexHash].entities[1]];
+        const entitiesToRemove: entities = [anyIndexEntities[0], anyIndexEntities[1]];
 
         // Has value under key
         const initialCorrespondingValues = stateTreeBefore.get(anyIndexHash);
