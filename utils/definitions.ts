@@ -58,7 +58,7 @@ export interface Index<IndexValue> {
 // empty string means try all
 export type GetByIdFunction<Entity> = (id, entityPropertyName?: string) => Entity;
 
-export type HashCode<Entity> = (record: Entity, getById: GetByIdFunction<any>) => number;
+export type HashCode<Entity> = (record: Entity, getById?: GetByIdFunction<any>) => number;
 
 export type HashIndex<Entity> = Index<HashCode<Entity>>;
 
