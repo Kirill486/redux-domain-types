@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import { initializeStoreWithProductStateControllerAndData } from '../api/constants';
 import { NotImplementedYetException } from '../../src/exceptions';
+import { initializeStoreWithProductStateControllerAndData } from '../api/constants.entity';
 
 describe('Simple indexes do not require another entities to get calculated', () => {
     it('has index data', () => {

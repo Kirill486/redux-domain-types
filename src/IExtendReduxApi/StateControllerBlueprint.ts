@@ -35,8 +35,9 @@ implements IExtendReduxAPI<State> {
         }
 
         const controllerProperty: State = state[this.propertyTitle];
+        const controllerPropertyIsDefined = typeof controllerProperty !== "undefined";
 
-        if (controllerProperty) {
+        if (controllerPropertyIsDefined) {
             return controllerProperty;
         } else {
             throw StateControllerUnknownRootPropertyName(this.propertyTitle);

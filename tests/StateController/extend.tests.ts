@@ -1,6 +1,5 @@
 import * as assert from 'assert';
-import { initializeAppStateController, initialApp, initializeStoreWithAppStateController, StatePropertyNames } from '../api/constants';
-import { IAppState } from '../../domain_types/domainTypes';
+import { initializeAppStateController, initialApp } from '../api/constants.state';
 
 describe('StateController extends redux API', () => {
   

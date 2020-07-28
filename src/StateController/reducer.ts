@@ -12,10 +12,15 @@ export class ReducerController<State> {
         resetActionType: string,
     ) {
         this.initialState = initialState;
-        this.initial = () => ({
-            ...this.initialState,
-        });
-        
+        this.initial = () => {
+            if (this.initialState === null) {
+                return null;
+            } else {
+                return {
+                  ...this.initialState,
+                }
+            }            
+        };        
         
         const reducer: Reducer<State> = (
             state: State,
@@ -38,9 +43,13 @@ export class ReducerController<State> {
                     }
                 }
                 default: {
-                   return {
-                       ...state,
-                   };
+                    if (state === null) {
+                        return null;
+                    } else {
+                        return {
+                            ...state,
+                        };
+                    }                   
                 }
             }
         }        

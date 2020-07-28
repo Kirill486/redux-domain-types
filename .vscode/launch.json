@@ -24,6 +24,22 @@
     {
         "type": "node",
         "request": "launch",
+        "name": "Mocha Index",
+        "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+        "args": [
+            "-r",
+            "ts-node/register",
+            "--timeout",
+            "999999",
+            "--colors",
+            "${workspaceFolder}/tests/IndexStateController/*.ts"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+    },
+    {
+        "type": "node",
+        "request": "launch",
         "name": "Mocha Current File",
         "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
         "args": [
