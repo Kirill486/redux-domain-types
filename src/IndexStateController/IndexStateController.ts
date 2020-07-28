@@ -6,6 +6,7 @@ import { ReduxStateController } from "..";
 import { deepClone } from "../../utils/deepClone";
 import { INode } from "functional-red-black-tree2/dist/libraryDefinitions";
 import { RedBlackTreeIterator } from "functional-red-black-tree2/dist/rbtreeIterator";
+import { AttemptToDeleteHashThatIsNotPresent } from "../exceptions";
 
 export type IndexInnerTreeType = INode<entities> | null;
 
@@ -54,18 +55,31 @@ implements IIndexStateController {
         let tree = new RedBlackTree<entities>(defaultCompare, this.InnerTreeCopy);
         const iterator = tree.find(hash);
 
-        if (iterator) {
-            const { value } = iterator;
-            const nextValue = value.reduce((accumulator, item)  => {
-                if (!ids.includes(item)) {
-                    accumulator.push(item)
+        const {value} = iterator;
+        const hashExist = !!value;
+
+        if (hashExist) {
+            const nextValue = value.map((item) => {
+                if (ids.includes(item)) {
+                    return undefined;
+                } else {
+                    return item;
                 }
-                return accumulator;
-            }, []);
-            tree = iterator.update(nextValue);
+            }).filter((item) => typeof item !== "undefined");
+
+            if (nextValue.length > 0) {
+                tree = iterator.update(nextValue);
+                
+            } else {
+                tree = iterator.remove();
+            }
+
             const nextInnerTree = tree.root;
             this.controller.set(nextInnerTree);
+        } else {
+            throw AttemptToDeleteHashThatIsNotPresent(hash);
         }
+
     };
 
     select = (hashFrom?: hash, hashTo?: hash) => {

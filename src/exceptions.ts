@@ -21,3 +21,7 @@ export const RecordKeyCannotBeUndefined = () => new Error(`Cannot set to undefin
 export const KeyDoesNotExistToDelete = (recordKeys: string[]) => new Error(`Records with keys ${recordKeys.join(' ')} does not exist. Cannot select`);
 
 export const KeyYouReTryingToReachDoesNotExist = (recordKey: string) => new Error(`Record with key ${recordKey} does not exist. Cannot select`);
+
+// Index State controller
+
+export const AttemptToDeleteHashThatIsNotPresent = (hash: number) => new Error(`Attempt to delete from hash that does dot exist ${hash}`)
