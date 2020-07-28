@@ -57,19 +57,21 @@ export const initializeStoreWithPositionStateController = () => {
 
 export const initializeStoreWithProductStateControllerAndData = () => {
     const {store, controller} = initializeStoreWithProductStateController();
-        const newProd1: IEntity<IProduct> = {
-            id: '42',
-            title: 'prod1',
-            description: 'descr1',
-            value: 42,
-        };
-        const newProd2: IEntity<IProduct> = {
-            id: '422',
-            title: '2prod12',
-            description: '2descr12',
-            value: 242,
-        };
-    const prods = [newProd1, newProd2];
-    controller.add(prods);
-    return {store, controller, prods};
+    controller.add(dummieProds);
+    return {store, controller, prods: dummieProds};
 }
+
+const newProd1: IEntity<IProduct> = {
+    id: '42',
+    title: 'prod1',
+    description: 'descr1',
+    value: 42,
+};
+const newProd2: IEntity<IProduct> = {
+    id: '422',
+    title: '2prod12',
+    description: '2descr12',
+    value: 242,
+};
+
+export const dummieProds = [newProd1, newProd2];
