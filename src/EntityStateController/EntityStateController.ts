@@ -16,7 +16,7 @@ implements IEntityStateController<IEntity<DomainType>> {
     static indexPrefix = 'index';
     public factory: Factory<IEntity<DomainType>>;
     dataController: ReduxRecordStateController<IEntity<DomainType>>
-    indexes = {};
+    indexes: { [indexKey: string]: HashIndexInfo<DomainType> } = {};
 
     get indexKeys() {
         return Object.keys(this.indexes);
@@ -53,6 +53,9 @@ implements IEntityStateController<IEntity<DomainType>> {
 
     afterPlugIn = () => {
         this.dataController.plugIn(this.commandEntryPoint, this.getControllerProperty);
+        this.indexKeys.forEach((indexKey) => {
+            this.indexes[indexKey].controller.plugIn(this.commandEntryPoint, this.getControllerProperty);
+        })
     }
 
     includes = (id: id) => {
@@ -73,22 +76,39 @@ implements IEntityStateController<IEntity<DomainType>> {
         return entitiesToInsertArray;
     }
 
-    add = (arg?: AddAccepts<DomainType>) => {
-        if (arg) {
-            const entitiesToInsertArray = this.extractEntityArray(arg);
-            const toInsert = entitiesToInsertArray.map((item) => this.makeRecordDto(item));
+    addData = (toAdd: IEntity<DomainType>[]) => {
+        const toInsert = toAdd.map((item) => this.makeRecordDto(item));
+        const conflictKeys = toInsert.filter((item) => this.dataController.includes(item.recordKey)).map((item) => item.recordKey);
+        if (conflictKeys.length === 0) {
+            // Add data
+            this.dataController.bulkSet(toInsert);
+        } else {
+            throw AttemptToInsertDuplicateKey(this.propertyTitle, conflictKeys);
+        }
+    }
 
-            const conflictKeys = toInsert.filter((item) => this.dataController.includes(item.recordKey)).map((item) => item.recordKey);
-            
-            if (conflictKeys.length === 0) {
-                this.dataController.bulkSet(toInsert);
-            } else {
-                throw AttemptToInsertDuplicateKey(this.propertyTitle, conflictKeys);
-            }            
+    addIndexes = (toAdd: IEntity<DomainType>[]) => {
+        this.indexKeys.forEach((indexKey) => {
+            const {index, controller} = this.indexes[indexKey] as HashIndexInfo<DomainType>;
+            toAdd.forEach((entity) => {
+                const hash = index(entity);
+                controller.add(hash, [entity.id]);
+            });
+        });
+    }
+
+    add = (arg?: AddAccepts<DomainType>) => {
+        let entitiesToInsertArray: IEntity<DomainType>[];
+        
+        if (arg) {
+            entitiesToInsertArray = this.extractEntityArray(arg);
         } else {
             const newEntity = this.factory();
-            this.dataController.set(newEntity.id, newEntity);
+            entitiesToInsertArray = this.extractEntityArray(newEntity);
         }
+        
+        this.addData(entitiesToInsertArray);
+        this.addIndexes(entitiesToInsertArray);        
     };
 
     modify = (entity: IEntity<Partial<DomainType>>) => {
@@ -151,6 +171,6 @@ implements IEntityStateController<IEntity<DomainType>> {
     }
 
     recordExist = (id: string) => {
-        return this.dataController.getControllerProperty();
+        return !!this.dataController.getControllerProperty()[id];
     }
 }
