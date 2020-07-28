@@ -87,10 +87,7 @@ implements IEntityStateController<IEntity<DomainType>> {
                 this.dataController.bulkSet(toInsert);
             } else {
                 throw AttemptToInsertDuplicateKey(this.propertyTitle, conflictKeys);
-            }
-            
-            
-
+            }            
         } else {
             const newEntity = this.factory();
             this.dataController.set(newEntity.id, newEntity);
