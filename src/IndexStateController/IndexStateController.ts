@@ -28,8 +28,7 @@ implements IIndexStateController {
     }
 
     get InnerTreePointer(): IndexInnerTreeType {
-        // We may be always having a tree copy
-        const innerTree = this.controller.select() as INode<entities>
+        const innerTree = this.controller.select() as INode<entities>;
         return innerTree;
     }
 
