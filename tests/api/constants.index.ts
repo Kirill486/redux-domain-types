@@ -15,8 +15,8 @@ export const initializeStoreWithIndexStateController = () => {
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);
 
-    printState(store);
-    store.subscribe(() => printState(store));
+    // printState(store);
+    // store.subscribe(() => printState(store));
 
     const {dispatch, getState} = store;
     IndexStateController.plugIn(dispatch, getState);
