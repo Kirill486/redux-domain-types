@@ -1,7 +1,8 @@
-import { IndexStateController } from "../../src/IndexStateController/IndexStateController";
+import { IndexStateController, IndexInnerTreeType } from "../../src/IndexStateController/IndexStateController";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 import { combineReducers, createStore } from "redux";
 import { IndexDto } from "../../api_describtion/indexStateController";
+import { printState } from "../../utils/printState";
 
 export const initializeIndexStateController = () => {
     const indexStateController = new IndexStateController('index');
@@ -10,9 +11,12 @@ export const initializeIndexStateController = () => {
 
 export const initializeStoreWithIndexStateController = () => {
     const IndexStateController = initializeIndexStateController();
-    const reducerMap: ReducerMappedToProperty<any> = IndexStateController.makeReducer();
+    const reducerMap: ReducerMappedToProperty<IndexInnerTreeType> = IndexStateController.makeReducer();
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);
+
+    printState(store);
+    store.subscribe(() => printState(store));
 
     const {dispatch, getState} = store;
     IndexStateController.plugIn(dispatch, getState);
