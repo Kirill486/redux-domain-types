@@ -151,7 +151,7 @@ implements IEntityStateController<IEntity<DomainType>> {
             const oldEntity = this.getById(entity.id);
 
             const fullEntity = {
-                ...this.factory(),
+                ...oldEntity,
                 ...entity,
             }
 
