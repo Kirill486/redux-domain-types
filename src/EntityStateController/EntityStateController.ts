@@ -189,7 +189,8 @@ implements IEntityStateController<IEntity<DomainType>> {
 
     queryDataById = (): IEntity<DomainType>[] => {
         const data = this.dataController.select() as any;
-        return data;
+        const dataKeys = Object.keys(data);
+        return dataKeys.map((dataKey) => data[dataKey]);
     }
 
     query = (indexKey?: string, from?: hash, to?: hash): IEntity<DomainType>[] => {

@@ -42,8 +42,9 @@ describe('EntityStateController selects data', () => {
 
         defaultOrder.forEach((entity, index) => {
             assert.ok(prodIds.includes(entity.id));
-            assert.deepEqual(entity, prods[index]);
-            assert.notEqual(entity, prods[index]);
+
+            const correspondingProd = prods.find((prod) => prod.id === entity.id);
+            assert.deepEqual(entity, correspondingProd);
         })
     });
 
