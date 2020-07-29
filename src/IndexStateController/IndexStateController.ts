@@ -94,16 +94,22 @@ implements IIndexStateController {
             iterator = tree.begin;
         }
 
+        const pushIteratorValues = (iterator: RedBlackTreeIterator<entities>, arr: id[]) => {
+            const {value: entities} = iterator;
+            entities.forEach((id) => arr.push(id));
+        };
+        
+        pushIteratorValues(iterator, result);
+
         while (iterator.hasNext) {
             iterator.next();
 
-            const toConditionHit = hashTo && iterator.key > hashTo;
+            const toConditionHit = hashTo && (iterator.key > hashTo);
             if (toConditionHit) {
                 break;
+            } else {
+                pushIteratorValues(iterator, result);
             }
-
-            const entities = iterator.value;
-            entities.forEach((id: id) => result.push(id));
         }
 
         return result;

@@ -1,4 +1,5 @@
 import { Action } from "redux";
+import { IndexStateController } from "../src/IndexStateController/IndexStateController";
 
 export type id = string;
 
@@ -57,9 +58,15 @@ export interface Index<IndexValue> {
 // empty string means try all
 export type GetByIdFunction<Entity> = (id, entityPropertyName?: string) => Entity;
 
-export type HashCode<Entity> = (record: Entity, getById: GetByIdFunction<any>) => number;
+export type HashCode<Entity> = (record: Entity, getById?: GetByIdFunction<any>) => number;
 
 export type HashIndex<Entity> = Index<HashCode<Entity>>;
+
+export interface IIndexInfoCommon {
+  controller: IndexStateController,
+}
+
+export type HashIndexInfo<Entity> = Index<HashCode<Entity>> & IIndexInfoCommon;
 
 // We have literal command - query separation.
 

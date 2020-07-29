@@ -46,7 +46,7 @@ describe('EntityStateController extends redux API', () => {
     it('initial state has index propertyes', () => {
 
         const productStateController = initializeProductEntityStateController();
-        const reducerProperty = productStateController.makeReducer() as any;
+        const reducerProperty = productStateController.makeReducerInner();
 
         const stateInitial = reducerProperty(undefined, {type: 'any'}) as object;
 
@@ -54,10 +54,13 @@ describe('EntityStateController extends redux API', () => {
         assert.equal(stateInitialIsNotNullObject, true);
 
         // Indexes set on initialization
-        const hasTitleIndexPropertyProperty = stateInitial.hasOwnProperty(titleIndex.indexKey);
+        const titleIndexStateKey = productStateController.getIndexProperyTitle(titleIndex.indexKey);
+        const valueIndexStateKey = productStateController.getIndexProperyTitle(titleIndex.indexKey);
+
+        const hasTitleIndexPropertyProperty = stateInitial.hasOwnProperty(titleIndexStateKey);
         assert.equal(hasTitleIndexPropertyProperty, true);
 
-        const hasValueIndexPropertyProperty = stateInitial.hasOwnProperty(valueIndex.indexKey);
+        const hasValueIndexPropertyProperty = stateInitial.hasOwnProperty(valueIndexStateKey);
         assert.equal(hasValueIndexPropertyProperty, true);
     });
 });

@@ -1,6 +1,6 @@
 import { IEntityStateController } from "./entityStateController";
 import { IStateController } from "./stateController";
-import { Reducer, Factory, id, command, ClientSelector } from "../utils/definitions";
+import { Reducer, Factory, id, command, ClientSelector, Index, HashCode } from "../utils/definitions";
 
 export type AnyStateController = IEntityStateController<any> | IStateController<any>;
 
@@ -27,3 +27,5 @@ export type IndexHash = { [indexValue: string]: id[] };
 export type Ordered = id[];
 
 export type ReducerMappedToProperty<State> = { [properyKey: string]: Reducer<State> };
+
+export type HashIndex<Entity> = Index<HashCode<Entity>>;

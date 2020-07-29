@@ -11,16 +11,19 @@ describe('EntityStateController has initial state split into data and indexes', 
         assert.deepEqual(dataProperty, {});
     });
     
-    it('initial index state is empty object', () => {
+    it('initial index state is null', () => {
         const {store, controller} = initializeStoreWithProductStateController();
         const state = store.getState();
-        const propertyState = [titleIndex.indexKey];
-        assert.deepEqual(propertyState, {});
+        const titleIndexKey = controller.getIndexProperyTitle(titleIndex.indexKey);
+        const propertyState = state[titleIndexKey];
+        assert.equal(propertyState, null);
     });
 
-    it('initial index state is empty object', () => {
+    it('initial index state is null', () => {
         const {store, controller} = initializeStoreWithProductStateController();
-        const propertyState = store.getState()[valueIndex.indexKey];
-        assert.deepEqual(propertyState, {});
+        const state = store.getState();
+        const valueIndexKey = controller.getIndexProperyTitle(valueIndex.indexKey);
+        const propertyState = state[valueIndexKey];
+        assert.equal(propertyState, null);
     });    
 });

@@ -6,6 +6,7 @@ import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 import { combineReducers, createStore } from "redux";
 import { IEntity } from "../../utils/definitions";
 import { IProduct } from "../../domain_types/domainTypes";
+import { getUniqueValueHashNumber } from "../../utils/getUniqueValueHashNumber";
 
 export const initializeProductEntityStateController = () => {
     const productStateController = new ReduxEntityStateController(
@@ -57,19 +58,83 @@ export const initializeStoreWithPositionStateController = () => {
 
 export const initializeStoreWithProductStateControllerAndData = () => {
     const {store, controller} = initializeStoreWithProductStateController();
-        const newProd1: IEntity<IProduct> = {
-            id: '42',
-            title: 'prod1',
-            description: 'descr1',
-            value: 42,
-        };
-        const newProd2: IEntity<IProduct> = {
-            id: '422',
-            title: '2prod12',
-            description: '2descr12',
-            value: 242,
-        };
-    const prods = [newProd1, newProd2];
-    controller.add(prods);
-    return {store, controller, prods};
+    controller.add(dummieProds);
+    return {store, controller, prods: dummieProds};
 }
+
+export const dummieProds = [
+    {
+        id: '421',
+        title: 'prod1421',
+        description: 'descr1421',
+        value: 86,
+    },
+    {
+        id: '422',
+        title: 'prod1',
+        description: 'descr1',
+        value: 95,
+    },
+    {
+        id: '423',
+        title: 'prod1',
+        description: 'descr1',
+        value: 137,
+    },
+    {
+        id: '424',
+        title: 'prod1',
+        description: 'descr1',
+        value: 83,
+    },
+    {
+        id: '425',
+        title: 'prod1',
+        description: 'descr1',
+        value: 83,
+    },
+    {
+        id: '642',
+        title: 'prod1',
+        description: 'descr1',
+        value: 2200,
+    },
+    {
+        id: '842',
+        title: 'prod1',
+        description: 'descr1',
+        value: 1100,
+    },
+    {
+        id: '942',
+        title: 'prod1',
+        description: 'descr1',
+        value: 5,
+    },
+    {
+        id: '1142',
+        title: 'prod1',
+        description: 'descr1',
+        value: 12,
+    },
+    {
+        id: '4212',
+        title: 'prod1',
+        description: 'descr1',
+        value: 450,
+    },
+    {
+        id: '4214',
+        title: 'prod1',
+        description: 'descr1',
+        value: 200,
+    },
+    {
+        id: '4122',
+        title: 'prod1',
+        description: 'descr1',
+        value: 120,
+    },
+];
+
+export const numberOfValueIndexKeys = getUniqueValueHashNumber(dummieProds, valueIndex.index);
