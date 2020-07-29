@@ -4,9 +4,12 @@ import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlue
 import { ReduxRecordStateController, RecordDto } from "../RecordStateController/RecordStateController";
 import { combineReducers } from "redux";
 import { IEntityFactoryMethod, AddAccepts } from "./types";
-import { AttemptToInsertDuplicateKey } from "./exceptions";
+import { AttemptToInsertDuplicateKey, AttemptToModifyRecordThatIsNotExist } from "./exceptions";
 import { IndexStateController } from "../IndexStateController/IndexStateController";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
+import { entities, hash } from "../../api_describtion/indexStateController";
+
+export type EntityHashIndexValueMap = { [indexKey: string]: hash };
 
 export class ReduxEntityStateController<DomainType>
 extends StateControllerBlueprint<any>
@@ -111,14 +114,54 @@ implements IEntityStateController<IEntity<DomainType>> {
         this.addIndexes(entitiesToInsertArray);        
     };
 
+    modifyEntity = (entity: IEntity<DomainType>) => {
+        this.dataController.set(entity.id, entity);
+    }
+
+    deleteEntities = (toDelete: id[]) => {
+        this.dataController.bulkDelete(toDelete);
+    }
+
+    // EntityHashIndexValueMap = { [indexKey: string]: hash };
+
+    deleteIndexes = (entities: IEntity<DomainType>[]) => {
+        this.indexKeys.forEach((indexKey) => {
+            const {index, controller} = this.indexes[indexKey] as HashIndexInfo<DomainType>;
+            entities.forEach((entity) => {
+                const hash = index(entity);
+                controller.remove(hash, [entity.id]);
+            });
+        });
+    }
+    
+    makeIndexMap = (entity: IEntity<DomainType>): EntityHashIndexValueMap => {
+        const result: EntityHashIndexValueMap = {};
+        this.indexKeys.forEach((indexKey) => {
+            const index = this.indexes[indexKey];
+            result[indexKey] = index.index(entity);
+        });
+
+        return result;
+    }
+
     modify = (entity: IEntity<Partial<DomainType>>) => {
         const recordExist = this.recordExist(entity.id);
-        const fullEntity = {
-            ...this.factory(),
-            ...entity,
-        }
+
         if (recordExist) {
-            this.dataController.set(entity.id, fullEntity);
+            const oldEntity = this.getById(entity.id);
+
+            const fullEntity = {
+                ...this.factory(),
+                ...entity,
+            }
+
+            this.modifyEntity(fullEntity);
+
+            this.deleteIndexes([oldEntity]);
+
+            this.addIndexes([fullEntity]);
+        } else {
+            throw AttemptToModifyRecordThatIsNotExist(this.propertyTitle, entity.id);
         }
     };
     delete = (id: id | id[]) => {
@@ -128,8 +171,10 @@ implements IEntityStateController<IEntity<DomainType>> {
         } else {
             toDelete = [id];
         }
+        const oldEntities = toDelete.map(this.getById);
 
-        this.dataController.bulkDelete(toDelete);
+        this.deleteEntities(toDelete);
+        this.deleteIndexes(oldEntities);
     };
 
     select: (indexKey?: string, value?: any) => null;
@@ -170,7 +215,11 @@ implements IEntityStateController<IEntity<DomainType>> {
         }
     }
 
-    recordExist = (id: string) => {
-        return !!this.dataController.getControllerProperty()[id];
+    recordExist = (id: id) => {
+        return !!this.getById(id);
+    }
+
+    getById = (id: id) => {
+        return this.dataController.getControllerProperty()[id];
     }
 }
