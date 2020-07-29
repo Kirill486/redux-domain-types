@@ -4,7 +4,7 @@ import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlue
 import { ReduxRecordStateController, RecordDto } from "../RecordStateController/RecordStateController";
 import { combineReducers } from "redux";
 import { IEntityFactoryMethod, AddAccepts } from "./types";
-import { AttemptToInsertDuplicateKey, AttemptToModifyRecordThatIsNotExist } from "./exceptions";
+import { AttemptToInsertDuplicateKey, AttemptToModifyRecordThatIsNotExist, AttemptToSelectEntityThatDoesNotExist } from "./exceptions";
 import { IndexStateController } from "../IndexStateController/IndexStateController";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 import { entities, hash } from "../../api_describtion/indexStateController";
@@ -177,8 +177,32 @@ implements IEntityStateController<IEntity<DomainType>> {
         this.deleteIndexes(oldEntities);
     };
 
-    select: (indexKey?: string, value?: any) => null;
-    query: (indexKey?: string, ...args: any[]) => [];
+    select = (id: id) => {
+        const entity = this.getById(id);
+
+        if (entity) {
+            return entity;
+        } else {
+            throw AttemptToSelectEntityThatDoesNotExist(this.propertyTitle, id);
+        }
+    };
+
+    queryDataById = (): IEntity<DomainType>[] => {
+        const data = this.dataController.select() as any;
+        return data;
+    }
+
+    query = (indexKey?: string, from?: hash, to?: hash): IEntity<DomainType>[] => {
+        let data: IEntity<DomainType>[] = [];
+        if (indexKey) {
+            const {controller} = this.indexes[indexKey];
+            const entities = controller.select(from, to);
+            data = entities.map((entityId) => this.getById(entityId));
+        } else {
+            return this.queryDataById();            
+        }
+        return data;
+    };
 
     makeReducerInner = () => {
         

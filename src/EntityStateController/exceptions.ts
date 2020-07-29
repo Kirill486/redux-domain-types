@@ -6,3 +6,6 @@ export const AttemptToInsertDuplicateKey =
 
 export const  AttemptToModifyRecordThatIsNotExist = (propertyKey: string, entityId: id) =>
     new Error(`Attempt to modify record that is not exist propertyKey: ${propertyKey} entityId: ${entityId}`);
+
+export const AttemptToSelectEntityThatDoesNotExist = (propertyKey: string, entityId: id) =>
+    new Error(`Attempt to select entity that does not exist ${propertyKey} entityId: ${entityId}`);
