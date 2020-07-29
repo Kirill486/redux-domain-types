@@ -9,7 +9,7 @@ describe('EntityStateController selects data', () => {
         const anyNumber = 1;
         const anyProd = prods[anyNumber]
         const anyId = anyProd.id;
-        
+
         const selectedById = controller.select(anyId);
 
         assert.deepEqual(selectedById, anyProd);
@@ -63,7 +63,7 @@ describe('EntityStateController selects data', () => {
             if (!!previos) {
                 const thisIndexValueGreaterOrEqual = entity.value  >= previos.value;
                 assert.ok(thisIndexValueGreaterOrEqual);
-            }            
+            }
         })
     });
 

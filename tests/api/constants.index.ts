@@ -6,7 +6,7 @@ import { printState } from "../../utils/printState";
 
 export const initializeIndexStateController = () => {
     const indexStateController = new IndexStateController('index');
-    return indexStateController;    
+    return indexStateController;
 }
 
 export const initializeStoreWithIndexStateController = () => {
@@ -29,7 +29,7 @@ export const initializeStoreWithIndexStateController = () => {
 
 export const initializeStoreWithIndexStateControllerAndData = () => {
     const {store, controller} = initializeStoreWithIndexStateController();
-    
+
     const indexes: IndexDto[] = [
         {
             hash: 5,

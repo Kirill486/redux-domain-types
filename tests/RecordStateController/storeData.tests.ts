@@ -3,7 +3,7 @@ import { id } from "../../utils/definitions";
 import * as assert from "assert";
 
 describe('RecordStateController stores data', () => {
-    
+
     it('the initial record state is empty object', () => {
         const {store, controller} = initializeStoreWithRecordStateController();
         const propertyState = store.getState()[controller.propertyTitle];
@@ -13,10 +13,10 @@ describe('RecordStateController stores data', () => {
 
     it('the key numbers will increase if we insert in empty record state', () => {
         const {store, controller} = initializeStoreWithRecordStateController();
-        
+
         const propertyStateBefore = store.getState()[controller.propertyTitle];
         const emptyRecordsLengthBefore = Object.keys(propertyStateBefore).length;
-        
+
         assert.equal(emptyRecordsLengthBefore, 0);
 
         const id123: id = '123';
@@ -24,24 +24,24 @@ describe('RecordStateController stores data', () => {
             firstName: '123',
             lastName: '456',
         }
-        
+
         controller.set(id123, user123);
-        
+
         const propertyStateAfter = store.getState()[controller.propertyTitle];
         const recordsLengthAfter = Object.keys(propertyStateBefore).length;
-        
+
         assert.equal(recordsLengthAfter, 1);
     });
 
     it('put record in state by key', () => {
         const {store, controller} = initializeStoreWithRecordStateController();
-        
+
         const id123: id = '123';
         const user123: IUserData = {
             firstName: '123',
             lastName: '456',
         }
-        
+
         controller.set(id123, user123);
 
         const appState = store.getState()[controller.propertyTitle];
@@ -53,7 +53,7 @@ describe('RecordStateController stores data', () => {
 
     it('changes the existing record', () => {
         const {store, controller} = initializeStoreWithRecordStateController();
-        
+
         const id123: id = '123';
         const user123: IUserData = {
             firstName: '123',
@@ -76,7 +76,7 @@ describe('RecordStateController stores data', () => {
 
     it('deletes an existing key', () => {
         const {store, controller} = initializeStoreWithRecordStateController();
-        
+
         const propertyState0 = store.getState()[controller.propertyTitle];
         const length0 = Object.keys(propertyState0).length;
         assert.equal(length0, 0);
@@ -87,7 +87,7 @@ describe('RecordStateController stores data', () => {
             lastName: '456',
         }
         controller.set(id123, user123);
-        
+
         const propertyState1 = store.getState()[controller.propertyTitle];
         const length1 = Object.keys(propertyState1).length;
         assert.equal(length1, 1);

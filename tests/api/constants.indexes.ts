@@ -39,6 +39,7 @@ const costHash: HashCode<IPosition> = (position, getById) => {
         return position.amount * correspondingProduct.value;
     } else {
         // It is buisiness-logic exception
+        // tslint:disable-next-line: no-string-throw
         throw "Pointer to undefined exception";
     }
 }
@@ -54,6 +55,7 @@ const productHash: HashCode<IPosition> = (position, getById) => {
         return getStringHash(correspondingProduct.id);
     } else {
         // It is buisiness-logic exception
+        // tslint:disable-next-line: no-string-throw
         throw "Pointer to undefined exception";
     }
 }
@@ -73,6 +75,7 @@ const wishListHash: HashCode<IPosition> = (position, getById) => {
         return list.includes(correspondingProduct.id) ? 1 : 0;
     } else {
         // It is buisiness-logic exception
+        // tslint:disable-next-line: no-string-throw
         throw "Pointer to undefined exception";
     }
 }

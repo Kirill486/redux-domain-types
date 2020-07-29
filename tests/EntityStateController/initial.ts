@@ -10,7 +10,7 @@ describe('EntityStateController has initial state split into data and indexes', 
         const dataProperty = propertyState[controller.dataProperyTitle];
         assert.deepEqual(dataProperty, {});
     });
-    
+
     it('initial index state is null', () => {
         const {store, controller} = initializeStoreWithProductStateController();
         const state = store.getState();
@@ -25,5 +25,5 @@ describe('EntityStateController has initial state split into data and indexes', 
         const valueIndexKey = controller.getIndexProperyTitle(valueIndex.indexKey);
         const propertyState = state[valueIndexKey];
         assert.equal(propertyState, null);
-    });    
+    });
 });

@@ -4,8 +4,6 @@ import { productFactoryMethod, positionFactoryMethod } from "./constants.factori
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "./constants.indexes";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 import { combineReducers, createStore } from "redux";
-import { IEntity } from "../../utils/definitions";
-import { IProduct } from "../../domain_types/domainTypes";
 import { getUniqueValueHashNumber } from "../../utils/getUniqueValueHashNumber";
 
 export const initializeProductEntityStateController = () => {
@@ -14,7 +12,7 @@ export const initializeProductEntityStateController = () => {
         productFactoryMethod,
         [titleIndex, valueIndex],
     );
-    return productStateController;    
+    return productStateController;
 }
 
 export const initializePositionEntityStateController = () => {

@@ -5,7 +5,7 @@ import { initializeProductEntityStateController } from '../api/constants.entity'
 
 
 describe('EntityStateController extends redux API', () => {
-  
+
     it('has makeReducer method that returns an object with key and reducer props', () => {
 
         const productStateController = initializeProductEntityStateController();

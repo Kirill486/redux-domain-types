@@ -16,7 +16,7 @@ export const initializeAppStateController = () => {
 }
 
 export const  initializeStoreWithAppStateController = () => {
-    const ApplicationStateController = initializeAppStateController();    
+    const ApplicationStateController = initializeAppStateController();
     const reducerMap = ApplicationStateController.makeReducer();
     const combinedReducer = combineReducers({...reducerMap});
     const store = createStore(combinedReducer);

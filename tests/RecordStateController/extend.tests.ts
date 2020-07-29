@@ -4,7 +4,7 @@ import { initializeRecordStateController, IUserData } from "../api/constants.rec
 import { IRecordState } from '../../utils/definitions';
 
 describe('RecordStateController extends redux API', () => {
-  
+
     it('has makeReducer method that returns an object with key and reducer props', () => {
 
         const appStateController = initializeRecordStateController();
@@ -35,5 +35,5 @@ describe('RecordStateController extends redux API', () => {
         const state = reducer(someState, { type: 'any', payload: null });
 
         assert.deepEqual(state, someState);
-    });    
+    });
 });

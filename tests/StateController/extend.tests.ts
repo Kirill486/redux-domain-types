@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import { initializeAppStateController, initialApp } from '../api/constants.state';
 
 describe('StateController extends redux API', () => {
-  
+
     it('has makeReducer method that returns an object with key and reducer props', () => {
 
         const appStateController = initializeAppStateController();

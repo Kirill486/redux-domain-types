@@ -20,8 +20,8 @@ export const initializeControllerPool = () => {
 }
 
 export const initializeStoreWithControllerPool = () => {
-    
-    const ApplicationStateControllerPool = initializeControllerPool();    
+
+    const ApplicationStateControllerPool = initializeControllerPool();
     const reducerMap = ApplicationStateControllerPool.makeReducer();
     const store = createStore(combineReducers({...reducerMap}));
 
@@ -29,7 +29,7 @@ export const initializeStoreWithControllerPool = () => {
     ApplicationStateControllerPool.plugIn(dispatch, getState);
 
     return {
-        store, 
+        store,
         controller: ApplicationStateControllerPool,
     };
 }

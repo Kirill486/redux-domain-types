@@ -4,7 +4,7 @@ import { IEntity } from '../../utils/definitions';
 import { initializeStoreWithProductStateController, initializeStoreWithProductStateControllerAndData } from '../api/constants.entity';
 
 describe('EntityStateController adds entities', () => {
-    
+
     it('can create produs', () => {
         const {store, controller} = initializeStoreWithProductStateController();
         controller.add();
@@ -38,7 +38,7 @@ describe('EntityStateController adds entities', () => {
             description: 'descr1',
             value: 42,
         }
-        
+
         controller.add(newProd);
 
         const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
@@ -54,7 +54,7 @@ describe('EntityStateController adds entities', () => {
             description: 'descr1',
             value: 42,
         }
-        
+
         controller.add(newProd);
 
         const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
@@ -72,7 +72,7 @@ describe('EntityStateController adds entities', () => {
             description: 'descr1',
             value: 42,
         }
-        
+
         controller.add(newProd);
 
         const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
@@ -102,7 +102,7 @@ describe('EntityStateController adds entities', () => {
 
         const propertyData: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const prod = propertyData[newProd.id];
-        
+
         const {
             id: statePropertyId,
             title: stateProperyTitle,

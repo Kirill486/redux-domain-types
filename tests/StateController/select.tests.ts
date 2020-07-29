@@ -19,7 +19,7 @@ describe('StateController select data', () => {
         })
 
         const manualOrder = controller.select('manualOrder');
-        assert.deepEqual(manualOrder, {manualOrder: someOrder}); 
+        assert.deepEqual(manualOrder, {manualOrder: someOrder});
     });
 
     it('Select multiple properties properties', () => {
@@ -37,7 +37,7 @@ describe('StateController select data', () => {
         assert.deepEqual(partial, {
             manualOrder: someOrder,
             errors: someErrors,
-        }); 
+        });
     });
 });
 

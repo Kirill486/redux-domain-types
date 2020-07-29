@@ -18,7 +18,7 @@ export const productFactoryMethod: IEntityFactoryMethod<IEntity<IProduct>> = {
 const positionFactory: Factory<IEntity<IPosition>> = (productId, amount = 1) => ({
     id: uuid(),
     product: productId,
-    amount: amount,
+    amount,
 })
 
 export const positionFactoryMethod: IEntityFactoryMethod<IEntity<IPosition>> = {

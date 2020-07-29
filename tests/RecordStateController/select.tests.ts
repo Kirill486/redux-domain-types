@@ -5,7 +5,7 @@ import * as assert from "assert";
 describe('RecordStateController selects data', () => {
     it('selects single record', () => {
         const {store, controller} = initializeStoreWithRecordStateController();
-        
+
         const id123: id = '123';
         const user123: IUserData = {
             firstName: '123',
@@ -13,7 +13,7 @@ describe('RecordStateController selects data', () => {
         }
 
         controller.set(id123, user123);
-        
+
         const propertyState = store.getState()[controller.propertyTitle];
         const recordFromState = propertyState[id123];
         assert.deepEqual(recordFromState, user123);
@@ -22,10 +22,10 @@ describe('RecordStateController selects data', () => {
 
         assert.deepEqual(recordFromState, recordFromSelector);
     });
-    
+
     it('selects a whole state', () => {
         const {store, controller} = initializeStoreWithRecordStateController();
-        
+
         const id123: id = '123';
         const user123: IUserData = {
             firstName: '123',
@@ -33,7 +33,7 @@ describe('RecordStateController selects data', () => {
         }
 
         controller.set(id123, user123);
-        
+
         const propertyState = store.getState()[controller.propertyTitle];
         assert.deepEqual(propertyState, { [id123]: user123 });
 
