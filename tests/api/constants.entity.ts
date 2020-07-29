@@ -6,6 +6,7 @@ import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
 import { combineReducers, createStore } from "redux";
 import { IEntity } from "../../utils/definitions";
 import { IProduct } from "../../domain_types/domainTypes";
+import { getUniqueValueHashNumber } from "../../utils/getUniqueValueHashNumber";
 
 export const initializeProductEntityStateController = () => {
     const productStateController = new ReduxEntityStateController(
@@ -73,5 +74,19 @@ const newProd2: IEntity<IProduct> = {
     description: '2descr12',
     value: 242,
 };
+const newProd3: IEntity<IProduct> = {
+    id: '4223',
+    title: '2prod12',
+    description: '2descr12',
+    value: 2420,
+};
+const newProd4: IEntity<IProduct> = {
+    id: '4224',
+    title: '2prod12',
+    description: '2descr12',
+    value: 2420,
+};
 
-export const dummieProds = [newProd1, newProd2];
+export const dummieProds = [newProd1, newProd2, newProd3, newProd4];
+
+export const numberOfValueIndexKeys = getUniqueValueHashNumber(dummieProds, valueIndex.index);
