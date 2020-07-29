@@ -11,7 +11,7 @@ const selectMultipleKeys = <Data>(state: Object, keys: string[]) => {
             data[queryKey] = state[queryKey];
         } else {
             misssingKeys.push(queryKey);
-        }        
+        }
     });
 
     if (misssingKeys.length !== 0) {
@@ -22,9 +22,9 @@ const selectMultipleKeys = <Data>(state: Object, keys: string[]) => {
 }
 
 export class SelectorController<ControllerState> {
-    
+
     rootSelector: ClientSelector<ControllerState>;
-    
+
     public select: ClientSelector<Partial<ControllerState>> = (propertyKey?: string | string[]) => {
         const propertyState = this.rootSelector();
 
@@ -57,6 +57,6 @@ export class SelectorController<ControllerState> {
         } else {
             throw NoRootSelectorProvided();
         }
-        
-    }    
+
+    }
 }

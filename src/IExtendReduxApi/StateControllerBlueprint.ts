@@ -1,6 +1,5 @@
 import { command, Reducer, ClientSelector } from "../../utils/definitions";
 import { StateControllerUnknownRootPropertyName, UnpluggedControllerOperation } from "../exceptions";
-import { Store } from "redux";
 import { IExtendReduxAPI } from "../../api_describtion/libraryApi";
 
 export abstract class StateControllerBlueprint<State>
@@ -19,7 +18,7 @@ implements IExtendReduxAPI<State> {
     public plugIn(commandEntryPoint: command, rootGetStateSelector: ClientSelector<any>) {
         this.commandEntryPoint = commandEntryPoint;
         this.rootSelector = rootGetStateSelector;
-        
+
         this.plugged = true;
 
         if (this.afterPlugIn) {

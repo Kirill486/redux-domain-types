@@ -21,7 +21,7 @@ export class ActionsController<State> {
             type: actionTypes.set,
             payload: state,
         });
-    
+
         this.resetAction = () => ({
             type: actionTypes.reset,
             payload: undefined,

@@ -9,7 +9,7 @@ import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlue
 export class ReduxStateController<State>
 extends StateControllerBlueprint<State>
 implements IStateController<State> {
-    
+
     private actionsController: ActionsController<State>;
     private reducerController: ReducerController<State>;
     private selectController: SelectorController<State>;
@@ -19,14 +19,14 @@ implements IStateController<State> {
     initial = () => {
         return this.reducerController.initial();
     }
-    
+
     set = (diff: Partial<State>) => {
         if (this.isPlugged()) {
             this.commandEntryPoint(this.actionsController.setAction(diff));
         } else {
             throw UnpluggedControllerOperation(this.propertyTitle);
         }
-        
+
     }
     reset = () => {
         if (this.isPlugged()) {
@@ -34,9 +34,9 @@ implements IStateController<State> {
         } else {
             throw UnpluggedControllerOperation(this.propertyTitle);
         }
-        
-    } 
-    
+
+    }
+
     select = (propertyKey?: string | string[]) => {
         if (this.isPlugged()) {
             return this.selectController.select(propertyKey);
@@ -68,6 +68,6 @@ implements IStateController<State> {
             initial,
             setActionType,
             resetActionType,
-        );        
+        );
     }
 }

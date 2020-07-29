@@ -9,7 +9,7 @@ export class ReduxStateControllerPool extends StateControllerBlueprint<any> impl
         super(properyTitle);
         // nothingYet
     }
-    
+
     makeReducerInner: () => null;
 
     getControllerFor: (property: string) => null;

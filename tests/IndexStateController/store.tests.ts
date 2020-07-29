@@ -41,12 +41,12 @@ describe('IndexStateController can store index data', () => {
 
     it('can add multiple id to the same index', () => {
         const {store, controller} = initializeStoreWithIndexStateController();
-        
+
         const hash1 = 255;
 
         const id1 = '42';
         const id2 = '48';
-        
+
         controller.add(hash1, [id1, id2]);
         const innerTree = store.getState()[controller.propertyTitle];
         const stateTree =  new RedBlackTree<entities>(defaultCompare, innerTree);
@@ -63,13 +63,13 @@ describe('IndexStateController can store index data', () => {
 
     it('can add multiple ids to different indexes, keys stored in defaultCompare order', () => {
         const {store, controller} = initializeStoreWithIndexStateController();
-        
+
         const hash1 = 255;
         const hash2 = 45;
 
         const ids1: entities = ['4f2', '48g'];
         const ids2: entities = ['sdfgsdba', 'fhafhadba'];
-        
+
         controller.add(hash1, ids1);
         controller.add(hash2, ids2);
 
@@ -119,7 +119,7 @@ describe('IndexStateController can store index data', () => {
 
         const containEntitiesToRemove =
             entitiesToRemove.every((item) => initialCorrespondingValues.includes(item));
-        assert.ok(containEntitiesToRemove);        
+        assert.ok(containEntitiesToRemove);
 
         controller.remove(anyIndexHash, entitiesToRemove);
 
@@ -137,10 +137,10 @@ describe('IndexStateController can store index data', () => {
         const {store, controller, indexes} = initializeStoreWithIndexStateControllerAndData();
         const anyIndex = 2;
         const {hash: anyHash, entities: anyEntities} = indexes[anyIndex]
-        
+
         const innerTreeBefore = store.getState()[controller.propertyTitle];
         const stateTreeBefore =  new RedBlackTree<entities>(defaultCompare, innerTreeBefore);
-        
+
         const correspondingEntities = stateTreeBefore.get(anyHash);
         const theSameLength = correspondingEntities.length === anyEntities.length;
         assert.ok(theSameLength);
@@ -177,7 +177,7 @@ describe('IndexStateController can store index data', () => {
 
     it('will throw on deleting id that does not exist in hash', () => {
         const {store, controller, indexes} = initializeStoreWithIndexStateControllerAndData();
-        
+
         const anyIndex = 3;
         const {hash, entities} = indexes[anyIndex];
 
@@ -187,7 +187,7 @@ describe('IndexStateController can store index data', () => {
         const innerTreeBefore = store.getState()[controller.propertyTitle];
         const stateTreeBefore =  new RedBlackTree<entities>(defaultCompare, innerTreeBefore);
 
-        const madeUpId = 'someMadeUpId';        
+        const madeUpId = 'someMadeUpId';
         const entitiesBefore = stateTreeBefore.get(hash);
 
         const entitiesBeforeDoesNotIncludeMadeUpId = !entitiesBefore.includes(madeUpId);

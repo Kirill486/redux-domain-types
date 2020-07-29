@@ -9,4 +9,4 @@ export type AddAccepts<DomainType> =
     DomainType |
     DomainType[] |
     IEntity<DomainType> |
-    Array<IEntity<DomainType>>;
+    IEntity<DomainType>[];

@@ -6,20 +6,18 @@ import { RedBlackTree, defaultCompare } from 'functional-red-black-tree2';
 import { entities } from '../../api_describtion/indexStateController';
 
 describe('Simple indexes do not require another entities to get calculated', () => {
-    
+
     it('has index data', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
         // titleIndex, valueIndex
         const valueIndexPropertyTitle = controller.getIndexProperyTitle(valueIndex.indexKey);
         const innerTree = store.getState()[controller.propertyTitle][valueIndexPropertyTitle];
-        
+
         assert.ok(!!innerTree);
 
         const indexTree = new RedBlackTree(defaultCompare, innerTree);
 
         const {keys, values} = indexTree;
-
-        
 
         assert.ok(keys.length === numberOfValueIndexKeys);
         assert.ok(values.length === numberOfValueIndexKeys);

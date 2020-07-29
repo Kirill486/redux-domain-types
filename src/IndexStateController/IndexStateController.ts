@@ -46,9 +46,9 @@ implements IIndexStateController {
         } else {
             tree = tree.insert(hash, ids);
         }
-        
+
         const nextInnerTree = tree.root;
-        this.controller.set(nextInnerTree);        
+        this.controller.set(nextInnerTree);
     };
     remove = (hash: hash, ids: id[]) => {
         let tree = new RedBlackTree<entities>(defaultCompare, this.InnerTreeCopy);
@@ -68,7 +68,7 @@ implements IIndexStateController {
 
             if (nextValue.length > 0) {
                 tree = iterator.update(nextValue);
-                
+
             } else {
                 tree = iterator.remove();
             }
@@ -98,7 +98,7 @@ implements IIndexStateController {
             const {value: entities} = iterator;
             entities.forEach((id) => arr.push(id));
         };
-        
+
         pushIteratorValues(iterator, result);
 
         while (iterator.hasNext) {

@@ -9,7 +9,7 @@ describe('EntityStateController deletes stores data', () => {
         const propertyDataBefore: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const beforeKeysLength = Object.keys(propertyDataBefore).length;
         assert.ok(beforeKeysLength === prods.length);
-        
+
         assert.ok(prods[0].id);
         controller.delete(prods[0].id);
 
@@ -23,7 +23,7 @@ describe('EntityStateController deletes stores data', () => {
         const propertyDataBefore: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const beforeKeysLength = Object.keys(propertyDataBefore).length;
         assert.ok(beforeKeysLength === prods.length);
-        
+
         assert.ok(prods[0].id);
         assert.ok(prods[1].id);
 

@@ -16,7 +16,7 @@ export const StatePropertyNames = Object.freeze({
 // export const initializeStoreWithPositionStateControllerAndData = () => {
 //     const {store: prosuctStore, prods, controller: prodsController} = initializeStoreWithProductStateControllerAndData();
 //     const {store: positionStore, controller: positionController} = initializeStoreWithPositionStateController();
-    
+
 //     const position1: IEntity<IPosition> = {
 //         id: '12345',
 //         amount: 55,

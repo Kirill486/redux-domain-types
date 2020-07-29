@@ -18,7 +18,7 @@ describe('StateController control the respective redux property', () => {
 
         const differedProperty: IAppState = appState[StatePropertyNames.app];
 
-        assert.deepEqual(differedProperty.errors, errorsToSet);        
+        assert.deepEqual(differedProperty.errors, errorsToSet);
     });
 
     it('multiple properties can be set', () => {
@@ -63,7 +63,7 @@ describe('StateController control the respective redux property', () => {
     })
 
     it('state can be reset to initial state', () => {
-        
+
         const {store, controller} = initializeStoreWithAppStateController();
 
         const errorsToSet = ['2', '3', '3'];
