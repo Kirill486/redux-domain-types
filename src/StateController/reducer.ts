@@ -19,9 +19,9 @@ export class ReducerController<State> {
                 return {
                   ...this.initialState,
                 }
-            }            
-        };        
-        
+            }
+        };
+
         const reducer: Reducer<State> = (
             state: State,
             action: IAction<any>
@@ -49,10 +49,10 @@ export class ReducerController<State> {
                         return {
                             ...state,
                         };
-                    }                   
+                    }
                 }
             }
-        }        
+        }
 
         this.reducer = reducer;
     }

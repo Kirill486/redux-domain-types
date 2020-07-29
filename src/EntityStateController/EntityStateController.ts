@@ -7,7 +7,7 @@ import { IEntityFactoryMethod, AddAccepts } from "./types";
 import { AttemptToInsertDuplicateKey, AttemptToModifyRecordThatIsNotExist, AttemptToSelectEntityThatDoesNotExist } from "./exceptions";
 import { IndexStateController } from "../IndexStateController/IndexStateController";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
-import { entities, hash } from "../../api_describtion/indexStateController";
+import { hash } from "../../api_describtion/indexStateController";
 
 export type EntityHashIndexValueMap = { [indexKey: string]: hash };
 
@@ -32,11 +32,11 @@ implements IEntityStateController<IEntity<DomainType>> {
     getIndexProperyTitle = (indexKey: string)  => {
         return `${ReduxEntityStateController.indexPrefix}__${this.propertyTitle}__${indexKey}`;
     }
-    
+
     constructor(
         propertyTitle: string,
         factoryMethod: IEntityFactoryMethod<IEntity<DomainType>>,
-        indexes: Array<HashIndex<DomainType>>,
+        indexes: HashIndex<DomainType>[],
     ) {
         super(propertyTitle);
 
@@ -66,12 +66,12 @@ implements IEntityStateController<IEntity<DomainType>> {
     }
 
     extractEntityArray = (arg: AddAccepts<DomainType>) => {
-        let entitiesToInsertArray: Array<IEntity<DomainType>> = [];
+        let entitiesToInsertArray: IEntity<DomainType>[] = [];
         const isArray = Array.isArray(arg);
         if (isArray) {
             entitiesToInsertArray = (arg as DomainType[]).map((item) => {
                 return this.makeEntity(item);
-            });                
+            });
         } else {
             const entity: IEntity<DomainType> = this.makeEntity(arg as DomainType);
             entitiesToInsertArray = [entity];
@@ -102,16 +102,16 @@ implements IEntityStateController<IEntity<DomainType>> {
 
     add = (arg?: AddAccepts<DomainType>) => {
         let entitiesToInsertArray: IEntity<DomainType>[];
-        
+
         if (arg) {
             entitiesToInsertArray = this.extractEntityArray(arg);
         } else {
             const newEntity = this.factory();
             entitiesToInsertArray = this.extractEntityArray(newEntity);
         }
-        
+
         this.addData(entitiesToInsertArray);
-        this.addIndexes(entitiesToInsertArray);        
+        this.addIndexes(entitiesToInsertArray);
     };
 
     modifyEntity = (entity: IEntity<DomainType>) => {
@@ -133,7 +133,7 @@ implements IEntityStateController<IEntity<DomainType>> {
             });
         });
     }
-    
+
     makeIndexMap = (entity: IEntity<DomainType>): EntityHashIndexValueMap => {
         const result: EntityHashIndexValueMap = {};
         this.indexKeys.forEach((indexKey) => {
@@ -200,24 +200,24 @@ implements IEntityStateController<IEntity<DomainType>> {
             const entities = controller.select(from, to);
             data = entities.map((entityId) => this.getById(entityId));
         } else {
-            return this.queryDataById();            
+            return this.queryDataById();
         }
         return data;
     };
 
     makeReducerInner = () => {
-        
+
         this.dataController = new ReduxRecordStateController<IEntity<DomainType>>(this.dataProperyTitle);
         const dataControllerReducer = this.dataController.makeReducer();
-        
+
         const indexesReducer: ReducerMappedToProperty<any> = {};
-        
+
         this.indexKeys.forEach((indexKey: string) => {
             const {controller} = this.indexes[indexKey] as HashIndexInfo<DomainType>;
             const indexControllerReducer = controller.makeReducerInner();
             indexesReducer[controller.propertyTitle] = indexControllerReducer;
-        });        
-                
+        });
+
         const reducer = combineReducers({
             ...dataControllerReducer,
             ...indexesReducer,

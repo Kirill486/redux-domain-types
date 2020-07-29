@@ -23,7 +23,7 @@ implements IRecordStateController<Record> {
         const initialState: IRecordState<Record> = {};
         this.controller = new ReduxStateController(propertyTitle, initialState);
     }
-    
+
     makeReducerInner = () => {
         return this.controller.makeReducerInner();
     };
@@ -33,10 +33,10 @@ implements IRecordStateController<Record> {
             recordKey: id,
             record: data,
         }
-        this.bulkSet([recordDto]);        
+        this.bulkSet([recordDto]);
     };
 
-    bulkSet = (dto: Array<RecordDto<Record>>) => {
+    bulkSet = (dto: RecordDto<Record>[]) => {
         const state = this.controller.select();
 
         dto.forEach(({recordKey, record}) => {
@@ -45,7 +45,7 @@ implements IRecordStateController<Record> {
 
             if (!recordPresent) throw RecordValueCannotBeUndefined(recordKey);
             if (!keyPresent) throw RecordKeyCannotBeUndefined();
-            
+
             if (recordPresent && keyPresent) {
                 state[recordKey] = record;
             }
@@ -68,7 +68,7 @@ implements IRecordStateController<Record> {
                 delete state[recordKey];
             } else {
                 missingIds.push(recordKey);
-            }   
+            }
         });
         if (missingIds.length === 0) {
             this.controller.set({...state});
@@ -91,7 +91,7 @@ implements IRecordStateController<Record> {
             }
         } else {
             return this.controller.select();
-        }        
+        }
     };
 
     includes = (id: id) => {
