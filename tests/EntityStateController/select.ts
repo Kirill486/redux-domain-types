@@ -34,18 +34,56 @@ describe('EntityStateController selects data', () => {
 
     it('it default query by id', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
-        const defaultOrder = controller.query()
+        const defaultOrder = controller.query();
+
+        const prodIds = prods.map((prod) => prod.id);
+
+        assert.ok(defaultOrder.length === prods.length);
+
+        defaultOrder.forEach((entity, index) => {
+            assert.ok(prodIds.includes(entity.id));
+            assert.deepEqual(entity, prods[index]);
+            assert.notEqual(entity, prods[index]);
+        })
     });
 
     it('it query by index', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
         const orderedByValue = controller.query(valueIndex.indexKey);
+
+        const prodValues = prods.map((prod) => prod.value);
+        assert.ok(orderedByValue.length === prods.length);
+
+        orderedByValue.forEach((entity, index, array) => {
+            assert.ok(prodValues.includes(entity.value));
+
+            const previos = array[index - 1];
+
+            const thisIndexValueGreaterOrEqual = entity.value  >= previos.value;
+            assert.ok(thisIndexValueGreaterOrEqual);
+        })
     });
 
     it('it query rande by index', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
-        const from = 10;
-        const to = 50;
+        const from = 200;
+        const to = 1000;
         const rangeOrderedByValue = controller.query(valueIndex.indexKey, from, to);
+
+        const prodValues = prods.map((prod) => prod.value);
+        assert.ok(rangeOrderedByValue.length === prods.length);
+
+        rangeOrderedByValue.forEach((entity, index, array) => {
+            const currentValue = entity.value;
+            assert.ok(prodValues.includes(currentValue));
+
+            assert.ok(currentValue >=  from);
+            assert.ok(currentValue <=  to);
+
+            const {value: previousValue} = array[index - 1];
+
+            const thisIndexValueGreaterOrEqual = currentValue  >= previousValue;
+            assert.ok(thisIndexValueGreaterOrEqual);
+        })
     });
 });
