@@ -8,21 +8,21 @@ describe('EntityStateController deletes stores data', () => {
 
         const propertyDataBefore: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const beforeKeysLength = Object.keys(propertyDataBefore).length;
-        assert.ok(beforeKeysLength === 2);
+        assert.ok(beforeKeysLength === prods.length);
         
         assert.ok(prods[0].id);
         controller.delete(prods[0].id);
 
         const propertyDataAfter: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const afterKeysLength = Object.keys(propertyDataAfter).length;
-        assert.ok(afterKeysLength === 1);
+        assert.ok(afterKeysLength === (prods.length - 1));
     });
     it('can delete array of ids', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
 
         const propertyDataBefore: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const beforeKeysLength = Object.keys(propertyDataBefore).length;
-        assert.ok(beforeKeysLength === 2);
+        assert.ok(beforeKeysLength === prods.length);
         
         assert.ok(prods[0].id);
         assert.ok(prods[1].id);
@@ -33,7 +33,7 @@ describe('EntityStateController deletes stores data', () => {
 
         const propertyDataAfter: object = store.getState()[controller.propertyTitle][controller.dataProperyTitle];
         const afterKeysLength = Object.keys(propertyDataAfter).length;
-        assert.ok(afterKeysLength === 0);
+        assert.ok(afterKeysLength === prods.length - 2);
     });
     it('will throw on wrong id', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
