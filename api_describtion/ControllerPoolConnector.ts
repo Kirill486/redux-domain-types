@@ -9,4 +9,6 @@ export interface ICanConnectToPool<DomainEntityType> {
 
     getById: (id: id, propertyTitle?: string) => DomainEntityType;
     getStateProperty: (propertyTitle: string) => SomeState;
+
+    notifyPool: command;
 }

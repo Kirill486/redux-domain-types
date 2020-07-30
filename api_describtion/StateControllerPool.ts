@@ -10,4 +10,10 @@ export interface StateControllerPool extends IExtendReduxAPI<any> {
 
     readonly entityControllersKeys: string[];
     readonly stateControllersKeys: string[];
+
+    // Find and recalculate depending indexes (for entity controllers)
+    entityChanged: (propertyTitle: string, id) => void;
+
+    // FInd and recalculate dependent indexes (for state controllers)
+    stateChanged: (propertyTitle: string) => void;
 }
