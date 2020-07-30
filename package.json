@@ -8,7 +8,8 @@
     "test_state": "mocha -r ts-node/register tests/StateController/*.ts",
     "test_record": "mocha -r ts-node/register tests/RecordStateController/*.ts",
     "test_entity": "mocha -r ts-node/register tests/EntityStateController/*.ts",
-    "test_index": "mocha -r ts-node/register tests/IndexStateController/*.ts"
+    "test_index": "mocha -r ts-node/register tests/IndexStateController/*.ts",
+    "test_pool": "mocha -r ts-node/register tests/StateControllerPool/*.ts"
   },
   "repository": {
     "type": "git",
