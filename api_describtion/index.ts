@@ -1,20 +1,20 @@
 import { IProduct, IPosition, IAppState, TPartialAppState } from "../domain_types/domainTypes";
 import { IEntityStateController } from "./entityStateController";
 import { IStateController } from "./stateController";
-import { Factory, HashIndex, id } from "../utils/definitions";
-import { StateControllerPool } from "./libraryApi";
-import { createStore } from 'redux';
-import { StatePropertyNames, initialApp } from "../tests/api/constants";
+import { Factory, HashIndex, id, IEntity } from "../utils/definitions";
+import { createStore, combineReducers } from 'redux';
+import { StatePropertyNames } from "../tests/api/constants";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "../tests/api/constants.indexes";
-import { IEntityFactoryMethod } from "../src/EntityStateController/EntityStateController";
+import { initialApp } from "../tests/api/constants.state";
+import { IEntityFactoryMethod } from "../src/EntityStateController/types";
+import { StateControllerPool } from "./StateControllerPool";
 
 export const commonInitialization =
 (
-    productFactoryMethod: IEntityFactoryMethod<IProduct>,
-    positionFactoryMethod: IEntityFactoryMethod<IPosition>,
+    productFactoryMethod: IEntityFactoryMethod<IEntity<IProduct>>,
+    positionFactoryMethod: IEntityFactoryMethod<IEntity<IPosition>>,
 ) => {
-    
     const appStateController = new ReduxStateController(StatePropertyNames.app, initialApp);
 
     const productStateController = new ReduxEntityStateController(
@@ -30,22 +30,25 @@ export const commonInitialization =
     );
 
     const ApplicationStateControllerPool = new ReduxStateControllerPool(
+        StatePropertyNames.appMain,
         appStateController,
         productStateController,
         positionStateController
     );
 
     const reducer = ApplicationStateControllerPool.makeReducer();
-    const store = createStore(reducer);
+    const store = createStore(combineReducers(reducer));
+
+    const {dispatch, getState} = store;
 
     // We need a command entry point
-    ApplicationStateControllerPool.plugIn(store.dispatch);
+    ApplicationStateControllerPool.plugIn(dispatch, getState);
 }
 
 export const initialQuery = (
     ApplicationStateControllerPool: StateControllerPool,
-    titleIndex: HashIndex<IProduct, number>,
-    valueIndex: HashIndex<IProduct, number>,
+    titleIndex: HashIndex<IProduct>,
+    valueIndex: HashIndex<IProduct>,
 ) => {
 
     const productStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.product) as IEntityStateController<IProduct>;
@@ -70,7 +73,7 @@ export const commonPurchaise = (
     if (queryInRange.length) {
         // we want first that require our query
         const position1 = positionStateController.factory(queryInRange[0], 1);
-        positionStateController.add(position1);                
+        positionStateController.add(position1);
     }
 
     const position2 = positionStateController.factory(productSelectedById, 2);
@@ -82,7 +85,7 @@ export const commonPurchaise = (
     positionStateController.delete(position2.id);
 
     const positionToModify = positionStateController.select(null, position3.id);
-    
+
     if (positionToModify) {
         // diff may be better?
         positionToModify.amount = 5;
@@ -94,13 +97,13 @@ export const commonPurchaise = (
 
     // Show wishes that are about to get complete
     const positionsThatFullfillWisshes = positionStateController.query(wishListPosition.indexKey);
-}    
+}
 
 export const appStateScenario =
 (
     ApplicationStateControllerPool: StateControllerPool,
 ) => {
-    
+
     const appStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.app) as IStateController<IAppState>;
 
     const diff: TPartialAppState = {
@@ -117,7 +120,7 @@ export const manualOrderScenario =
 ) => {
 
     const appStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.app) as IStateController<IAppState>;
-    const positionStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.position) as IEntityStateController<IPosition>; 
+    const positionStateController = ApplicationStateControllerPool.getControllerFor(StatePropertyNames.position) as IEntityStateController<IPosition>;
 
     const order: id[] = positionStateController.query().map((position) => position.id);
 
