@@ -7,5 +7,7 @@ import { IExtendReduxAPI, AnyStateController } from "./libraryApi";
 export interface StateControllerPool extends IExtendReduxAPI<any> {
     getControllerFor: (property: string) => AnyStateController;
     readonly controllersKeys: string[];
+
     readonly entityControllersKeys: string[];
+    readonly stateControllersKeys: string[];
 }

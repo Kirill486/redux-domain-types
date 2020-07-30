@@ -1,6 +1,6 @@
 import { command, id } from '../utils/definitions';
-import { StateControllerPool } from './StateControllerPool'
-import { ReduxEntityStateController } from '../src';
+
+type SomeState = any;
 
 export interface ICanConnectToPool<DomainEntityType> {
     connect: command;
@@ -8,4 +8,5 @@ export interface ICanConnectToPool<DomainEntityType> {
     readonly controllersKeys: string[];
 
     getById: (id: id, propertyTitle?: string) => DomainEntityType;
+    getStateProperty: (propertyTitle: string) => SomeState;
 }
