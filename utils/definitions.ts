@@ -1,5 +1,7 @@
 import { Action } from "redux";
 import { IndexStateController } from "../src/IndexStateController/IndexStateController";
+import { ILinkedProperty } from "../src/EntityStateController/types";
+import { IRecordStateController } from "../api_describtion/recordStateController";
 
 export type id = string;
 
@@ -67,6 +69,12 @@ export interface IIndexInfoCommon {
 }
 
 export type HashIndexInfo<Entity> = Index<HashCode<Entity>> & IIndexInfoCommon;
+
+export interface ILinkedInfoCommon {
+  controller: IRecordStateController<id[]>,
+}
+
+export type LinkedIndexInfo = ILinkedProperty & IIndexInfoCommon;
 
 // We have literal command - query separation.
 
