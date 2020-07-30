@@ -10,6 +10,8 @@ export class ReduxStateControllerPool extends StateControllerBlueprint<any> impl
         super(properyTitle);
         // nothingYet
     }
+    entityChanged: (propertyTitle: string, id: any) => void;
+    stateChanged: (propertyTitle: string) => void;
 
     get controllersKeys() {
         return [] as string[];
