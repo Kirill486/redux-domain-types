@@ -7,7 +7,7 @@ import { IEntityFactoryMethod, AddAccepts, ILinkedProperty } from "./types";
 import { AttemptToInsertDuplicateKey, AttemptToModifyRecordThatIsNotExist, AttemptToSelectEntityThatDoesNotExist } from "./exceptions";
 import { IndexStateController } from "../IndexStateController/IndexStateController";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
-import { hash, entities } from "../../api_describtion/indexStateController";
+import { hash } from "../../api_describtion/indexStateController";
 
 export type EntityHashIndexValueMap = { [indexKey: string]: hash };
 
@@ -22,6 +22,7 @@ implements IEntityStateController<IEntity<DomainType>> {
     indexes: { [indexKey: string]: HashIndexInfo<DomainType> } = {};
 
     linkedIndexes: LinkedIndexInfo[];
+    linkedProperties: ILinkedProperty[];
 
     get indexKeys() {
         return Object.keys(this.indexes);
@@ -55,12 +56,7 @@ implements IEntityStateController<IEntity<DomainType>> {
             this.indexes[indexKey] = indexInfo;
         });
 
-        // this.linkedIndexes = linkedProperties.map((linkedProperty) => {
-            
-        //     return {
-        //         ...linkedProperty
-        //     }
-        // });
+        this.linkedProperties = linkedProperties;
     }
 
     afterPlugIn = () => {

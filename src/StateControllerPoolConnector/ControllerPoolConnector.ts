@@ -5,7 +5,8 @@ import { id, command } from '../../utils/definitions';
 import { PoolConnectorCanNotFindRecordById, ControllerPoolAttemptToGetUnknownStateProperty, PoolConnectorAttemptToUseDisconnected } from './exceptions';
 import { ReduxStateController } from '../StateController/StateController';
 
-export class StateControllerPoolConnector<DomainEntityType> implements ICanConnectToPool<DomainEntityType> {
+export class StateControllerPoolConnector<DomainEntityType>
+implements ICanConnectToPool<DomainEntityType> {
     notifyPool: command;
     controllerPool: StateControllerPool;
 
