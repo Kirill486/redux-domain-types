@@ -1,11 +1,12 @@
 import { ICanConnectToPool } from '../../api_describtion/ControllerPoolConnector';
 import { StateControllerPool } from '../../api_describtion/StateControllerPool';
 import { ReduxEntityStateController } from '../EntityStateController/EntityStateController';
-import { id } from '../../utils/definitions';
+import { id, command } from '../../utils/definitions';
 import { PoolConnectorCanNotFindRecordById, ControllerPoolAttemptToGetUnknownStateProperty, PoolConnectorAttemptToUseDisconnected } from './exceptions';
 import { ReduxStateController } from '../StateController/StateController';
 
 export class StateControllerPoolConnector<DomainEntityType> implements ICanConnectToPool<DomainEntityType> {
+    notifyPool: command;
     controllerPool: StateControllerPool;
 
     connect = (pool: StateControllerPool) => {

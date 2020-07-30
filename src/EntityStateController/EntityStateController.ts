@@ -1,13 +1,13 @@
 import { IEntityStateController } from "../../api_describtion/entityStateController";
-import { HashIndex, id, IEntity, Factory, HashIndexInfo } from "../../utils/definitions";
+import { HashIndex, id, IEntity, Factory, HashIndexInfo, LinkedIndexInfo } from "../../utils/definitions";
 import { StateControllerBlueprint } from "../IExtendReduxApi/StateControllerBlueprint";
 import { ReduxRecordStateController, RecordDto } from "../RecordStateController/RecordStateController";
 import { combineReducers } from "redux";
-import { IEntityFactoryMethod, AddAccepts } from "./types";
+import { IEntityFactoryMethod, AddAccepts, ILinkedProperty } from "./types";
 import { AttemptToInsertDuplicateKey, AttemptToModifyRecordThatIsNotExist, AttemptToSelectEntityThatDoesNotExist } from "./exceptions";
 import { IndexStateController } from "../IndexStateController/IndexStateController";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
-import { hash } from "../../api_describtion/indexStateController";
+import { hash, entities } from "../../api_describtion/indexStateController";
 
 export type EntityHashIndexValueMap = { [indexKey: string]: hash };
 
@@ -20,6 +20,8 @@ implements IEntityStateController<IEntity<DomainType>> {
     public factory: Factory<IEntity<DomainType>>;
     dataController: ReduxRecordStateController<IEntity<DomainType>>
     indexes: { [indexKey: string]: HashIndexInfo<DomainType> } = {};
+
+    linkedIndexes: LinkedIndexInfo[];
 
     get indexKeys() {
         return Object.keys(this.indexes);
@@ -40,7 +42,7 @@ implements IEntityStateController<IEntity<DomainType>> {
     ) {
         super(propertyTitle);
 
-        const {factory} = factoryMethod;
+        const {factory, linkedProperties} = factoryMethod;
         this.factory = factory;
 
         indexes.forEach((hashIndex) => {
@@ -52,6 +54,13 @@ implements IEntityStateController<IEntity<DomainType>> {
             };
             this.indexes[indexKey] = indexInfo;
         });
+
+        // this.linkedIndexes = linkedProperties.map((linkedProperty) => {
+            
+        //     return {
+        //         ...linkedProperty
+        //     }
+        // });
     }
 
     afterPlugIn = () => {
