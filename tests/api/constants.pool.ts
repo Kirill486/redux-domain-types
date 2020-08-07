@@ -1,8 +1,10 @@
 import { initializeAppStateController } from "./constants.state";
-import { initializeProductEntityStateController, initializePositionEntityStateController } from "./constants.entity";
-import { ReduxStateControllerPool } from "../../src";
+import { initializeProductEntityStateController, initializePositionEntityStateController, dummieProds } from "./constants.entity";
+import { ReduxStateControllerPool, ReduxEntityStateController } from "../../src";
 import { StatePropertyNames } from "./constants";
 import { createStore, combineReducers } from "redux";
+import { IProduct, IPosition } from "../../domain_types/domainTypes";
+import { IEntity } from "../../utils/definitions";
 
 export const initializeControllerPool = () => {
     const appStateController = initializeAppStateController();
@@ -32,4 +34,28 @@ export const initializeStoreWithControllerPool = () => {
         store,
         controller: ApplicationStateControllerPool,
     };
+}
+
+export const initializePoolWithControllersAndData = () => {
+    const {controller, store} = initializeStoreWithControllerPool();
+
+    const productController: ReduxEntityStateController<IProduct> = controller.getControllerFor(StatePropertyNames.product);
+    dummieProds.forEach(productController.add);
+    const positionController: ReduxEntityStateController<IPosition> = controller.getControllerFor(StatePropertyNames.product);
+    const dummiePositionProd = dummieProds[0];
+    const dummiePosition: IEntity<IPosition> = {
+        id: '9998',
+        product: dummiePositionProd.id,
+        amount: 10,
+    };
+    positionController.add(dummiePosition);
+    const state = store.getState();
+    return {
+        controller,
+        store,
+        dummieProds,
+        dummiePositionProd,
+        dummiePosition,
+        state,
+    }
 }
