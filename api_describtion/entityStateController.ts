@@ -13,7 +13,7 @@ export interface IEntityStateCommandController<Entity> {
 }
 
 export interface IEntityStateQueryController<Entity> {
-    query: ClientSelector<Array<IEntity<Entity>>>,
+    query: ClientSelector<IEntity<Entity>[]>,
     select: ClientSelector<IEntity<Entity>>,
 }
 
