@@ -1,33 +1,74 @@
-# Redux Domain types
+Redux Domain types
+=========================
 
-We describbe our API in ```api_description/index```. Not actual tests yet. Just the way we would use the perfect model implementation.
+The easy to use map from buisiness-logic to model
 
-Get me right here!!! 
-The ```redux-domain-types``` is the model implementation. You ***must not*** write buisiness-logic here.
-It's just a fancy in-memory data storage with synckrosyty, time travel and blackjack))) To help all humans)
+# 1. Initial intent
 
-For buisiness-logic layer inplementation I would recommend ```redux-saga```. It does the job well.
-Even too well. You can literally **translate** well-written buisiness requiriments into code.
-It has great documentation, so check it out, it's really exciting reading)
+When we talk about a buisiness-application, it probably does one of this **use cases**:
+- store **object with ptoperties**
+- store **models** that have a sertain **Interface**
 
-## Folder Structure
+## 1.1. Object with properties (StateController).
 
-```api-description``` - a place to store high-level client definitions like what is State controller, what it does, haw to create one. The idea you can get from ```api-description/index```.
+We can do set and reset to initial.
+If we start using just redux, we end up with reducers, actions, when we actually need just
 
-```tests``` - this will proof the api described
+```Typescript
+const diff: PartialAppState = {
+    stateProperty1: 'stateProperty1Value',
+    stateProperty2: 42,
+    stateProperty3: true,
+}
 
-```src``` - we will write modules implementation.
+appStateController.set(diff);
 
-## Installation & Run
+appStateController.reset();
+```
+The ```redux``` is still underneath. You can use your favorite devtools, timetravel and middleware.
 
-Yet you can not. (**See work order**)
+## 1.2. Entity - thing that implements the DTO-like interface with the id property (StateController).
 
-## Work order
+Here we want fast queries by some values and pointer safety.
 
-1. Finish describing API. How it all starts (StateControllerPool) ```() =>store```. <<<<- **we here**
-2. Write Usage with ```redux-saga``` part.
-3. Write red tests and the ```Installation & Run``` part).
+### 1.2.1. Queries
 
-## Contribution guide
+```EntityStateController``` has a **complex state underneath**:
+
+- dataState ```{[entityId]: Entity}```
+- hashIndexesState(can be more then one) ```SearchTree<Hash: number, id[]>```
+- dependentEntitiesState ```{dependentEntityId: id[]}```
+
+**I case we want fast queries** - we provide EntityStateController with indexes.
+
+Each index has a **hashFunction** underneath.
+The arrays of entities that have the same hash result stored in [**SearchTree**](https://www.npmjs.com/package/functional-red-black-tree2).
+
+When you **query range** - you have the ```Iterator``` for ***O(logn)*** and the rest of sequence for **constant time** each next.
+
+### 1.2.2. Pointer safety and complex indexes
+
+When we have connections between data, we often want to maintain pointer safety.
+(WIP: [PointerResolve](https://github.com/Kirill486/redux-domain-types/issues/34))
+
+# 2. Run tests
+
+```
+npm install
+npm test
+
+```
+
+You can run tests for **any part** of the project
+
+```
+npm run test_state
+npm run test_record
+npm run test_entity
+npm run test_index
+npm run test_pool
+```
+
+# 3. Contribution guide
 
 [Contribution guide](https://github.com/Kirill486/redux-domain-types/blob/master/contribution.md)
