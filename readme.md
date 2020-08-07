@@ -3,13 +3,13 @@ Redux Domain types
 
 The easy to use map from buisiness-logic to model
 
-# 1 Initial intent
+# 1. Initial intent
 
 When we talk about a buisiness-application, it probably does one of this **use cases**:
 - store **object with ptoperties**
 - store **models** that have a sertain **Interface**
 
-## 1.1 Object with properties (StateController).
+## 1.1. Object with properties (StateController).
 
 We can do set and reset to initial.
 If we start using just redux, we end up with reducers, actions, when we actually need just
@@ -27,11 +27,11 @@ appStateController.reset();
 ```
 The ```redux``` is still underneath. You can use your favorite devtools, timetravel and middleware.
 
-## 1.2 Entity - thing that implements the DTO-like interface with the id property (StateController).
+## 1.2. Entity - thing that implements the DTO-like interface with the id property (StateController).
 
 Here we want fast queries by some values and pointer safety.
 
-### 1.2.1 Queries
+### 1.2.1. Queries
 
 ```EntityStateController``` has a **complex state underneath**:
 
@@ -46,12 +46,12 @@ The arrays of entities that have the same hash result stored in [**SearchTree**]
 
 When you **query range** - you have the ```Iterator``` for ***O(logn)*** and the rest of sequence for **constant time** each next.
 
-### 1.2.2 Pointer safety and complex indexes
+### 1.2.2. Pointer safety and complex indexes
 
 When we have connections between data, we often want to maintain pointer safety.
 (WIP: [PointerResolve](https://github.com/Kirill486/redux-domain-types/issues/34))
 
-# 2 Run tests
+# 2. Run tests
 
 ```
 npm install
@@ -69,6 +69,6 @@ npm run test_index
 npm run test_pool
 ```
 
-# 3 Contribution guide
+# 3. Contribution guide
 
 [Contribution guide](https://github.com/Kirill486/redux-domain-types/blob/master/contribution.md)
