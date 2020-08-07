@@ -10,7 +10,7 @@ describe('Simple indexes do not require another entities to get calculated', () 
     it('has index data', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
         // titleIndex, valueIndex
-        const valueIndexPropertyTitle = controller.getIndexProperyTitle(valueIndex.indexKey);
+        const valueIndexPropertyTitle = controller.getHashIndexProperyTitle(valueIndex.indexKey);
         const innerTree = store.getState()[controller.propertyTitle][valueIndexPropertyTitle];
 
         assert.ok(!!innerTree);
@@ -29,7 +29,7 @@ describe('Simple indexes do not require another entities to get calculated', () 
 
     it('index data created on entity creation', () => {
         const {store, controller} = initializeStoreWithProductStateController();
-        const valueIndexPropertyTitle = controller.getIndexProperyTitle(valueIndex.indexKey);
+        const valueIndexPropertyTitle = controller.getHashIndexProperyTitle(valueIndex.indexKey);
         const anyNumber = 0;
         const anyProd = dummieProds[anyNumber];
 
@@ -53,7 +53,7 @@ describe('Simple indexes do not require another entities to get calculated', () 
     it('index data updated on entity update', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
 
-        const valueIndexPropertyTitle = controller.getIndexProperyTitle(valueIndex.indexKey);
+        const valueIndexPropertyTitle = controller.getHashIndexProperyTitle(valueIndex.indexKey);
         const anyNumber = 0;
         const anyProd = dummieProds[anyNumber];
         const anyProdValueHash = valueIndex.index(anyProd);
@@ -83,7 +83,7 @@ describe('Simple indexes do not require another entities to get calculated', () 
     it('index data deleted on entity delete', () => {
         const {store, prods, controller} = initializeStoreWithProductStateControllerAndData();
 
-        const valueIndexPropertyTitle = controller.getIndexProperyTitle(valueIndex.indexKey);
+        const valueIndexPropertyTitle = controller.getHashIndexProperyTitle(valueIndex.indexKey);
         const anyNumber = 0;
         const anyProd = dummieProds[anyNumber];
         const anyProdValueHash = valueIndex.index(anyProd);
