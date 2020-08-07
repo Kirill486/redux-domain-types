@@ -16,7 +16,9 @@ extends StateControllerBlueprint<any>
 implements IEntityStateController<IEntity<DomainType>> {
 
     static dataPrefix = 'data';
-    static indexPrefix = 'index';
+    static hashIndexPrefix = 'index_hash';
+    static dependencyIndexPrefix = 'index_dependency';
+
     public factory: Factory<IEntity<DomainType>>;
     dataController: ReduxRecordStateController<IEntity<DomainType>>
     indexes: { [indexKey: string]: HashIndexInfo<DomainType> } = {};
@@ -32,8 +34,12 @@ implements IEntityStateController<IEntity<DomainType>> {
         return `${this.propertyTitle}__${ReduxEntityStateController.dataPrefix}`;
     }
 
-    getIndexProperyTitle = (indexKey: string)  => {
-        return `${ReduxEntityStateController.indexPrefix}__${this.propertyTitle}__${indexKey}`;
+    getHashIndexProperyTitle = (indexKey: string)  => {
+        return `${ReduxEntityStateController.hashIndexPrefix}__${this.propertyTitle}__${indexKey}`;
+    }
+
+    get dependencyIndexProperyTitle () {
+        return `${ReduxEntityStateController.dependencyIndexPrefix}__${this.propertyTitle}`;
     }
 
     constructor(
@@ -48,7 +54,7 @@ implements IEntityStateController<IEntity<DomainType>> {
 
         indexes.forEach((hashIndex) => {
             const {indexKey} = hashIndex;
-            const indexStateController = new IndexStateController(this.getIndexProperyTitle(indexKey));
+            const indexStateController = new IndexStateController(this.getHashIndexProperyTitle(indexKey));
             const indexInfo: HashIndexInfo<DomainType> = {
                 ...hashIndex,
                 controller: indexStateController,
