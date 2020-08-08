@@ -13,10 +13,10 @@ describe('ControllerPool index ADD', () => {
     it('when you add a position, dependent index is add', () => {
         const {controller, store} = initializeStoreWithControllerPool();
 
-        const productController: ReduxEntityStateController<IProduct> = controller.getControllerFor(StatePropertyNames.product);
+        const productController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct>;
         dummieProds.forEach(productController.add);
 
-        const positionController: ReduxEntityStateController<IPosition> = controller.getControllerFor(StatePropertyNames.product);
+        const positionController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IPosition>;
         const dummiePositionProd = dummieProds[0];
         const dummiePosition: IEntity<IPosition> = {
             id: '9998',
@@ -42,10 +42,10 @@ describe('ControllerPool index ADD', () => {
     it('when you add a position, simple hash index is add', () => {
         const {controller, store} = initializeStoreWithControllerPool();
 
-        const productController: ReduxEntityStateController<IProduct> = controller.getControllerFor(StatePropertyNames.product);
+        const productController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct>;
         dummieProds.forEach(productController.add);
 
-        const positionController: ReduxEntityStateController<IPosition> = controller.getControllerFor(StatePropertyNames.product);
+        const positionController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IPosition>;
         const dummiePositionProd = dummieProds[0];
         const dummiePosition: IEntity<IPosition> = {
             id: '9998',
@@ -74,10 +74,10 @@ describe('ControllerPool index ADD', () => {
     it('when you add a position, complex hash index is add', () => {
         const {controller, store} = initializeStoreWithControllerPool();
 
-        const productController: ReduxEntityStateController<IProduct> = controller.getControllerFor(StatePropertyNames.product);
+        const productController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct>;
         dummieProds.forEach(productController.add);
 
-        const positionController: ReduxEntityStateController<IPosition> = controller.getControllerFor(StatePropertyNames.product);
+        const positionController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IPosition>;
         const dummiePositionProd = dummieProds[0];
         const dummiePosition: IEntity<IPosition> = {
             id: '9998',

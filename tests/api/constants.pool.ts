@@ -39,9 +39,9 @@ export const initializeStoreWithControllerPool = () => {
 export const initializePoolWithControllersAndData = () => {
     const {controller, store} = initializeStoreWithControllerPool();
 
-    const productController: ReduxEntityStateController<IProduct> = controller.getControllerFor(StatePropertyNames.product);
+    const productController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct>;
     dummieProds.forEach(productController.add);
-    const positionController: ReduxEntityStateController<IPosition> = controller.getControllerFor(StatePropertyNames.product);
+    const positionController = controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IPosition>;
     const dummiePositionProd = dummieProds[0];
     const dummiePosition: IEntity<IPosition> = {
         id: '9998',

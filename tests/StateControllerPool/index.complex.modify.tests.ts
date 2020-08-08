@@ -12,8 +12,8 @@ import { entities } from '../../api_describtion/indexStateController';
 describe('ControllerPool modify complex indexes indexes', () => {
     it('when you modify a position changing product - the cost index recalculates', () => {
         const {controller, dummiePositionProd, dummiePosition, store} = initializePoolWithControllersAndData();
-        const positionController: ReduxEntityStateController<IPosition> =
-        controller.getControllerFor(StatePropertyNames.position);
+        const positionController =
+        controller.getControllerFor(StatePropertyNames.position) as ReduxEntityStateController<IPosition>;
 
         const anotherProd = dummieProds[5];
         assert.ok(dummiePositionProd.value !== anotherProd.value);
@@ -41,8 +41,8 @@ describe('ControllerPool modify complex indexes indexes', () => {
 
     it('when you modify a position changing amount - the cost index recalculates', () => {
         const {controller, dummiePositionProd, dummiePosition, store} = initializePoolWithControllersAndData();
-        const positionController: ReduxEntityStateController<IPosition> =
-        controller.getControllerFor(StatePropertyNames.position);
+        const positionController =
+        controller.getControllerFor(StatePropertyNames.position) as ReduxEntityStateController<IPosition>;
 
         const anotherAmount = 55;
         assert.ok(dummiePosition.amount !== anotherAmount);
@@ -71,11 +71,11 @@ describe('ControllerPool modify complex indexes indexes', () => {
     it('when you modify a product changing value - the cost index recalculates', () => {
         const {controller, dummiePositionProd, dummiePosition, store} = initializePoolWithControllersAndData();
 
-        const productController: ReduxEntityStateController<IProduct> =
-        controller.getControllerFor(StatePropertyNames.product);
+        const productController =
+        controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct>;
 
-        const positionController: ReduxEntityStateController<IPosition> =
-        controller.getControllerFor(StatePropertyNames.product);
+        const positionController =
+        controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IPosition>;
 
         const newProductValue = 100542;
         assert.ok(dummiePositionProd.value !== newProductValue);
@@ -105,11 +105,11 @@ describe('ControllerPool modify complex indexes indexes', () => {
     it('when you delete a product - the corresponding positions are deleted by default pointer-resolving strategy', () => {
         const {controller, dummiePositionProd, dummiePosition, store} = initializePoolWithControllersAndData();
 
-        const productController: ReduxEntityStateController<IProduct> =
-        controller.getControllerFor(StatePropertyNames.product);
+        const productController =
+        controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct>;
 
-        const positionController: ReduxEntityStateController<IPosition> =
-        controller.getControllerFor(StatePropertyNames.product);
+        const positionController =
+        controller.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IPosition>;
 
         productController.delete(dummiePositionProd.id);
 

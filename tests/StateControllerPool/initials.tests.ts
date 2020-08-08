@@ -55,7 +55,8 @@ describe('ControllerPool has initial state', () => {
 
         assert.ok(entityProperyKeys.length === 3);
 
-        const productController: ReduxEntityStateController<IProduct> = controllerPool.getControllerFor(StatePropertyNames.product);
+        const productController =
+        controllerPool.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct> ;
 
         assert.ok(initialProduct[productController.dataProperyTitle]);
         assert.ok(initialProduct[productController.getHashIndexProperyTitle(ProductIndexKeys.title)]);
@@ -69,7 +70,8 @@ describe('ControllerPool has initial state', () => {
 
         assert.ok(entityProperyKeys.length === 4);
 
-        const positionController: ReduxEntityStateController<IProduct> = controllerPool.getControllerFor(StatePropertyNames.position);
+        const positionController =
+        controllerPool.getControllerFor(StatePropertyNames.position) as ReduxEntityStateController<IProduct>;
 
         assert.ok(initialPosition[positionController.dataProperyTitle]);
         assert.ok(initialPosition[positionController.dependencyIndexProperyTitle]);
