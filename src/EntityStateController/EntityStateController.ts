@@ -7,7 +7,7 @@ import { IEntityFactoryMethod, AddAccepts, ILinkedProperty } from "./types";
 import { AttemptToInsertDuplicateKey, AttemptToModifyRecordThatIsNotExist, AttemptToSelectEntityThatDoesNotExist } from "./exceptions";
 import { IndexStateController } from "../IndexStateController/IndexStateController";
 import { ReducerMappedToProperty } from "../../api_describtion/libraryApi";
-import { hash } from "../../api_describtion/indexStateController";
+import { hash, entities } from "../../api_describtion/indexStateController";
 
 export type EntityHashIndexValueMap = { [indexKey: string]: hash };
 
@@ -21,13 +21,15 @@ implements IEntityStateController<IEntity<DomainType>> {
 
     public factory: Factory<IEntity<DomainType>>;
     dataController: ReduxRecordStateController<IEntity<DomainType>>
-    indexes: { [indexKey: string]: HashIndexInfo<DomainType> } = {};
+    hashIndexes: { [indexKey: string]: HashIndexInfo<DomainType> } = {};
+    dependencyIndex: ReduxRecordStateController<entities>;
+
 
     linkedIndexes: LinkedIndexInfo[];
     linkedProperties: ILinkedProperty[];
 
     get indexKeys() {
-        return Object.keys(this.indexes);
+        return Object.keys(this.hashIndexes);
     }
 
     get dataProperyTitle() {
@@ -59,16 +61,19 @@ implements IEntityStateController<IEntity<DomainType>> {
                 ...hashIndex,
                 controller: indexStateController,
             };
-            this.indexes[indexKey] = indexInfo;
+            this.hashIndexes[indexKey] = indexInfo;
         });
 
-        this.linkedProperties = linkedProperties;
+        if (linkedProperties.length) {
+            this.linkedProperties = linkedProperties;
+            this.dependencyIndex = new ReduxRecordStateController(this.dependencyIndexProperyTitle);
+        }
     }
 
     afterPlugIn = () => {
         this.dataController.plugIn(this.commandEntryPoint, this.getControllerProperty);
         this.indexKeys.forEach((indexKey) => {
-            this.indexes[indexKey].controller.plugIn(this.commandEntryPoint, this.getControllerProperty);
+            this.hashIndexes[indexKey].controller.plugIn(this.commandEntryPoint, this.getControllerProperty);
         })
     }
 
@@ -103,7 +108,7 @@ implements IEntityStateController<IEntity<DomainType>> {
 
     addIndexes = (toAdd: IEntity<DomainType>[]) => {
         this.indexKeys.forEach((indexKey) => {
-            const {index, controller} = this.indexes[indexKey] as HashIndexInfo<DomainType>;
+            const {index, controller} = this.hashIndexes[indexKey] as HashIndexInfo<DomainType>;
             toAdd.forEach((entity) => {
                 const hash = index(entity);
                 controller.add(hash, [entity.id]);
@@ -137,7 +142,7 @@ implements IEntityStateController<IEntity<DomainType>> {
 
     deleteIndexes = (entities: IEntity<DomainType>[]) => {
         this.indexKeys.forEach((indexKey) => {
-            const {index, controller} = this.indexes[indexKey] as HashIndexInfo<DomainType>;
+            const {index, controller} = this.hashIndexes[indexKey] as HashIndexInfo<DomainType>;
             entities.forEach((entity) => {
                 const hash = index(entity);
                 controller.remove(hash, [entity.id]);
@@ -148,7 +153,7 @@ implements IEntityStateController<IEntity<DomainType>> {
     makeIndexMap = (entity: IEntity<DomainType>): EntityHashIndexValueMap => {
         const result: EntityHashIndexValueMap = {};
         this.indexKeys.forEach((indexKey) => {
-            const index = this.indexes[indexKey];
+            const index = this.hashIndexes[indexKey];
             result[indexKey] = index.index(entity);
         });
 
@@ -207,7 +212,7 @@ implements IEntityStateController<IEntity<DomainType>> {
     query = (indexKey?: string, from?: hash, to?: hash): IEntity<DomainType>[] => {
         let data: IEntity<DomainType>[] = [];
         if (indexKey) {
-            const {controller} = this.indexes[indexKey];
+            const {controller} = this.hashIndexes[indexKey];
             const entities = controller.select(from, to);
             data = entities.map((entityId) => this.getById(entityId));
         } else {
@@ -221,18 +226,30 @@ implements IEntityStateController<IEntity<DomainType>> {
         this.dataController = new ReduxRecordStateController<IEntity<DomainType>>(this.dataProperyTitle);
         const dataControllerReducer = this.dataController.makeReducer();
 
-        const indexesReducer: ReducerMappedToProperty<any> = {};
+        const hashIndexesReducer: ReducerMappedToProperty<any> = {};
 
         this.indexKeys.forEach((indexKey: string) => {
-            const {controller} = this.indexes[indexKey] as HashIndexInfo<DomainType>;
+            const {controller} = this.hashIndexes[indexKey] as HashIndexInfo<DomainType>;
             const indexControllerReducer = controller.makeReducerInner();
-            indexesReducer[controller.propertyTitle] = indexControllerReducer;
+            hashIndexesReducer[controller.propertyTitle] = indexControllerReducer;
         });
 
-        const reducer = combineReducers({
+        let resultReducer = {
             ...dataControllerReducer,
-            ...indexesReducer,
-        });
+            ...hashIndexesReducer,
+        }
+
+        if (this.dependencyIndex) {
+
+            const dependencyReducer = this.dependencyIndex.makeReducer();
+
+            resultReducer = {
+                ...resultReducer,
+                ...dependencyReducer,
+            };
+        }
+
+        const reducer = combineReducers(resultReducer);
         return reducer;
     };
 
