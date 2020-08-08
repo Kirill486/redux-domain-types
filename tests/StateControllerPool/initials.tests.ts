@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import { createStore } from 'redux';
 import { ReduxEntityStateController } from '../../src';
 import { IProduct } from '../../domain_types/domainTypes';
-import { PositionIndexKeys, ProductIndexKeys } from '../api/constants.indexes';
+import { PositionIndexKeys, ProductIndexKeys, valueIndex, costIndex } from '../api/constants.indexes';
 import { initializeControllerPool } from '../api/constants.pool';
 import { StatePropertyNames } from '../api/constants';
 
@@ -32,7 +32,7 @@ describe('ControllerPool has initial state', () => {
 
     it('initial state has controller properties', () => {
         const {store, state} = createStoreWithStateControllerPoolTest();
-        console.log(state);
+        // console.log(state);
         assert.ok(state[StatePropertyNames.app]);
         assert.ok(state[StatePropertyNames.position]);
         assert.ok(state[StatePropertyNames.product]);
@@ -40,7 +40,7 @@ describe('ControllerPool has initial state', () => {
 
     it('initial app state has app properties', () => {
         const {state} = createStoreWithStateControllerPoolTest();
-        console.log(state);
+        // console.log(state);
         assert.ok(state[StatePropertyNames.app]);
         assert.ok(state[StatePropertyNames.position]);
         assert.ok(state[StatePropertyNames.product]);
@@ -48,7 +48,7 @@ describe('ControllerPool has initial state', () => {
 
     it('initial product state has 3 keys: data property, and 2 hash indexes properties', () => {
         const {state, controllerPool} = createStoreWithStateControllerPoolTest();
-        console.log(state);
+        // console.log(state);
 
         const initialProduct = state[StatePropertyNames.product];
         const entityProperyKeys = Object.keys(initialProduct);
@@ -59,8 +59,11 @@ describe('ControllerPool has initial state', () => {
         controllerPool.getControllerFor(StatePropertyNames.product) as ReduxEntityStateController<IProduct> ;
 
         assert.ok(initialProduct[productController.dataProperyTitle]);
-        assert.ok(initialProduct[productController.getHashIndexProperyTitle(ProductIndexKeys.title)]);
-        assert.ok(initialProduct[productController.getHashIndexProperyTitle(ProductIndexKeys.value)]);
+
+        const titleIndexPropertyTitle = productController.getHashIndexProperyTitle(ProductIndexKeys.title);
+        assert.ok(typeof initialProduct[titleIndexPropertyTitle] !== "undefined");
+        const valueIndexPropertyTitile = productController.getHashIndexProperyTitle(ProductIndexKeys.value);
+        assert.ok(typeof initialProduct[valueIndexPropertyTitile] !== "undefined");
     });
 
     it('initial position state has 4 keys: data property, dependencyIndex, 2 hash indexes', () => {
@@ -76,7 +79,9 @@ describe('ControllerPool has initial state', () => {
         assert.ok(initialPosition[positionController.dataProperyTitle]);
         assert.ok(initialPosition[positionController.dependencyIndexProperyTitle]);
 
-        assert.ok(initialPosition[positionController.getHashIndexProperyTitle(PositionIndexKeys.cost)]);
-        assert.ok(initialPosition[positionController.getHashIndexProperyTitle(PositionIndexKeys.product)]);
+        const costIndexPropertyTitle = positionController.getHashIndexProperyTitle(PositionIndexKeys.cost);
+        assert.ok(typeof initialPosition[costIndexPropertyTitle] !== "undefined");
+        const productIndexPropertyTitle = positionController.getHashIndexProperyTitle(PositionIndexKeys.product);
+        assert.ok(typeof initialPosition[productIndexPropertyTitle] !== "undefined");
     });
 })
