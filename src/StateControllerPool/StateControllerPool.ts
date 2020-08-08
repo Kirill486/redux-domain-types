@@ -7,7 +7,7 @@ import { ReduxStateController } from "../StateController/StateController";
 import { combineReducers } from "redux";
 
 export class ReduxStateControllerPool extends StateControllerBlueprint<any> implements StateControllerPool {
-    stateControllers: { [priopertyTitle: string]: AnyStateController }
+    stateControllers: { [priopertyTitle: string]: AnyStateController } = {};
 
     constructor(
         properyTitle: string,
