@@ -71,7 +71,7 @@ describe('ControllerPool has initial state', () => {
         const initialPosition = state[StatePropertyNames.position];
         const entityProperyKeys = Object.keys(initialPosition);
 
-        assert.ok(entityProperyKeys.length === 4);
+        assert.ok(entityProperyKeys.length === 5);
 
         const positionController =
         controllerPool.getControllerFor(StatePropertyNames.position) as ReduxEntityStateController<IProduct>;
