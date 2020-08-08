@@ -66,7 +66,7 @@ describe('ControllerPool has initial state', () => {
         assert.ok(typeof initialProduct[valueIndexPropertyTitile] !== "undefined");
     });
 
-    it('initial position state has 4 keys: data property, dependencyIndex, 2 hash indexes', () => {
+    it('initial position state has 5 keys: data property, dependencyIndex, 2 hash indexes and whishlist index', () => {
         const {state, controllerPool} = createStoreWithStateControllerPoolTest();
         const initialPosition = state[StatePropertyNames.position];
         const entityProperyKeys = Object.keys(initialPosition);
