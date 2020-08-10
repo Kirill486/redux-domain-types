@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid';
-import { IEntityFactoryMethod } from '../../src/EntityStateController/types';
+import { IEntityFactoryMethod } from '../../src/DisconnectedEntityStateController/types';
 import { Factory, IEntity } from "../../utils/definitions";
 import { IProduct, IPosition } from "../../domain_types/domainTypes";
 import { StatePropertyNames } from './constants';

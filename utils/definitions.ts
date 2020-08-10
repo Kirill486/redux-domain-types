@@ -1,6 +1,6 @@
 import { Action } from "redux";
 import { IndexStateController } from "../src/IndexStateController/IndexStateController";
-import { ILinkedProperty } from "../src/EntityStateController/types";
+import { ILinkedProperty } from "../src/DisconnectedEntityStateController/types";
 import { IRecordStateController } from "../api_describtion/recordStateController";
 
 export type id = string;

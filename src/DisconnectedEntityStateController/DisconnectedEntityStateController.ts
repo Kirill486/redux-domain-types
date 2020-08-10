@@ -11,7 +11,7 @@ import { hash, entities } from "../../api_describtion/indexStateController";
 
 export type EntityHashIndexValueMap = { [indexKey: string]: hash };
 
-export class ReduxEntityStateController<DomainType>
+export class DisconnectedReduxEntityStateController<DomainType>
 extends StateControllerBlueprint<any>
 implements IEntityStateController<IEntity<DomainType>> {
 
@@ -33,15 +33,15 @@ implements IEntityStateController<IEntity<DomainType>> {
     }
 
     get dataProperyTitle() {
-        return `${this.propertyTitle}__${ReduxEntityStateController.dataPrefix}`;
+        return `${this.propertyTitle}__${DisconnectedReduxEntityStateController.dataPrefix}`;
     }
 
     getHashIndexProperyTitle = (indexKey: string)  => {
-        return `${ReduxEntityStateController.hashIndexPrefix}__${this.propertyTitle}__${indexKey}`;
+        return `${DisconnectedReduxEntityStateController.hashIndexPrefix}__${this.propertyTitle}__${indexKey}`;
     }
 
     get dependencyIndexProperyTitle () {
-        return `${ReduxEntityStateController.dependencyIndexPrefix}__${this.propertyTitle}`;
+        return `${DisconnectedReduxEntityStateController.dependencyIndexPrefix}__${this.propertyTitle}`;
     }
 
     constructor(

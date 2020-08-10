@@ -7,7 +7,7 @@ import { StatePropertyNames } from "../tests/api/constants";
 import { ReduxStateController, ReduxEntityStateController, ReduxStateControllerPool } from "../src";
 import { titleIndex, valueIndex, costIndex, productIndex, wishListPosition } from "../tests/api/constants.indexes";
 import { initialApp } from "../tests/api/constants.state";
-import { IEntityFactoryMethod } from "../src/EntityStateController/types";
+import { IEntityFactoryMethod } from "../src/DisconnectedEntityStateController/types";
 import { StateControllerPool } from "./StateControllerPool";
 
 export const commonInitialization =

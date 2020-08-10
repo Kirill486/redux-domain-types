@@ -8,7 +8,7 @@ export interface ICanConnectToPool {
     readonly isConnected: boolean;
     readonly controllersKeys: string[];
 
-    getById: (id: id, propertyTitle?: string) => IEntity<AnyDomainType>;
+    getFromPoolById: (id: id, propertyTitle?: string) => IEntity<AnyDomainType>;
     getStateProperty: (propertyTitle: string) => SomeState;
 
     notifyPool: command;

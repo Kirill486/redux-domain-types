@@ -1,11 +1,8 @@
-import { id } from "../../utils/definitions";
+export const PoolConnectorCanNotFindRecordById = (id: string, propertyTitle: string, properiesVisited: string[]) =>
+    new Error(`Pool Connector can not find record by id: ${id} propertyTitle: ${propertyTitle} properties visited: ${properiesVisited.join(' ')}`);
 
-export const AttemptToInsertDuplicateKey =
-    (propertyKey: string, conflictKeys: string[]) =>
-    new Error(`Attempt to insert is state property ${propertyKey} duplicate key ${conflictKeys.join(' ')}`);
+export const ControllerPoolAttemptToGetUnknownStateProperty = (propertyTitle: string) =>
+    new Error(`Controller Pool attempt to get unknown State property: ${propertyTitle} Use GetById to query EntityState`);
 
-export const  AttemptToModifyRecordThatIsNotExist = (propertyKey: string, entityId: id) =>
-    new Error(`Attempt to modify record that is not exist propertyKey: ${propertyKey} entityId: ${entityId}`);
-
-export const AttemptToSelectEntityThatDoesNotExist = (propertyKey: string, entityId: id) =>
-    new Error(`Attempt to select entity that does not exist ${propertyKey} entityId: ${entityId}`);
+export const PoolConnectorAttemptToUseDisconnected = () =>
+    new Error(`Pool Connector Attempt to Use Disconnected`);
