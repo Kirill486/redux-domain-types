@@ -1,5 +1,5 @@
 import { ReduxStateController } from "./StateController/StateController";
-import { ReduxEntityStateController } from "./EntityStateController/EntityStateController";
+import { ReduxEntityStateController } from "./EntityStateController/DisconnectedEntityStateController";
 import { ReduxStateControllerPool } from "./StateControllerPool/StateControllerPool";
 
 export {

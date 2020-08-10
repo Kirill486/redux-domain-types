@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { initializeStoreWithControllerPool, initializePoolWithControllersAndData } from '../api/constants.pool';
 import { dummieProds } from '../api/constants.entity';
-import { ReduxEntityStateController } from '../../src/EntityStateController/EntityStateController';
+import { ReduxEntityStateController } from '../../src/EntityStateController/DisconnectedEntityStateController';
 import { IProduct, IPosition } from '../../domain_types/domainTypes';
 import { StatePropertyNames } from '../api/constants';
 import { IEntity } from '../../utils/definitions';

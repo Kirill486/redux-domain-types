@@ -5,6 +5,7 @@ import { DuplicateProperyTitle, CannotGetControllerForKey } from "./exceptions";
 import { ReduxEntityStateController } from "..";
 import { ReduxStateController } from "../StateController/StateController";
 import { combineReducers } from "redux";
+import { StateControllerPoolConnector } from "../StateControllerPoolConnector/ControllerPoolConnector";
 
 export class ReduxStateControllerPool extends StateControllerBlueprint<any> implements StateControllerPool {
     stateControllers: { [priopertyTitle: string]: AnyStateController } = {};
@@ -66,4 +67,12 @@ export class ReduxStateControllerPool extends StateControllerBlueprint<any> impl
         }
     };
 
+    afterPlugIn = () => {
+        this.controllersKeys.forEach((key) => {
+            const controller = this.getControllerFor(key);
+            if (controller instanceof StateControllerPoolConnector) {
+                controller.connect(this);
+            }
+        });
+    }
 }
