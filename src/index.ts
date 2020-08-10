@@ -1,9 +1,9 @@
 import { ReduxStateController } from "./StateController/StateController";
-import { ReduxEntityStateController } from "./EntityStateController/DisconnectedEntityStateController";
+import { DisconnectedReduxEntityStateController } from "./DisconnectedEntityStateController/DisconnectedEntityStateController";
 import { ReduxStateControllerPool } from "./StateControllerPool/StateControllerPool";
 
 export {
     ReduxStateController,
-    ReduxEntityStateController,
+    DisconnectedReduxEntityStateController as ReduxEntityStateController,
     ReduxStateControllerPool,
 }

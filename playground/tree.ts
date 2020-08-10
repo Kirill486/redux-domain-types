@@ -1,12 +1,12 @@
 import * as assert from 'assert';
 import * as SearchTree from 'search-tree';
-import { IProduct } from '../../domain_types/domainTypes';
-import { IIndex } from '../../utils/definitions';
-import { randomInt } from '../../utils/randomInt';
+import { IProduct } from '../domain_types/domainTypes';
+import { IIndex } from '../utils/definitions';
+import { randomInt } from '../utils/randomInt';
 import { ITree } from 'search-tree/libraryDefinitions';
-import { Timer } from '../../utils/timer';
-import { roughlyEqual } from '../../utils/roughlyEqual';
-import { serilizeTree, deserilizeTree } from '../../utils/treeUtils';
+import { Timer } from '../utils/timer';
+import { roughlyEqual } from '../utils/roughlyEqual';
+import { serilizeTree, deserilizeTree } from '../utils/treeUtils';
 // Here we have our tree tested.
 // It should return pointer to the first element that satisfy query fast
 // And then return elements even faster
