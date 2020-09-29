@@ -54,8 +54,8 @@ describe('EntityStateController extends redux API', () => {
         assert.equal(stateInitialIsNotNullObject, true);
 
         // Indexes set on initialization
-        const titleIndexStateKey = productStateController.getIndexProperyTitle(titleIndex.indexKey);
-        const valueIndexStateKey = productStateController.getIndexProperyTitle(titleIndex.indexKey);
+        const titleIndexStateKey = productStateController.getHashIndexProperyTitle(titleIndex.indexKey);
+        const valueIndexStateKey = productStateController.getHashIndexProperyTitle(titleIndex.indexKey);
 
         const hasTitleIndexPropertyProperty = stateInitial.hasOwnProperty(titleIndexStateKey);
         assert.equal(hasTitleIndexPropertyProperty, true);

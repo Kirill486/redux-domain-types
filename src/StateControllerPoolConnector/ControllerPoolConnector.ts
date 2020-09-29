@@ -5,8 +5,7 @@ import { id, command } from '../../utils/definitions';
 import { PoolConnectorCanNotFindRecordById, ControllerPoolAttemptToGetUnknownStateProperty, PoolConnectorAttemptToUseDisconnected } from './exceptions';
 import { ReduxStateController } from '../StateController/StateController';
 
-export class ReduxEntityStateController<DomainType>
-extends DisconnectedReduxEntityStateController<DomainType>
+export class StateControllerPoolConnector
 implements ICanConnectToPool {
     notifyPool: command;
     controllerPool: StateControllerPool;
@@ -25,7 +24,7 @@ implements ICanConnectToPool {
 
     controllerIncludesRecord = (controller: DisconnectedReduxEntityStateController<any>, id: id) => controller.includes(id);
 
-    controllerData = <AnotherControllerDomainType>(controller: DisconnectedReduxEntityStateController<AnotherControllerDomainType>, id: id): AnotherControllerDomainType => controller.getById(id);
+    controllerData = <DomainType>(controller: DisconnectedReduxEntityStateController<DomainType>, id: id): DomainType => controller.getById(id);
 
     getFromPoolById = (id: id, propertyTitle: string) => {
 

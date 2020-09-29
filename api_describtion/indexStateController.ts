@@ -9,8 +9,6 @@ export interface IndexDto {
     entities: entities;
 }
 
-export interface IIndexStateInstanceController {
-}
 
 export interface IIndexStateCommandController {
     add: command;
@@ -23,7 +21,6 @@ export interface IIndexStateQueryController {
 }
 
 export interface IIndexStateController extends
-IIndexStateInstanceController,
 IIndexStateCommandController,
 IIndexStateQueryController,
 IExtendReduxAPI<any> {}
